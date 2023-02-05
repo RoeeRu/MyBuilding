@@ -1,11 +1,11 @@
-<!-- 
-	This is the sign in page, it uses the dashboard layout in: 
+<!--
+	This is the sign in page, it uses the dashboard layout in:
 	"./layouts/Default.vue" .
  -->
 
 <template>
 	<div class="sign-in">
-		
+
 		<a-row type="flex" :gutter="[24,24]" justify="space-around" align="middle">
 
 			<!-- Sign In Form Column -->
@@ -22,7 +22,8 @@
 					:hideRequiredMark="true"
 				>
 					<a-form-item class="mb-10" label="Email" :colon="false">
-						<a-input 
+						<a-input
+						ref="email"
 						v-decorator="[
 						'email',
 						{ rules: [{ required: true, message: 'Please input your email!' }] },
@@ -30,6 +31,7 @@
 					</a-form-item>
 					<a-form-item class="mb-5" label="Password" :colon="false">
 						<a-input
+						ref="password"
 						v-decorator="[
 						'password',
 						{ rules: [{ required: true, message: 'Please input your password!' }] },
@@ -47,21 +49,35 @@
 				<!-- / Sign In Form -->
 
 				<p class="font-semibold text-muted">Don't have an account? <router-link to="/sign-in" class="font-bold text-dark">Sign Up</router-link></p>
+				<p class="">Or</p>
+
+				<div class="sign-in-gateways">
+	    			<a-button @click="handleSignUp('facebook')">
+						<img src="images/logos/logos-facebook.svg" alt="">
+					</a-button>
+	    			<a-button @click="handleSignUp('gmail')">
+						<img src="images/logos/Google__G__Logo.svg.png" alt="">
+					</a-button>
+				</div>
 			</a-col>
 			<!-- / Sign In Form Column -->
+
 
 			<!-- Sign In Image Column -->
 			<a-col :span="24" :md="12" :lg="12" :xl="12" class="col-img">
 				<img src="images/img-signin.jpg" alt="">
+
 			</a-col>
 			<!-- Sign In Image Column -->
 
 		</a-row>
-		
+
 	</div>
 </template>
 
 <script>
+import { getAuth, signInWithPopup, GoogleAuthProvider, FacebookAuthProvider, signInWithEmailAndPassword   } from "firebase/auth";
+import { FirebaseConfig } from '../firebaseConfig';
 
 	export default ({
 		data() {
@@ -80,10 +96,53 @@
 				e.preventDefault();
 				this.form.validateFields((err, values) => {
 					if ( !err ) {
-						console.log('Received values of form: ', values) ;
+
 					}
+					this.handleSignUp('selfRegistration')
 				});
 			},
+
+			handleSignUp(type) {
+				FirebaseConfig.setup();
+				const auth = getAuth();
+
+				if(type === 'selfRegistration') {
+					signInWithEmailAndPassword(auth, this.$refs.email.value, this.$refs.password.value)
+						.then((userCredential) => {
+							// Signed in
+							const user = userCredential.user;
+							console.log('Uemail', user);
+						})
+						.catch((error) => {
+							const errorCode = error.code;
+							const errorMessage = error.message;
+							console.log('errorUemail', user);
+						});
+						return;
+				}
+
+				let provider = type==='facebook' ? new FacebookAuthProvider() :  new GoogleAuthProvider();
+
+				signInWithPopup(auth, provider)
+					.then((result) => {
+						// This gives you a Google Access Token. You can use it to access the Google API.
+						const credential = GoogleAuthProvider.credentialFromResult(result);
+						const token = credential.accessToken;
+						// The signed-in user info.
+						const user = result.user;
+						console.log('email', user);
+					}).catch((error) => {
+						// Handle Errors here.
+						const errorCode = error.code;
+						const errorMessage = error.message;
+						// The email of the user's account used.
+						const email = error.customData.email;
+						// The AuthCredential type that was used.
+						const credential = GoogleAuthProvider.credentialFromError(error);
+						console.log('failed email', credential);
+					});
+
+			}
 		},
 	})
 

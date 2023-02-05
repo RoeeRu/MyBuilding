@@ -1,10 +1,28 @@
 // _sign-in.scss
-// 
+//
 // Template's sign in page styles.
-// 
+//
 
 
 // Sign In Page
+.sign-in-gateways {
+  text-align: inherit;
+
+  .ant-btn {
+    margin-right: 10px;
+    margin-left: 10px;
+    height: 60px;
+    width: 70px;
+    box-shadow: none;
+
+    @media( min-width: $md ) {
+      width: 100px;
+    }
+    img {
+      width: 20px;
+    }
+  }
+}
 .sign-in {
     padding: 0px 20px;
 	.col-img img {

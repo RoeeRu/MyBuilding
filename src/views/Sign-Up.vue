@@ -1,5 +1,5 @@
-<!-- 
-	This is the sign up page, it uses the dashboard layout in: 
+<!--
+	This is the sign up page, it uses the dashboard layout in:
 	"./layouts/Default.vue" .
  -->
 
@@ -14,20 +14,17 @@
 			</div>
 		</div>
 		<!-- / Sign Up Image And Headings -->
-		
+
 		<!-- Sign Up Form -->
 		<a-card :bordered="false" class="card-signup header-solid h-full" :bodyStyle="{paddingTop: 0}">
 			<template #title>
 				<h5 class="font-semibold text-center">Register With</h5>
 			</template>
 			<div class="sign-up-gateways">
-    			<a-button>
+    			<a-button @click="handleSignUp('facebook')">
 					<img src="images/logos/logos-facebook.svg" alt="">
 				</a-button>
-    			<a-button>
-					<img src="images/logos/logo-apple.svg" alt="">
-				</a-button>
-    			<a-button>
+    			<a-button @click="handleSignUp('gmail')">
 					<img src="images/logos/Google__G__Logo.svg.png" alt="">
 				</a-button>
 			</div>
@@ -40,6 +37,7 @@
 			>
 				<a-form-item class="mb-10">
 					<a-input
+						ref="name"
 						v-decorator="[
 						'name',
 						{ rules: [{ required: true, message: 'Please input your name!' }] },
@@ -50,6 +48,7 @@
 				</a-form-item>
 				<a-form-item class="mb-10">
 					<a-input
+						ref="email"
 						v-decorator="[
 						'email',
 						{ rules: [{ required: true, message: 'Please input your email!' }] },
@@ -60,6 +59,7 @@
 				</a-form-item>
 				<a-form-item class="mb-5">
 					<a-input
+						ref="password"
 						v-decorator="[
 						'password',
 						{ rules: [{ required: true, message: 'Please input your Password!' }] },
@@ -96,15 +96,41 @@
 </template>
 
 <script>
+	import { FirebaseConfig } from '../firebaseConfig';
+	import * as firebase from "firebase/app";
+	import { onAuthStateChanged, getAuth, signInWithPopup, GoogleAuthProvider, FacebookAuthProvider, createUserWithEmailAndPassword  } from "firebase/auth";
+	import axios from 'axios';
 
 	export default ({
 		data() {
 			return {
+				auth: 1
 			}
 		},
 		beforeCreate() {
-			// Creates the form and adds to it component's "form" property.
 			this.form = this.$form.createForm(this, { name: 'normal_login' });
+		},
+		async created() {
+			  await FirebaseConfig.setup();
+
+				const auth = getAuth();
+				onAuthStateChanged(auth, (user) => {
+				  if (user) {
+						console.log("user", user);
+				    const uid = user.uid;
+						user.getIdToken().then(async (idToken) => {
+							let res = await this.isUserLoggedIn(idToken);
+							console.log('user logged? ' + res);
+			        }).catch((error) => {
+									console.log('user not logged: ' + error.message);
+			        });
+			  } else {
+					//  user sighout
+						console.log('user not logged');
+				  }
+				});
+
+
 		},
 		methods: {
 			// Handles input validation after submission.
@@ -115,7 +141,67 @@
 						console.log('Received values of form: ', values) ;
 					}
 				});
+				this.handleSignUp('selfRegistration')
 			},
+
+			handleSignUp(type) {
+				FirebaseConfig.setup();
+				const auth = getAuth();
+
+				if(type === 'selfRegistration') {
+					createUserWithEmailAndPassword(auth, this.$refs.email.value, this.$refs.password.value)
+						.then((userCredential) => {
+							// Signed in
+							console.log("userCredential", userCredential);
+							const user = userCredential.user;
+							this.resgiterNewApi(user);
+							console.log('Uemail', user);
+						})
+						.catch((error) => {
+							const errorCode = error.code;
+							const errorMessage = error.message;
+							console.log('errorUemail', error);
+						});
+				} else {
+					let provider = type==='facebook' ? new FacebookAuthProvider() :  new GoogleAuthProvider();
+					signInWithPopup(auth, provider)
+						.then((result) => {
+							// This gives you a Google Access Token. You can use it to access the Google API.
+							const credential = GoogleAuthProvider.credentialFromResult(result);
+							const token = credential.accessToken;
+							// The signed-in user info.
+							const user = result.user;
+							this.resgiterNewApi(user);
+							console.log('email', user);
+						}).catch((error) => {
+							// Handle Errors here.
+							const errorCode = error.code;
+							const errorMessage = error.message;
+							// The email of the user's account used.
+							const email = error.customData.email;
+							// The AuthCredential type that was used.
+							const credential = GoogleAuthProvider.credentialFromError(error);
+							console.log('failed email', credential);
+						});
+				}
+
+			},
+
+			resgiterNewApi(user) {
+						this.refreshToken = user.refreshToken
+						axios.post('http://127.0.0.1:5000/registration/new', {accessToken: user.accessToken})
+				      .then(response => {
+				        console.log(response.data.data);
+				     });
+			},
+
+			isUserLoggedIn(token) {
+				return axios.post('./registration/isSignedIn', {accessToken: token})
+					.then(response => {
+						console.log(response.data.status);
+						return response.data.status;
+				 });
+			}
 		},
 	})
 
