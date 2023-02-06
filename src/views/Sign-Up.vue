@@ -189,14 +189,14 @@
 
 			resgiterNewApi(user) {
 						this.refreshToken = user.refreshToken
-						axios.post('http://127.0.0.1:5000/registration/new', {accessToken: user.accessToken})
+						axios.post(process.env.VUE_APP_SYSTEM_DOMAIN + '/registration/new', {accessToken: user.accessToken})
 				      .then(response => {
 				        console.log(response.data.data);
 				     });
 			},
 
 			isUserLoggedIn(token) {
-				return axios.post('./registration/isSignedIn', {accessToken: token})
+				return axios.post(process.env.VUE_APP_SYSTEM_DOMAIN + '/registration/isSignedIn', {accessToken: token})
 					.then(response => {
 						console.log(response.data.status);
 						return response.data.status;
