@@ -1,6 +1,7 @@
 <template>
 
 	<!-- Transactions Table Card -->
+
 	<a-card :bordered="false" class="header-solid h-full" :bodyStyle="{padding: 0,}">
 		<template #title>
 			<a-row type="flex" align="middle">
@@ -10,7 +11,8 @@
 				<a-col :span="24" :md="12" style="display: flex; align-items: center; justify-content: flex-end">
 					<a-radio-group v-model="transactionsHeaderBtns" size="small">
 						<a-radio-button value="all">ALL</a-radio-button>
-						<a-radio-button value="online">ONLINE</a-radio-button>
+						<a-radio-button value="bank">Bank</a-radio-button>
+						<a-radio-button value="manual">Manual</a-radio-button>
 					</a-radio-group>
 				</a-col>
 			</a-row>
@@ -41,15 +43,26 @@
 				</div>
 			</template>
 
-			<template slot="status" slot-scope="status">
-				<a-tag class="tag-status" :class="status ? 'ant-tag-primary' : 'ant-tag-muted'">
-					{{ status ? "ONLINE" : "OFFLINE" }}
-				</a-tag>
+			<template slot="transaction_amount" slot-scope="transaction_amount">
+				<div class="transaction_amount-info">
+							<span v-if="transaction_amount.type == 1" class="text-success">
+								+ ${{ transaction_amount.amount }}
+							</span>
+							<span v-if="transaction_amount.type == 0" class="text-warning">
+								Pending
+							</span>
+							<span v-if="transaction_amount.type == -1" class="text-danger">
+								- ${{ transaction_amount.amount }}
+							</span>
+				</div>
 			</template>
+			
 
-			<template slot="editBtn" slot-scope="row">
-				<a-button type="link" :data-id="row.key" class="btn-edit">
-					Edit
+			
+
+			<template slot="actionsBtn" slot-scope="row">
+				<a-button type="link" :data-id="row.key" class="btn-actions">
+					Actions
 				</a-button>
 			</template>
 
