@@ -5,7 +5,13 @@
 
 <template>
 	<div>
+		<a-row  :gutter="24" type="flex">
+			<a-col  :span="24" class="mb-24">
+				<CardTransactionsActions></CardTransactionsActions>
 
+			</a-col>
+
+		</a-row>
 		<!-- Transactions Table -->
 		<a-row :gutter="24" type="flex">
 
@@ -31,9 +37,8 @@
 <script>
 
 	// "Transactions" table component.
-
-	// "Projects" table component.
 	import CardTransactionsTable from '../components/Cards/CardTransactionsTable.vue';
+	import CardTransactionsActions from '../components/Cards/CardTransactionsActions.vue';
 	
 	// "Transactions" table list of columns and their properties.
 	const table1Columns = [
@@ -107,7 +112,8 @@
 
 	export default ({
 		components: {
-    CardTransactionsTable
+    CardTransactionsTable,
+	CardTransactionsActions
 },
 		data() {
 			return {
