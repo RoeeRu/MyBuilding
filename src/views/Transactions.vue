@@ -1,29 +1,29 @@
 <!-- 
-	This is the tables page, it uses the dashboard layout in: 
+	This is the transactions page, it uses the dashboard layout in: 
 	"./layouts/Dashboard.vue" .
  -->
 
 <template>
 	<div>
 
-		<!-- Authors Table -->
+		<!-- Transactions Table -->
 		<a-row :gutter="24" type="flex">
 
-			<!-- Authors Table Column -->
+			<!-- Transactions Table Column -->
 			<a-col :span="24" class="mb-24">
 
-				<!-- Authors Table Card -->
-				<CardAuthorTable
+				<!-- Transactions Table Card -->
+				<CardTransactionsTable
 					:data="table1Data"
 					:columns="table1Columns"
-				></CardAuthorTable>
-				<!-- / Authors Table Card -->
+				></CardTransactionsTable>
+				<!-- / Transactions Table Card -->
 
 			</a-col>
-			<!-- / Authors Table Column -->
+			<!-- / Transactions Table Column -->
 
 		</a-row>
-		<!-- / Authors Table -->
+		<!-- / Transactions Table -->
 
 		<!-- Projects Table -->
 		<a-row :gutter="24" type="flex">
@@ -49,32 +49,39 @@
 
 <script>
 
-	// "Authors" table component.
-	import CardAuthorTable from '../components/Cards/CardAuthorTable' ;
+	// "Transactions" table component.
+	import CardTransactionTable from '../components/Cards/CardTransactionsTable' ;
 
 	// "Projects" table component.
 	import CardProjectTable2 from '../components/Cards/CardProjectTable2' ;
+import CardTransactionsTable from '../components/Cards/CardTransactionsTable.vue';
 	
-	// "Authors" table list of columns and their properties.
+	// "Transactions" table list of columns and their properties.
 	const table1Columns = [
 		{
-			title: 'AUTHOR',
-			dataIndex: 'author',
-			scopedSlots: { customRender: 'author' },
+			title: 'Transaction Date',
+			dataIndex: 'date',
+			class: 'text-muted',
 		},
 		{
-			title: 'FUNCTION',
-			dataIndex: 'func',
-			scopedSlots: { customRender: 'func' },
+			title: 'Source',
+			dataIndex: 'source',
+			scopedSlots: { customRender: 'source' },
 		},
+		{
+			title: 'Transaction',
+			dataIndex: 'transaction',
+			scopedSlots: { customRender: 'transaction' },
+		},
+		
 		{
 			title: 'STATUS',
 			dataIndex: 'status',
 			scopedSlots: { customRender: 'status' },
 		},
 		{
-			title: 'EMPLOYED',
-			dataIndex: 'employed',
+			title: 'Transaction Date',
+			dataIndex: 'date',
 			class: 'text-muted',
 		},
 		{
@@ -84,92 +91,39 @@
 		},
 	];
 
-	// "Authors" table list of rows and their properties.
+	// "Transactions" table list of rows and their properties.
 	const table1Data = [
 		{
 			key: '1',
-			author: {
+			
+			date: '23/04/18',
+			transaction: {
 				avatar: 'images/face-2.jpg',
 				name: 'Michael John',
 				email: 'michael@mail.com',
 			},
-			func: {
-				job: 'Manager',
-				department: 'Organization',
+			source: {
+				type: 'Bank',
+				details: '(... 2341)',
 			},
 			status: 1,
-			employed: '23/04/18',
 		},
 		{
 			key: '2',
-			author: {
+			
+			date: '23/12/20',
+			transaction: {
 				avatar: 'images/face-3.jpg',
 				name: 'Alexa Liras',
 				email: 'alexa@mail.com',
 			},
-			func: {
-				job: 'Programator',
-				department: 'Developer',
+			source: {
+				type: 'Manual',
+				details: 'Daniel, apt. 3a',
 			},
 			status: 0,
-			employed: '23/12/20',
 		},
-		{
-			key: '3',
-			author: {
-				avatar: 'images/face-1.jpg',
-				name: 'Laure Perrier',
-				email: 'laure@mail.com',
-			},
-			func: {
-				job: 'Executive',
-				department: 'Projects',
-			},
-			status: 1,
-			employed: '13/04/19',
-		},
-		{
-			key: '4',
-			author: {
-				avatar: 'images/face-4.jpg',
-				name: 'Miriam Eric',
-				email: 'miriam@mail.com',
-			},
-			func: {
-				job: 'Marketing',
-				department: 'Organization',
-			},
-			status: 1,
-			employed: '03/04/21',
-		},
-		{
-			key: '5',
-			author: {
-				avatar: 'images/face-5.jpeg',
-				name: 'Richard Gran',
-				email: 'richard@mail.com',
-			},
-			func: {
-				job: 'Manager',
-				department: 'Organization',
-			},
-			status: 0,
-			employed: '23/03/20',
-		},
-		{
-			key: '6',
-			author: {
-				avatar: 'images/face-6.jpeg',
-				name: 'John Levi',
-				email: 'john@mail.com',
-			},
-			func: {
-				job: 'Tester',
-				department: 'Developer',
-			},
-			status: 0,
-			employed: '14/04/17',
-		},
+		
 	];
 	
 	// "Projects" table list of columns and their properties.
@@ -277,15 +231,16 @@
 
 	export default ({
 		components: {
-			CardAuthorTable,
-			CardProjectTable2,
-		},
+    CardTransactionTable,
+    CardProjectTable2,
+    CardTransactionsTable
+},
 		data() {
 			return {
-				// Associating "Authors" table data with its corresponding property.
+				// Associating "Transactions" table data with its corresponding property.
 				table1Data: table1Data,
 
-				// Associating "Authors" table columns with its corresponding property.
+				// Associating "Transactions" table columns with its corresponding property.
 				table1Columns: table1Columns,
 
 				// Associating "Projects" table data with its corresponding property.
