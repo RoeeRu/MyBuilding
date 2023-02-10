@@ -21,9 +21,9 @@
 				<h5 class="font-semibold text-center">Register With</h5>
 			</template>
 			<div class="sign-up-gateways">
-    			<a-button @click="handleSignUp('facebook')">
+    			<!-- <a-button @click="handleSignUp('facebook')">
 					<img src="images/logos/logos-facebook.svg" alt="">
-				</a-button>
+				</a-button> -->
     			<a-button @click="handleSignUp('gmail')">
 					<img src="images/logos/Google__G__Logo.svg.png" alt="">
 				</a-button>
