@@ -100,6 +100,8 @@
 	import * as firebase from "firebase/app";
 	import { onAuthStateChanged, getAuth, signInWithPopup, GoogleAuthProvider, FacebookAuthProvider, createUserWithEmailAndPassword  } from "firebase/auth";
 	import axios from 'axios';
+	import store from '@/store'
+	import { isUserLoggedIn, resgiterNewApi } from '@/Api/user.js';
 
 	export default ({
 		data() {
@@ -109,28 +111,6 @@
 		},
 		beforeCreate() {
 			this.form = this.$form.createForm(this, { name: 'normal_login' });
-		},
-		async created() {
-			  await FirebaseConfig.setup();
-
-				const auth = getAuth();
-				onAuthStateChanged(auth, (user) => {
-				  if (user) {
-						console.log("user", user);
-				    const uid = user.uid;
-						user.getIdToken().then(async (idToken) => {
-							let res = await this.isUserLoggedIn(idToken);
-							console.log('user logged? ' + res);
-			        }).catch((error) => {
-									console.log('user not logged: ' + error.message);
-			        });
-			  } else {
-					//  user sighout
-						console.log('user not logged');
-				  }
-				});
-
-
 		},
 		methods: {
 			// Handles input validation after submission.
@@ -144,20 +124,26 @@
 				this.handleSignUp('selfRegistration')
 			},
 
-			handleSignUp(type) {
+			async handleSignUp(type) {
 				FirebaseConfig.setup();
 				const auth = getAuth();
 
 				if(type === 'selfRegistration') {
 					createUserWithEmailAndPassword(auth, this.$refs.email.value, this.$refs.password.value)
-						.then((userCredential) => {
+						.then(async (userCredential) => {
 							// Signed in
 							console.log("userCredential", userCredential);
 							const user = userCredential.user;
-							this.resgiterNewApi(user);
+							let isSignedIn = await resgiterNewApi(user);
+							this.$store.dispatch('setLoggedIn', isSignedIn)
+							if(isSignedIn) {
+								console.log("this.$router", this.$router);
+								this.$router.push({ name: '/dashboard' });
+							}
 							console.log('Uemail', user);
 						})
 						.catch((error) => {
+							this.$store.dispatch('setLoggedIn', false)
 							const errorCode = error.code;
 							const errorMessage = error.message;
 							console.log('errorUemail', error);
@@ -165,13 +151,18 @@
 				} else {
 					let provider = type==='facebook' ? new FacebookAuthProvider() :  new GoogleAuthProvider();
 					signInWithPopup(auth, provider)
-						.then((result) => {
+						.then(async (result) => {
 							// This gives you a Google Access Token. You can use it to access the Google API.
 							const credential = GoogleAuthProvider.credentialFromResult(result);
 							const token = credential.accessToken;
 							// The signed-in user info.
 							const user = result.user;
-							this.resgiterNewApi(user);
+							let isSignedIn = await resgiterNewApi(user);
+							if(isSignedIn) {
+								this.$router.push({ name: '/dashboard' });
+							}
+							this.$store.dispatch('setLoggedIn', isSignedIn)
+
 							console.log('email', user);
 						}).catch((error) => {
 							// Handle Errors here.
@@ -181,6 +172,8 @@
 							const email = error.customData.email;
 							// The AuthCredential type that was used.
 							const credential = GoogleAuthProvider.credentialFromError(error);
+							this.$store.dispatch('setLoggedIn', false)
+
 							console.log('failed email', credential);
 						});
 				}
@@ -188,19 +181,12 @@
 			},
 
 			resgiterNewApi(user) {
-						this.refreshToken = user.refreshToken
-						axios.post(process.env.VUE_APP_SYSTEM_DOMAIN + '/registration/new', {accessToken: user.accessToken})
-				      .then(response => {
-				        console.log(response.data.data);
-				     });
-			},
-
-			isUserLoggedIn(token) {
-				return axios.post(process.env.VUE_APP_SYSTEM_DOMAIN + '/registration/isSignedIn', {accessToken: token})
-					.then(response => {
-						console.log(response.data.status);
-						return response.data.status;
-				 });
+					this.refreshToken = user.refreshToken
+					return axios.post(process.env.VUE_APP_SYSTEM_DOMAIN + '/registration/new', {accessToken: user.accessToken})
+			      .then(response => {
+							console.log(response.data.data);
+							return response.data.status;
+			     });
 			}
 		},
 	})

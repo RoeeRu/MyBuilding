@@ -40,6 +40,9 @@
 					<a-form-item class="mb-10">
     					<a-switch v-model="rememberMe" /> Remember Me
 					</a-form-item>
+					<a-form-item class="mb-10">
+							<h7 v-if="regFailed" style="color:red;">Wrong Credentials</h7>
+					</a-form-item>
 					<a-form-item>
 						<a-button type="primary" block html-type="submit" class="login-form-button">
 							SIGN IN
@@ -76,14 +79,16 @@
 </template>
 
 <script>
-import { getAuth, signInWithPopup, GoogleAuthProvider, FacebookAuthProvider, signInWithEmailAndPassword   } from "firebase/auth";
+import { onAuthStateChanged, getAuth, signInWithPopup, GoogleAuthProvider, FacebookAuthProvider, signInWithEmailAndPassword   } from "firebase/auth";
 import { FirebaseConfig } from '../firebaseConfig';
+import { isUserLoggedIn } from '@/Api/user.js';
 
 	export default ({
 		data() {
 			return {
 				// Binded model property for "Sign In Form" switch button for "Remember Me" .
 				rememberMe: true,
+				regFailed: false
 			}
 		},
 		beforeCreate() {
@@ -112,11 +117,12 @@ import { FirebaseConfig } from '../firebaseConfig';
 							// Signed in
 							const user = userCredential.user;
 							console.log('Uemail', user);
+							this.$router.push({ name: 'Dashboard' });
 						})
 						.catch((error) => {
 							const errorCode = error.code;
 							const errorMessage = error.message;
-							console.log('errorUemail', user);
+							this.regFailed = true;
 						});
 						return;
 				}
@@ -131,6 +137,8 @@ import { FirebaseConfig } from '../firebaseConfig';
 						// The signed-in user info.
 						const user = result.user;
 						console.log('email', user);
+						this.$router.push({ name: 'Dashboard' });
+
 					}).catch((error) => {
 						// Handle Errors here.
 						const errorCode = error.code;
@@ -139,7 +147,7 @@ import { FirebaseConfig } from '../firebaseConfig';
 						const email = error.customData.email;
 						// The AuthCredential type that was used.
 						const credential = GoogleAuthProvider.credentialFromError(error);
-						console.log('failed email', credential);
+						this.regFailed = true;
 					});
 
 			}
