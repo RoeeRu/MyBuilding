@@ -96,12 +96,8 @@
 </template>
 
 <script>
-	import { FirebaseConfig } from '../firebaseConfig';
-	import * as firebase from "firebase/app";
-	import { onAuthStateChanged, getAuth, signInWithPopup, GoogleAuthProvider, FacebookAuthProvider, createUserWithEmailAndPassword  } from "firebase/auth";
 	import axios from 'axios';
 	import store from '@/store'
-	import { isUserLoggedIn, resgiterNewApi } from '@/Api/user.js';
 
 	export default ({
 		data() {
@@ -114,80 +110,26 @@
 		},
 		methods: {
 			// Handles input validation after submission.
-			handleSubmit(e) {
+			async handleSubmit(e) {
 				e.preventDefault();
 				this.form.validateFields((err, values) => {
 					if ( !err ) {
 						console.log('Received values of form: ', values) ;
 					}
 				});
-				this.handleSignUp('selfRegistration')
+				let isSignedIn = await this.$store.dispatch('registrationHandler', {regType: 'selfRegistration', email:this.$refs.email.value, password: this.$refs.password.value})
+				console.log("isSignedIn", isSignedIn);
+				if(isSignedIn) {
+					this.$router.push({ name: 'Dashboard' });
+				}
 			},
 
 			async handleSignUp(type) {
-				FirebaseConfig.setup();
-				const auth = getAuth();
-
-				if(type === 'selfRegistration') {
-					createUserWithEmailAndPassword(auth, this.$refs.email.value, this.$refs.password.value)
-						.then(async (userCredential) => {
-							// Signed in
-							console.log("userCredential", userCredential);
-							const user = userCredential.user;
-							let isSignedIn = await resgiterNewApi(user);
-							this.$store.dispatch('setLoggedIn', isSignedIn)
-							if(isSignedIn) {
-								console.log("this.$router", this.$router);
-								this.$router.push({ name: '/dashboard' });
-							}
-							console.log('Uemail', user);
-						})
-						.catch((error) => {
-							this.$store.dispatch('setLoggedIn', false)
-							const errorCode = error.code;
-							const errorMessage = error.message;
-							console.log('errorUemail', error);
-						});
-				} else {
-					let provider = type==='facebook' ? new FacebookAuthProvider() :  new GoogleAuthProvider();
-					signInWithPopup(auth, provider)
-						.then(async (result) => {
-							// This gives you a Google Access Token. You can use it to access the Google API.
-							const credential = GoogleAuthProvider.credentialFromResult(result);
-							const token = credential.accessToken;
-							// The signed-in user info.
-							const user = result.user;
-							let isSignedIn = await resgiterNewApi(user);
-							if(isSignedIn) {
-								this.$router.push({ name: '/dashboard' });
-							}
-							this.$store.dispatch('setLoggedIn', isSignedIn)
-
-							console.log('email', user);
-						}).catch((error) => {
-							// Handle Errors here.
-							const errorCode = error.code;
-							const errorMessage = error.message;
-							// The email of the user's account used.
-							const email = error.customData.email;
-							// The AuthCredential type that was used.
-							const credential = GoogleAuthProvider.credentialFromError(error);
-							this.$store.dispatch('setLoggedIn', false)
-
-							console.log('failed email', credential);
-						});
+				let isSignedIn = await this.$store.dispatch('registrationHandler', {regType: type})
+				if(isSignedIn) {
+					this.$router.push({ name: 'Dashboard' });
 				}
-
 			},
-
-			resgiterNewApi(user) {
-					this.refreshToken = user.refreshToken
-					return axios.post(process.env.VUE_APP_SYSTEM_DOMAIN + '/registration/new', {accessToken: user.accessToken})
-			      .then(response => {
-							console.log(response.data.data);
-							return response.data.status;
-			     });
-			}
 		},
 	})
 

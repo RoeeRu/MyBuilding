@@ -79,9 +79,6 @@
 </template>
 
 <script>
-import { onAuthStateChanged, getAuth, signInWithPopup, GoogleAuthProvider, FacebookAuthProvider, signInWithEmailAndPassword   } from "firebase/auth";
-import { FirebaseConfig } from '../firebaseConfig';
-import { isUserLoggedIn } from '@/Api/user.js';
 
 	export default ({
 		data() {
@@ -97,59 +94,29 @@ import { isUserLoggedIn } from '@/Api/user.js';
 		},
 		methods: {
 			// Handles input validation after submission.
-			handleSubmit(e) {
+			async handleSubmit(e) {
 				e.preventDefault();
 				this.form.validateFields((err, values) => {
 					if ( !err ) {
 
 					}
-					this.handleSignUp('selfRegistration')
 				});
-			},
-
-			handleSignUp(type) {
-				FirebaseConfig.setup();
-				const auth = getAuth();
-
-				if(type === 'selfRegistration') {
-					signInWithEmailAndPassword(auth, this.$refs.email.value, this.$refs.password.value)
-						.then((userCredential) => {
-							// Signed in
-							const user = userCredential.user;
-							console.log('Uemail', user);
-							this.$router.push({ name: 'Dashboard' });
-						})
-						.catch((error) => {
-							const errorCode = error.code;
-							const errorMessage = error.message;
-							this.regFailed = true;
-						});
-						return;
+				let isSignedIn = await this.$store.dispatch('loginHandler', {regType: 'selfRegistration', email:this.$refs.email.value, password: this.$refs.password.value})
+				if (isSignedIn) {
+					this.$router.push({ name: 'Dashboard' });
+				} else {
+					this.regFailed = true;
 				}
 
-				let provider = type==='facebook' ? new FacebookAuthProvider() :  new GoogleAuthProvider();
+			},
 
-				signInWithPopup(auth, provider)
-					.then((result) => {
-						// This gives you a Google Access Token. You can use it to access the Google API.
-						const credential = GoogleAuthProvider.credentialFromResult(result);
-						const token = credential.accessToken;
-						// The signed-in user info.
-						const user = result.user;
-						console.log('email', user);
-						this.$router.push({ name: 'Dashboard' });
-
-					}).catch((error) => {
-						// Handle Errors here.
-						const errorCode = error.code;
-						const errorMessage = error.message;
-						// The email of the user's account used.
-						const email = error.customData.email;
-						// The AuthCredential type that was used.
-						const credential = GoogleAuthProvider.credentialFromError(error);
-						this.regFailed = true;
-					});
-
+			async handleSignUp(type) {
+				let isSignedIn = await this.$store.dispatch('loginHandler', {regType: type})
+				if (isSignedIn) {
+					this.$router.push({ name: 'Dashboard' });
+				} else {
+					this.regFailed = true;
+				}
 			}
 		},
 	})

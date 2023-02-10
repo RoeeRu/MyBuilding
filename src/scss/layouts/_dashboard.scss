@@ -1,7 +1,7 @@
 // _dashboard-rtl.scss
-// 
+//
 // Template's dashboard layout styles.
-// 
+//
 
 
 // Dashboard Layout
@@ -10,7 +10,7 @@
 	text-align: left;
 	position: relative;
 	overflow-x: hidden;
-				
+
 	@media( min-width: $lg ){
 		overflow: auto;
 	}
@@ -34,25 +34,25 @@
 		margin: 0;
 		padding: 33px 20px;
 		background: #ffffff !important;
-				
+
 		@media( min-width: $lg ){
 			margin: 20px 0 0 20px;
 			padding: 13px 20px;
 			height: calc(100vh - 20px);
 			background: transparent !important;
 		}
-		
+
 		&.ant-layout-sider-dark {
 			background-color: #001529 !important;
 			box-shadow: $shadow-1;
 		}
-		
+
 		&.ant-layout-sider-zero-width {
 			overflow-x: hidden;
 			width: 210px;
 			margin: 0;
 			padding: 33px 0px;
-				
+
 			@media( min-width: $lg ){
 				padding: 13px 0;
 				margin: 20px 0 0 0;
@@ -93,7 +93,7 @@
 			margin: 0;
 			padding-top: 33px;
 			border-radius: 0px;
-				
+
 			@media( min-width: $lg ){
 				margin: 20px 0 64px 20px;
 				padding-top: 13px;
@@ -205,7 +205,7 @@
 			margin: 0;
 			padding-top: 33px;
 			border-radius: 0px;
-				
+
 			@media( min-width: $lg ){
 				margin: 20px 0 0 20px;
 				padding-top: 13px;
@@ -266,7 +266,7 @@
 			display: none;
 			padding-top: 100px;
 			padding-bottom: 33px;
-				
+
 			@media( min-width: $lg ){
 				padding-bottom: 20px;
 			}
@@ -373,7 +373,7 @@
 		background-color: $color-gray-12;
 		opacity: .5;
 		z-index: 9;
-				
+
 		@media( min-width: $lg ){
 			background-color: transparent;
 			opacity: 0;
@@ -389,7 +389,7 @@
 		min-height: 100vh;
 		width: 100%;
 		flex-shrink: 0;
-				
+
 		@media( min-width: $lg ){
 			width: auto;
 			flex-shrink: 1;
@@ -414,7 +414,7 @@
 		line-height: inherit;
 		border-radius: 12px;
 		transition: .2s;
-				
+
 		@media( min-width: $md ){
 			margin: 10px 20px;
 		}
@@ -454,11 +454,11 @@
 			padding: 0;
 			margin: 0;
 		}
-	
+
 		.ant-list-item {
 			padding: 5px 16px;
 			margin-bottom: 8px;
-	
+
 			&:last-child {
 				margin-bottom: 0;
 			}
@@ -466,7 +466,7 @@
 		.ant-list-item-meta-title {
 			line-height: normal;
 		}
-	
+
 		.ant-avatar {
 			width: 36px;
 			height: 36px;
@@ -492,7 +492,7 @@
 				fill: $color-gray-7;
 				vertical-align: middle;
 				margin-right: 4px;
-	
+
 				path {
 					fill: $color-gray-7;
 				}
@@ -530,7 +530,7 @@
 		flex-direction: row-reverse;
 		align-items: center;
 		margin-top: 10px;
-				
+
 		@media( min-width: $md ){
 			margin-top: 0;
 		}
@@ -552,6 +552,7 @@
 			margin: 0;
 			box-shadow: none;
 			color: $color-gray-7;
+			border: none;
 			svg {
 				margin-right: 4px;
 			}
@@ -559,7 +560,7 @@
 				font-weight: $fw-semibold;
 				vertical-align: middle;
 				display: none;
-				
+
 				@media( min-width: $md ){
 					display: inline;
 				}
@@ -574,7 +575,7 @@
 		.header-search {
 			width: 200px;
 			margin: 0 7px 0 0;
-				
+
 			@media( min-width: $md ){
 				margin: 0 7px;
 			}
@@ -618,7 +619,7 @@
 		background: transparent;
 		margin: 0px 20px 20px 20px;
 		padding: 0px;
-				
+
 		@media( min-width: $md ){
 			margin: 0px 0px 20px 20px;
 		}
@@ -627,7 +628,7 @@
 			line-height: 1.5;
 			margin-top: 20px;
 			text-align: center;
-				
+
 			@media( min-width: $md ){
 				margin-top: 0;
 				text-align: right;
@@ -663,11 +664,11 @@
 			font-weight: $fw-semibold;
 			color: $color-gray-7;
 			text-align: center;
-				
+
 			@media( min-width: $md ){
 				text-align: left;
 			}
-			
+
 			svg {
 				width: 16px;
 				height: 16px;
