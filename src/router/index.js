@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
+import store from '@/store'
 
 Vue.use(VueRouter)
 
@@ -21,7 +22,7 @@ let routes = [
 		// route level code-splitting
 		// this generates a separate chunk (about.[hash].js) for this route
 		// which is lazy-loaded when the route is visited.
-		component: () => import(/* webpackChunkName: "dashboard" */ '../views/Dashboard.vue'),
+		component: () => import(/* webpackChunkName: "dashboard" */ '../views/Dashboard.vue')
 	},
 	{
 		path: '/layout',
@@ -86,7 +87,7 @@ function addLayoutToRoute( route, parentLayout = "default" )
 {
 	route.meta = route.meta || {} ;
 	route.meta.layout = route.layout || parentLayout ;
-	
+
 	if( route.children )
 	{
 		route.children = route.children.map( ( childRoute ) => addLayoutToRoute( childRoute, route.meta.layout ) ) ;
@@ -100,6 +101,7 @@ const router = new VueRouter({
 	mode: 'hash',
 	base: process.env.BASE_URL,
 	routes,
+	store,
 	scrollBehavior (to, from, savedPosition) {
 		if ( to.hash ) {
 			return {
@@ -114,5 +116,18 @@ const router = new VueRouter({
 		}
 	}
 })
+
+router.beforeEach(async (to, from, next) => {
+		let isLogged = await store.dispatch('isLoggedIn');
+
+		if (isLogged && (to.name === 'Sign-In' || to.name === 'Sign-Up')) {
+	    return next('/dashboard');
+	  }
+
+	  if (!isLogged && (to.name !== 'Sign-In' && to.name !== 'Sign-Up')) {
+	    return next('/sign-in');
+	  }
+	  next();
+	})
 
 export default router
