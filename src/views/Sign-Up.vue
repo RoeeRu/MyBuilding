@@ -24,7 +24,7 @@
     			<!-- <a-button @click="handleSignUp('facebook')">
 					<img src="images/logos/logos-facebook.svg" alt="">
 				</a-button> -->
-    			<a-button @click="handleSignUp('gmail')">
+    			<a-button @click="handleProviderSignUp('gmail')">
 					<img src="images/logos/Google__G__Logo.svg.png" alt="">
 				</a-button>
 			</div>
@@ -123,22 +123,13 @@
 					this.$router.push({ name: 'Dashboard' });
 				}
 			},
-
-			resgiterNewApi(user) {
-						this.refreshToken = user.refreshToken
-						axios.post(process.env.VUE_APP_SYSTEM_DOMAIN + '/registration/new', {accessToken: user.accessToken})
-				      .then(response => {
-				        console.log(response.data.data);
-				     });
-			},
-
-			isUserLoggedIn(token) {
-				return axios.post(process.env.VUE_APP_SYSTEM_DOMAIN + '/registration/isSignedIn', {accessToken: token})
-					.then(response => {
-						console.log(response.data.status);
-						return response.data.status;
-				 });
+			async handleProviderSignUp(type) {
+				let isSignedIn = await this.$store.dispatch('registrationHandler', {regType: type, email:this.$refs.email.value, password: this.$refs.password.value})
+				if(isSignedIn) {
+					this.$router.push({ name: 'Dashboard' });
+				}
 			}
+
 		},
 	})
 

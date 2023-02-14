@@ -81,7 +81,6 @@ export default {
       } else {
         return await dispatch('signInWithPopup')
       }
-      return false;
     },
     async loginHandler({state, commit, dispatch}, data) {
       FirebaseConfig.setup();
@@ -117,14 +116,14 @@ export default {
       });
     },
 
-    async signInWithPopup() {
+    async signInWithPopup({state, commit}) {
       let provider = new GoogleAuthProvider();
       const auth = getAuth();
 
-      signInWithPopup(auth, provider)
+      return await signInWithPopup(auth, provider)
         .then((result) => {
           // This gives you a Google Access Token. You can use it to access the Google API.
-          const credential = provider.credentialFromResult(result);
+          const credential = GoogleAuthProvider.credentialFromResult(result);
           const token = credential.accessToken;
           // The signed-in user info.
           const user = result.user;
@@ -136,10 +135,10 @@ export default {
           const errorCode = error.code;
           const errorMessage = error.message;
           // The email of the user's account used.
-          const email = error.customData.email;
           // The AuthCredential type that was used.
           const credential = GoogleAuthProvider.credentialFromError(error);
-          return false;
+          console.log("errorMessage", errorMessage);
+          return errorMessage;
         });
     },
 
