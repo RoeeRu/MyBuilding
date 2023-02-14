@@ -1,6 +1,6 @@
 <template>
 
-	<!-- Payment Methods Card -->
+	<!-- Transactions actions Card -->
 	<a-card :bordered="false" class="header-solid h-full" :bodyStyle="{paddingTop: 0,}">
 		
 		<template #title>
@@ -24,7 +24,7 @@
 		</template>
 	
 	</a-card>
-	<!-- Payment Methods Card -->
+	<!-- Transactions actions Card -->
 
 </template>
 
