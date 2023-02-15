@@ -27,7 +27,7 @@
 					slot="avatar"
 					:size="48"
 					shape="square"
-					:src="item.avatar"
+					icon="user"
 					/>
 				</a-list-item-meta>
 			</a-list-item>

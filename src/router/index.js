@@ -16,6 +16,11 @@ let routes = [
 		redirect: '/dashboard',
 	},
 	{
+		path: '/#',
+		name: 'Home',
+		redirect: '/dashboard',
+	},
+	{
 		path: '/dashboard',
 		name: 'Dashboard',
 		layout: "dashboard",

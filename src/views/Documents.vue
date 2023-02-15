@@ -72,6 +72,11 @@
 			
 		},
 		{
+			title: 'Type',
+			dataIndex: 'type',
+			class: 'font-semibold text-muted text-sm',
+		},
+		{
 			title: 'Date Uploaded',
 			dataIndex: 'date',
 			class: 'font-semibold text-muted text-sm',
@@ -97,7 +102,7 @@
 		{
 			key: '1',
 			document: 'insurance-2022-main.pdf',
-			
+			type: "Insurance",
 			date: '23/04/18',
 			
 			details: "Final version of our insurance doc from 2022",
@@ -105,7 +110,7 @@
 		{
 			key: '2',
 			document: 'insurance-2021-main.pdf',
-			
+			type: "Other",
 			date: '23/12/20',
 			
 			details: "Final version of our insurance doc from 2022",
