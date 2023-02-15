@@ -49,6 +49,12 @@ let routes = [
 		component: () => import('../views/Building.vue'),
 	},
 	{
+		path: '/documents',
+		name: 'Documents',
+		layout: "dashboard",
+		component: () => import('../views/Documents.vue'),
+	},
+	{
 		path: '/billing',
 		name: 'Billing',
 		layout: "dashboard",

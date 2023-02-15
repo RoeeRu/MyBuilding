@@ -258,8 +258,57 @@
 		}
 	}
 }
+.card-building-head {
+	margin: -53px 0px 24px;
+
+	@media( min-width: $lg ){
+		margin: -53px 24px 24px;
+	}
+
+	.ant-card-head {
+		border-bottom: 0;
+		padding: 0 16px;
+
+		.ant-radio-group {
+			margin-top: 15px;
+
+			@media( min-width: $lg ){
+				margin-top: 0;
+			}
+		}
+
+		.col-info {
+			display: flex;
+			align-items: center;
+		}
+		.avatar-info {
+			margin-left: 16px;
+			h4 {
+				font-weight: $fw-semibold;
+				margin-bottom: 0;
+			}
+		}
+		.ant-avatar {
+			box-shadow: $shadow-3;
+			border-radius: 8px;
+			margin: 0;
+		}
+	}
+}
 
 .card-profile-information {
+	hr {
+		opacity: .2;
+	}
+	.ant-descriptions .ant-descriptions-row > th, .ant-descriptions .ant-descriptions-row > td {
+		padding-bottom: 16px;
+	}
+	.ant-descriptions .ant-descriptions-item-content i {
+		font-size: 15px;
+	}
+}
+
+.card-building-information {
 	hr {
 		opacity: .2;
 	}
