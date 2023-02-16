@@ -3,20 +3,6 @@
 	<!-- Transactions Table Card -->
 
 	<a-card :bordered="false" class="header-solid h-full" :bodyStyle="{padding: 0,}">
-		<template #title>
-			<a-row type="flex" align="middle">
-				<a-col :span="24" :md="12">
-					<h5 class="font-semibold m-0">Transactions Table</h5>
-				</a-col>
-				<a-col :span="24" :md="12" style="display: flex; align-items: center; justify-content: flex-end">
-					<a-radio-group v-model="transactionsHeaderBtns" size="small">
-						<a-radio-button value="all">ALL</a-radio-button>
-						<a-radio-button value="bank">Bank</a-radio-button>
-						<a-radio-button value="manual">Manual</a-radio-button>
-					</a-radio-group>
-				</a-col>
-			</a-row>
-		</template>
 		<a-table :columns="columns" :data-source="data" :pagination="false">
 
 			<template slot="transaction" slot-scope="transaction">

@@ -6,18 +6,7 @@
 <template>
 	<div>
 
-		<!-- Header Background Image -->
-		<div class="building-nav-bg" style="background-image: url('images/bg-building.jpg')"></div>
-		<!-- / Header Background Image -->
-
-		<!-- User Profile Card -->
-		<a-row  :gutter="24" type="flex">
-			<a-col  :span="24" class="mb-24">
-				<CardUserInfo></CardUserInfo>
-
-			</a-col>
-
-		</a-row>
+		
 			
 		<!-- User Profile Card -->
 
@@ -58,7 +47,6 @@
 <script>
 
 	import CardBuildingInformation from "../components/Cards/CardBuildingInformation"
-	import CardUserInfo from "../components/Cards/CardUserInfo"
 
 	import CardMembers from "../components/Cards/CardMembers"
 
@@ -106,7 +94,6 @@
 	export default ({
 		components: {
 			CardBuildingInformation,
-			CardUserInfo,
 			CardMembers,
 		},
 		data() {

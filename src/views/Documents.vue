@@ -1,5 +1,5 @@
 <!-- 
-	This is the transactions page, it uses the dashboard layout in: 
+	This is the documents page, it uses the dashboard layout in: 
 	"./layouts/Dashboard.vue" .
  -->
 

@@ -1,7 +1,7 @@
 <template>
 
         <!-- User Profile Card -->
-        <a-card :bordered="false" class="card-building-head" :bodyStyle="{padding: 0,}">
+        <a-card :bordered="false"  :bodyStyle="{padding: 0,}">
 			<template #title>
 				<a-row type="flex" align="middle">
 					<a-col :span="24" :md="12" class="col-info">

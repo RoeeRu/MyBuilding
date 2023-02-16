@@ -25,6 +25,9 @@
 			<a-descriptions-item label="Board President">
 				Name and Last Name
 			</a-descriptions-item>
+			<a-descriptions-item label="Treasurer">
+				Name and Last Name
+			</a-descriptions-item>
 			<a-descriptions-item label="Main Email">
 				name@gmail.com
 			</a-descriptions-item>
