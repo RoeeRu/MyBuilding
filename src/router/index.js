@@ -60,6 +60,12 @@ let routes = [
 		component: () => import('../views/Documents.vue'),
 	},
 	{
+		path: '/maintenance',
+		name: 'Maintenance',
+		layout: "dashboard",
+		component: () => import('../views/Maintenance.vue'),
+	},
+	{
 		path: '/billing',
 		name: 'Billing',
 		layout: "dashboard",

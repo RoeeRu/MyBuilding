@@ -31,6 +31,9 @@
 			<a-descriptions-item label="Main Email">
 				name@gmail.com
 			</a-descriptions-item>
+			<a-descriptions-item label="Tax ID">
+				123add123asdf123
+			</a-descriptions-item>
 		</a-descriptions>
 	</a-card>
 	<!-- / Profile Information Card -->
