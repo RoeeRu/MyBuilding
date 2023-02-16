@@ -17,13 +17,13 @@
 		<hr class="my-25">
 		<a-descriptions title="Oliver Liam" :column="1">
 			<a-descriptions-item label="Full Name">
-				Sarah Emily Jacob
+				{{userInfo.name}}
 			</a-descriptions-item>
-			<a-descriptions-item label="Mobile">
-				(44) 123 1234 123
+			<a-descriptions-item label="Building Id">
+				{{userInfo.building_id}}
 			</a-descriptions-item>
-			<a-descriptions-item label="Email">
-				sarahjacob@mail.com
+			<a-descriptions-item label="Apartment">
+				{{userInfo.apartment}}
 			</a-descriptions-item>
 			<a-descriptions-item label="Location">
 				USA
@@ -48,6 +48,13 @@
 <script>
 
 	export default ({
+		props: {
+			userInfo: {
+				type: Object,
+				default: () => {},
+			},
+		},
+
 		data() {
 			return {
 			}

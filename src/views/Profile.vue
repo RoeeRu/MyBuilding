@@ -1,5 +1,5 @@
-<!-- 
-	This is the user profile page, it uses the dashboard layout in: 
+<!--
+	This is the user profile page, it uses the dashboard layout in:
 	"./layouts/Dashboard.vue" .
  -->
 
@@ -49,15 +49,17 @@
 			<a-col :span="24" :md="8" class="mb-24">
 
 				<!-- Profile Information Card -->
-				<CardProfileInformation></CardProfileInformation>
+				<CardProfileInformation
+					:userInfo="userInfo"
+				></CardProfileInformation>
 				<!-- / Profile Information Card -->
 
 			</a-col>
 			<!-- / Profile Information Column -->
-			
+
 			<!-- Conversations Column -->
 			<a-col :span="24" :md="8" class="mb-24">
-			
+
 				<!-- Conversations Card -->
 				<CardConversations
 					:data="conversationsData"
@@ -68,12 +70,12 @@
 			<!-- / Conversations Column -->
 
 		</a-row>
-		
+
 		<!-- Projects Card -->
 		<a-card :bordered="false" class="header-solid h-full mb-24" :bodyStyle="{paddingTop: '14px'}">
 			<template #title>
-				<h6 class="font-semibold">Projects</h6>			
-				<p>Architects design houses</p>	
+				<h6 class="font-semibold">Projects</h6>
+				<p>Architects design houses</p>
 			</template>
 
 			<a-row type="flex" :gutter="[24,24]" align="stretch">
@@ -130,6 +132,8 @@
 	import CardProfileInformation from "../components/Cards/CardProfileInformation"
 	import CardConversations from "../components/Cards/CardConversations"
 	import CardProject from "../components/Cards/CardProject"
+	import { mapActions } from 'vuex'
+	import { mapState } from 'vuex'
 
 	// Conversation's list data.
 	const conversationsData = [
@@ -224,6 +228,18 @@
 				projects,
 			}
 		},
+		computed: {
+			...mapState({
+				userInfo: state => state.profile.userInfo
+			})
+		},
+
+		async mounted() {
+			let isSignedIn = await this.getUserData();
+		},
+		methods: {
+		  ...mapActions('profile', ['getUserData'])
+		}
 	})
 
 </script>

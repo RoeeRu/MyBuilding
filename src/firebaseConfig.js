@@ -17,7 +17,7 @@ export const FirebaseConfig = ({
     // Initialize Firebase
     // const analytics = await getAnalytics(firebaseApp);
 
-    return await initializeApp(firebaseConfig);;
+    return await initializeApp(firebaseConfig);
   }
 
 })
