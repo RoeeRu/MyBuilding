@@ -8,8 +8,8 @@
 					<h6 class="font-semibold m-0">Payment Methods</h6>
 				</a-col>
 				<a-col :span="24" :md="12" style="display: flex; align-items: center; justify-content: flex-end">
-					<a-button type="primary">
-						ADD NEW CARD
+					<a-button @click="handlePlaidLinkClick" type="primary">
+						{{ addBankText }}
 					</a-button>
 				</a-col>
 			</a-row>
@@ -46,12 +46,74 @@
 </template>
 
 <script>
+import axios from 'axios';
+import {create} from 'plaid';
+import { mapActions } from 'vuex'
+import { mapState } from 'vuex'
 
 	export default ({
 		data() {
 			return {
+				plaidLink: null,
+		 		linkToken: null,
+		 		plaidConfig: {
+					 clientName: 'DOMOS',
+					 env: 'sandbox',
+					 product: ['auth', 'transactions'],
+					 onSuccess: this.handlePlaidSuccess,
+		 	 	},
+				plaidHanler: null,
+				addBankText:'Add Bank Account'
 			}
 		},
+		async mounted() {
+			await this.hasBankAccout();
+			if(this.validBankAccout) {
+				this.addBankText = 'Change Bank Account';
+				let accountData = await this.getAccountData();
+				this.addBankText = 'Change Bank Account';
+				this.$emit('accountData', accountData);
+			}
+
+			this.initializePlaid();
+		},
+		methods: {
+			handlePlaidLinkClick() {
+	      this.plaidHanler.open();
+	    },
+			initializePlaid(){
+					const script = document.createElement('script');
+					script.src = 'https://cdn.plaid.com/link/v2/stable/link-initialize.js';
+					script.onload = async () => {
+						this.plaidHanler = window.Plaid.create({
+							token: await this.getPlaidLinkToken(),
+							onSuccess: async function(public_token, metadata) {
+								const accountData = await this.exchangePublicToken({public_token})
+								if(this.validBankAccout) {
+									this.$emit('accountData', accountData);
+									this.addBankText = 'Change Bank Account';
+								}
+							}.bind(this),
+							onExit: function(err, metadata) {
+								// The user exited the Link flow.
+								if (err != null) {
+									console.log("The user encountered a Plaid API error prior to exiting");
+									// The user encountered a Plaid API error prior to exiting.
+								}
+							}
+						});
+					};
+					document.body.appendChild(script);
+			},
+			...mapActions('profile', ['getPlaidLinkToken', 'exchangePublicToken', 'hasBankAccout', 'getAccountData'])
+	  },
+		computed: {
+			...mapState({
+				validBankAccout: state => state.profile.hasBankAccout
+			})
+		},
+
+
 	})
 
 </script>

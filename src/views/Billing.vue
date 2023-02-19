@@ -1,5 +1,5 @@
-<!-- 
-	This is the billing page, it uses the dashboard layout in: 
+<!--
+	This is the billing page, it uses the dashboard layout in:
 	"./layouts/Dashboard.vue" .
  -->
 
@@ -18,30 +18,37 @@
 						<!-- / Master Card -->
 
 					</a-col>
-					<a-col :span="12" :xl="6" class="mb-24" v-for="(salary, index) in salaries" :key="index">
-
-						<!-- Salary Card -->
-						<WidgetSalary
-							:value="salary.value"
-							:prefix="salary.prefix"
-							:icon="salary.icon"
-							:title="salary.title"
-							:content="salary.content"
-						></WidgetSalary>
-						<!-- / Salary Card -->
-
+					<a-col :span="12" :xl="6" class="mb-24">
+						<WidgetBalance
+							:value="accountInfo.available"
+							prefix="$"
+							:icon="balanceLogo"
+							title="Balance"
+							content="available"
+						></WidgetBalance>
+					</a-col>
+					<a-col :span="12" :xl="6" class="mb-24">
+						<WidgetBalance
+							:value="accountInfo.current"
+							prefix="$"
+							:icon="balanceLogo"
+							 title="Balance"
+							content="Current"
+						></WidgetBalance>
 					</a-col>
 					<a-col :span="24" class="mb-24">
 
 						<!-- Payment Methods Card -->
-						<CardPaymentMethods></CardPaymentMethods>
+						<CardPaymentMethods
+							v-on:accountData="handleAccountData">
+						</CardPaymentMethods>
 						<!-- Payment Methods Card -->
 
 					</a-col>
 				</a-row>
 			</a-col>
 			<!-- / Billing Info Column -->
-			
+
 			<!-- Invoices Column -->
 			<a-col :span="24" :md="8" class="mb-24">
 
@@ -79,7 +86,7 @@
 
 			</a-col>
 			<!-- / Your Transactions Column -->
-			
+
 		</a-row>
 
 	</div>
@@ -88,38 +95,21 @@
 <script>
 
 	import CardCredit from "../components/Cards/CardCredit"
-	import WidgetSalary from "../components/Widgets/WidgetSalary"
+	import WidgetBalance from "../components/Widgets/WidgetBalance"
 	import CardPaymentMethods from "../components/Cards/CardPaymentMethods"
 	import CardInvoices from "../components/Cards/CardInvoices"
 	import CardBillingInfo from "../components/Cards/CardBillingInfo"
 	import CardTransactions from "../components/Cards/CardTransactions"
 
-
-	// Salary cards data
-	const salaries = [
-		{
-			value: 2000,
-			prefix: "+$",
-			icon: `
-										<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 22 22">
-											<g id="bank" transform="translate(0.75 0.75)">
-												<path id="Shape" transform="translate(0.707 9.543)" fill="none" stroke="#fff" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" stroke-width="1.5"/>
-												<path id="Path" d="M10.25,0,20.5,9.19H0Z" fill="none" stroke="#fff" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" stroke-width="1.5"/>
-												<path id="Path-2" data-name="Path" d="M0,.707H20.5" transform="translate(0 19.793)" fill="none" stroke="#fff" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" stroke-width="1.5"/>
-											</g>
-										</svg>`,
-			title: "Salary",
-			content: "Belong Interactive",
-		},
-		{
-			value: 49000,
-			prefix: "+$",
-			icon: `
-										<img src="images/logos/paypal-logo-2.png" alt="">`,
-			title: "Paypal",
-			content: "Freelance Payment",
-		},
-	] ;
+	let accountInfo = {};
+	const balanceLogo = `
+								<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 22 22">
+									<g id="bank" transform="translate(0.75 0.75)">
+										<path id="Shape" transform="translate(0.707 9.543)" fill="none" stroke="#fff" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" stroke-width="1.5"/>
+										<path id="Path" d="M10.25,0,20.5,9.19H0Z" fill="none" stroke="#fff" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" stroke-width="1.5"/>
+										<path id="Path-2" data-name="Path" d="M0,.707H20.5" transform="translate(0 19.793)" fill="none" stroke="#fff" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" stroke-width="1.5"/>
+									</g>
+								</svg>`;
 
 	// "Invoices" list data.
 	const invoiceData = [
@@ -205,7 +195,7 @@
 	export default ({
 		components: {
 			CardCredit,
-			WidgetSalary,
+			WidgetBalance,
 			CardPaymentMethods,
 			CardInvoices,
 			CardBillingInfo,
@@ -213,16 +203,22 @@
 		},
 		data() {
 			return {
-				// Salary cards data
-				salaries,
+
+				balanceLogo,
+				accountInfo,
 
 				// Associating "Invoices" list data with its corresponding property.
 				invoiceData,
-				
+
 				// Associating "Your Transactions" list data with its corresponding property.
 				transactionsData,
 			}
 		},
+		methods: {
+		  handleAccountData(accountData) {
+		    this.accountInfo = accountData;
+		  }
+		}
 	})
 
 </script>
