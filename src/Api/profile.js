@@ -30,7 +30,8 @@ export function getPlaidLinkToken(idToken) {
 
 
 export function exchangePublicToken(publicToken, idToken) {
-    return axios.post(process.env.VUE_APP_SYSTEM_DOMAIN + '/profile/getNewAccountData', {
+    console.log("publicToken", publicToken);
+    return axios.post(process.env.VUE_APP_SYSTEM_DOMAIN + '/profile/getNewAccountData', {publicToken}, {
       headers: {
         Authorization: `Bearer ${idToken}`
       }

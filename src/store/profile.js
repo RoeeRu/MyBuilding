@@ -38,7 +38,7 @@ export default {
       return res.link_token;
     },
 
-    async exchangePublicToken({ state, rootState }, data ) {
+    async exchangePublicToken({ state, rootState, commit }, data ) {
       const res =  await exchangePublicToken(data.public_token, rootState.auth.user.accessToken);
       if(res.status) {
         commit('hasBankAccout', true);
