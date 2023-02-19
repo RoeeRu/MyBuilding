@@ -42,6 +42,12 @@ let routes = [
 		component: () => import('../views/Tables.vue'),
 	},
 	{
+		path: '/actions',
+		name: 'Actions',
+		layout: "dashboard",
+		component: () => import('../views/Actions.vue'),
+	},
+	{
 		path: '/transactions',
 		name: 'Transactions',
 		layout: "dashboard",

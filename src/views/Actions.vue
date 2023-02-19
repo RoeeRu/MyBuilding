@@ -7,7 +7,7 @@
 	<div>
 		<a-row  :gutter="24" type="flex">
 			<a-col  :span="24" class="mb-24">
-				<CardMaintenanceActions></CardMaintenanceActions>
+				<CardActionsActions></CardActionsActions>
 
 			</a-col>
 
@@ -19,10 +19,10 @@
 			<a-col :span="24" class="mb-24">
 
 				<!-- Maintenance Table Card -->
-				<CardMaintenanceTable
+				<CardActionsTable
 					:data="table1Data"
 					:columns="table1Columns"
-				></CardMaintenanceTable>
+				></CardActionsTable>
 				<!-- / Maintenance Table Card -->
 
 			</a-col>
@@ -37,25 +37,21 @@
 <script>
 
 	// "Maintenance" table component.
-	import CardMaintenanceTable from '../components/Cards/CardMaintenanceTable.vue';
-	import CardMaintenanceActions from '../components/Cards/CardMaintenanceActions.vue';
+	import CardActionsTable from '../components/Cards/CardActionsTable.vue';
+	import CardActionsActions from '../components/Cards/CardActionsActions.vue';
 	
 	// "Maintenance" table list of columns and their properties.
 	const table1Columns = [
 		{
-			title: 'Date Created',
-			dataIndex: 'date',
-			class: 'text-muted',
+			title: 'Item',
+			dataIndex: 'item',
+			scopedSlots: { customRender: 'item' },
 		},
+		
 		{
-			title: 'Created By',
+			title: 'Added By',
 			dataIndex: 'creator',
 			scopedSlots: { customRender: 'creator' },
-		},
-		{
-			title: 'Issue',
-			dataIndex: 'issue',
-			class: 'font-semibold text-muted text-sm',
 		},
 		{
 			title: 'STATUS',
@@ -66,6 +62,11 @@
 			title: 'Details',
 			dataIndex: 'details',
 			class: 'font-semibold text-muted text-sm',
+		},
+		{
+			title: 'Due Date',
+			dataIndex: 'date',
+			class: 'text-muted',
 		},
 		
 		
@@ -88,7 +89,7 @@
 				details: 'Apt. 3a',
 			},
 			status: 1,
-			issue: "Broken Door Handle",
+			item: {name: "Prepare agenda for board meeting"},
 			details: "The handle on the entrance door is very loose and about to fall",
 		},
 		{
@@ -97,10 +98,9 @@
 			date: '23/12/20',
 			
 			creator: {
-				type: 'David Mos',
-				details: 'Apt. 4a',
+				type: 'System',
 			},
-			issue: "Roof leakage",
+			item: {name: "Upload insurance doc"},
 			status: 0,
 			details: "I see some wetnes on our northen wall",
 		},
@@ -113,8 +113,8 @@
 
 	export default ({
 		components: {
-    CardMaintenanceTable,
-	CardMaintenanceActions
+    CardActionsTable,
+	CardActionsActions
 },
 		data() {
 			return {
