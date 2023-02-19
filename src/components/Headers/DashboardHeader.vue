@@ -17,11 +17,7 @@
 					</a-breadcrumb>
 					<!-- / Header Breadcrumbs -->
 
-					<!-- Header Page Title -->
-					<div class="ant-page-header-heading">
-						<span class="ant-page-header-heading-title">{{ this.$route.name }}</span>
-					</div>
-					<!-- / Header Page Title -->
+				
 
 				</a-col>
 				<!-- / Header Breadcrumbs & Title Column -->
