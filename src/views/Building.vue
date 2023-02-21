@@ -17,7 +17,9 @@
 			<a-col :span="24" :md="8" class="mb-24">
 
 				<!-- Profile Information Card -->
-				<CardBuildingInformation></CardBuildingInformation>
+				<CardBuildingInformation
+					:buildingInfo="buildingInfo"
+				></CardBuildingInformation>
 				<!-- / Profile Information Card -->
 
 			</a-col>
@@ -47,8 +49,9 @@
 <script>
 
 	import CardBuildingInformation from "../components/Cards/CardBuildingInformation"
-
 	import CardMembers from "../components/Cards/CardMembers"
+	import { mapActions } from 'vuex'
+	import { mapState } from 'vuex'
 
 	// Conversation's list data.
 	const membersData = [
@@ -104,6 +107,18 @@
 				membersData,
 			}
 		},
+		computed: {
+			...mapState({
+				buildingInfo: state => state.building.buildingInfo
+			})
+		},
+
+		async mounted() {
+			await this.getBuildingInformation();
+		},
+		methods: {
+		  ...mapActions('building', ['getBuildingInformation'])
+		}
 	})
 
 </script>

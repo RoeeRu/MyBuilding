@@ -235,7 +235,7 @@
 		},
 
 		async mounted() {
-			let isSignedIn = await this.getUserData();
+			await this.getUserData();
 		},
 		methods: {
 		  ...mapActions('profile', ['getUserData'])

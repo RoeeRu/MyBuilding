@@ -17,7 +17,7 @@
 		<hr class="my-25">
 		<a-descriptions  :column="1">
 			<a-descriptions-item label="Full Address">
-				West 68th St, NYC, NY, 10023, USA
+				{{buildingInfo.address}}
 			</a-descriptions-item>
 			<a-descriptions-item label="Number of Apartments">
 				20
@@ -43,6 +43,12 @@
 <script>
 
 	export default ({
+		props: {
+			buildingInfo: {
+				type: Object,
+				default: () => {},
+			},
+		},
 		data() {
 			return {
 			}

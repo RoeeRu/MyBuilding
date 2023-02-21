@@ -98,7 +98,7 @@
 			date: '23/12/20',
 			
 			creator: {
-				type: 'System',
+				type: 'Domos Team',
 			},
 			item: {name: "Upload insurance doc"},
 			status: 0,
