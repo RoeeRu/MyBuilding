@@ -30,7 +30,7 @@
 			
 				<!-- Members Card -->
 				<CardMembers
-					:data="membersData"
+					:data="membersInfo"
 				></CardMembers>
 				<!-- / Members Card -->
 
@@ -53,45 +53,6 @@
 	import { mapActions } from 'vuex'
 	import { mapState } from 'vuex'
 
-	// Conversation's list data.
-	const membersData = [
-		{
-			id: "1",
-			title: "Sophie B.",
-			apartment: "Apartment 3a",
-			avatar: "images/face-3.jpg",
-		},
-		{
-			id: "2",
-			title: "Anne Marie",
-			apartment: "Apartment 3b",
-			avatar: "images/face-4.jpg",
-		},
-		{
-			id: "3",
-			title: "Ivan",
-			apartment: "Apartment 2a",
-			avatar: "images/face-5.jpeg",
-		},
-		{
-			id: "4",
-			title: "Peterson",
-			apartment: "Apartment 4a",
-			avatar: "images/face-6.jpeg",
-		},
-		{
-			id: "5",
-			title: "Nick Daniel",
-			apartment: "Apartment 3b",
-			avatar: "images/face-2.jpg",
-		},
-		{
-			id: "6",
-			title: "Nick Nack",
-			apartment: "Apartment 5b",
-			avatar: "images/face-1.jpg",
-		},
-	] ;
 
 
 	export default ({
@@ -102,15 +63,12 @@
 		data() {
 			return {
 				
-
-				// Associating Conversation's list data with its corresponding property.
-				membersData,
 			}
 		},
 		computed: {
 			...mapState({
+				membersInfo: state => state.building.membersInfo,
 				buildingInfo: state => state.building.buildingInfo,
-				membersInfo: state => state.building.membersInfo
 			})
 		},
 
@@ -119,7 +77,11 @@
 			await this.getMembersInformation();
 		},
 		methods: {
-		  ...mapActions('building', ['getBuildingInformation', 'getMembersInformation'])
+			...mapActions({
+				getBuildingInformation: 'building/getBuildingInformation',
+				getMembersInformation: 'building/getMembersInformation'
+			})
+		  
 		}
 	})
 

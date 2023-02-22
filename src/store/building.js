@@ -26,7 +26,6 @@ export default {
   },
   actions: {
     async getBuildingInformation({ state, rootState, commit }) {
-      console.log("getBuildingInformation")
       let res = await getBuildingInfo(rootState.auth.user.accessToken);
       if(!res.status) {
         console.log("faield", res.data);
@@ -37,7 +36,6 @@ export default {
     },
 
     async getMembersInformation({ state, rootState, commit }) {
-      console.log("getMembersInformation")
       let res = await getBuildingMembers(rootState.auth.user.accessToken);
       if(!res.status) {
         console.log("faield", res.data);

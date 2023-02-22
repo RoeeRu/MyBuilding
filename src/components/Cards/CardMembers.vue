@@ -1,7 +1,8 @@
 <template>
 	
 
-	<!-- Members Card -->
+	<!-- Members Card - use data from members-->
+	
 	<a-card :bordered="false" class="header-solid h-full" :bodyStyle="{paddingTop: 0, paddingBottom: '16px' }">
 		<template #title>
 			<h6 class="font-semibold m-0">Members</h6>
@@ -10,7 +11,7 @@
 			class="members-list"
 			item-layout="horizontal"
 			:split="false"
-			:data-source="membersInfo"
+			:data-source="data"
 		>
 			<a-list-item slot="renderItem" slot-scope="item">
 				<a-button slot="actions" type="link">
@@ -20,7 +21,7 @@
 					Invite
 				</a-button>
 				<a-list-item-meta
-					:title="membersInfo.title"
+					:title="item.name"
 					:description="item.apartment"
 				>
 					<a-avatar
@@ -39,10 +40,9 @@
 
 <script>
 
-
 	export default ({
 		props: {
-			membersInfo: {
+			data: {
 				type: Array,
 				default: () => [],
 			},
@@ -51,6 +51,8 @@
 			return {
 			}
 		},
+		
 	})
+
 
 </script>
