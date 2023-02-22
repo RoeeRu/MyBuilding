@@ -58,37 +58,37 @@
 		{
 			id: "1",
 			title: "Sophie B.",
-			code: "Apartment 3a",
+			apartment: "Apartment 3a",
 			avatar: "images/face-3.jpg",
 		},
 		{
 			id: "2",
 			title: "Anne Marie",
-			code: "Apartment 3b",
+			apartment: "Apartment 3b",
 			avatar: "images/face-4.jpg",
 		},
 		{
 			id: "3",
 			title: "Ivan",
-			code: "Apartment 2a",
+			apartment: "Apartment 2a",
 			avatar: "images/face-5.jpeg",
 		},
 		{
 			id: "4",
 			title: "Peterson",
-			code: "Apartment 4a",
+			apartment: "Apartment 4a",
 			avatar: "images/face-6.jpeg",
 		},
 		{
 			id: "5",
 			title: "Nick Daniel",
-			code: "Apartment 3b",
+			apartment: "Apartment 3b",
 			avatar: "images/face-2.jpg",
 		},
 		{
 			id: "6",
 			title: "Nick Nack",
-			code: "Apartment 5b",
+			apartment: "Apartment 5b",
 			avatar: "images/face-1.jpg",
 		},
 	] ;
@@ -109,15 +109,17 @@
 		},
 		computed: {
 			...mapState({
-				buildingInfo: state => state.building.buildingInfo
+				buildingInfo: state => state.building.buildingInfo,
+				membersInfo: state => state.building.membersInfo
 			})
 		},
 
 		async mounted() {
 			await this.getBuildingInformation();
+			await this.getMembersInformation();
 		},
 		methods: {
-		  ...mapActions('building', ['getBuildingInformation'])
+		  ...mapActions('building', ['getBuildingInformation', 'getMembersInformation'])
 		}
 	})
 

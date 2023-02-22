@@ -20,19 +20,19 @@
 				{{buildingInfo.address}}
 			</a-descriptions-item>
 			<a-descriptions-item label="Number of Apartments">
-				20
+				{{buildingInfo.apartments}}
 			</a-descriptions-item>
 			<a-descriptions-item label="Board President">
-				Name and Last Name
+				{{buildingInfo.board_president}}
 			</a-descriptions-item>
 			<a-descriptions-item label="Treasurer">
-				Name and Last Name
+				{{buildingInfo.treasurer}}
 			</a-descriptions-item>
 			<a-descriptions-item label="Main Email">
-				name@gmail.com
+				{{buildingInfo.email}}
 			</a-descriptions-item>
 			<a-descriptions-item label="Tax ID">
-				123add123asdf123
+				{{buildingInfo.tax_id}}
 			</a-descriptions-item>
 		</a-descriptions>
 	</a-card>

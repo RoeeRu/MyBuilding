@@ -10,7 +10,7 @@
 			class="members-list"
 			item-layout="horizontal"
 			:split="false"
-			:data-source="data"
+			:data-source="membersInfo"
 		>
 			<a-list-item slot="renderItem" slot-scope="item">
 				<a-button slot="actions" type="link">
@@ -20,8 +20,8 @@
 					Invite
 				</a-button>
 				<a-list-item-meta
-					:title="item.title"
-					:description="item.code"
+					:title="membersInfo.title"
+					:description="item.apartment"
 				>
 					<a-avatar
 					slot="avatar"
@@ -33,7 +33,7 @@
 			</a-list-item>
 		</a-list>
 	</a-card>
-	<!-- / Conversations Card -->
+	<!-- / Members Card -->
 
 </template>
 
@@ -42,7 +42,7 @@
 
 	export default ({
 		props: {
-			data: {
+			membersInfo: {
 				type: Array,
 				default: () => [],
 			},

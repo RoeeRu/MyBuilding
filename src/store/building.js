@@ -1,6 +1,6 @@
 import { FirebaseConfig } from '../firebaseConfig';
 import * as firebase from "firebase/app";
-import { getBuildingInfo } from '@/Api/building.js';
+import { getBuildingInfo, getBuildingMembers } from '@/Api/building.js';
 import 'firebase/auth';
 
 
@@ -9,12 +9,16 @@ export default {
   state () {
     return {
       buildingInfo: {},
+      membersInfo: {},
       hasBankAccout: false
     }
   },
   mutations: {
     buildingInfo (state, buildingInfo) {
       state.buildingInfo = buildingInfo
+    },
+    membersInfo (state, membersInfo) {
+      state.membersInfo = membersInfo
     },
     hasBankAccout (state, hasBankAccout) {
       state.hasBankAccout = hasBankAccout
@@ -29,6 +33,17 @@ export default {
         return false;
       }
       commit('buildingInfo', res.data);
+      console.log("res", res);
+    },
+
+    async getMembersInformation({ state, rootState, commit }) {
+      console.log("getMembersInformation")
+      let res = await getBuildingMembers(rootState.auth.user.accessToken);
+      if(!res.status) {
+        console.log("faield", res.data);
+        return false;
+      }
+      commit('membersInfo', res.data);
       console.log("res", res);
     },
 
