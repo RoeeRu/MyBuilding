@@ -9,7 +9,7 @@ export default {
   state () {
     return {
       buildingInfo: {},
-      membersInfo: {},
+      membersInfo: [],
       hasBankAccout: false
     }
   },

@@ -1,17 +1,15 @@
 <template>
 
-	<!-- Actions Table Card -->
+	<!-- 
+		Actions Table Card
+		In this card we have a table with actions data.
+		It gets the data from the store in:
+		"./store/actions.js" .
+	 -->
 
 	<a-card :bordered="false" class="header-solid h-full" :bodyStyle="{padding: 0,}">
 		<a-table :columns="columns" :data-source="data" :pagination="false">
 
-			
-			<template slot="func" slot-scope="func">
-				<div class="transaction-info">
-					<h6 class="m-0">{{ func.job }}</h6>
-					<p class="m-0 font-regular text-muted">{{ func.department }}</p>
-				</div>
-			</template>
 
 			<template slot="creator" slot-scope="creator">
 				<div class="source-info">
