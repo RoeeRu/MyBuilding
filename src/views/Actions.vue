@@ -73,6 +73,7 @@
 			title: 'Due Date',
 			dataIndex: 'due_date',
 			class: 'font-semibold text-muted text-sm',
+			width: 120,
 		},
 		
 		

@@ -4,6 +4,7 @@ import auth from './auth'
 import profile from './profile'
 import building from './building'
 import actions from './actions'
+import maintenance from './maintenance'
 
 
 
@@ -14,6 +15,7 @@ export default new Vuex.Store({
     auth,
     profile,
     building,
-    actions
+    actions,
+    maintenance,
   }
 })

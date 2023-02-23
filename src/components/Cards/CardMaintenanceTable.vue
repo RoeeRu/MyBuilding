@@ -13,10 +13,10 @@
 				</div>
 			</template>
 
-			<template slot="creator" slot-scope="creator">
+			<template slot="created_by_name" slot-scope="created_by_name">
 				<div class="source-info">
-					<h6 class="m-0">{{ creator.type }}</h6>
-					<p class="m-0 font-regular text-muted">{{ creator.details }}</p>
+					<h6 class="m-0">{{ created_by_name }}</h6>
+					<p class="m-0 font-regular text-muted">{{ created_by_name }}</p>
 				</div>
 			</template>
 
