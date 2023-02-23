@@ -3,6 +3,7 @@ import Vuex from 'vuex'
 import auth from './auth'
 import profile from './profile'
 import building from './building'
+import actions from './actions'
 
 
 
@@ -12,6 +13,7 @@ export default new Vuex.Store({
   modules: {
     auth,
     profile,
-    building
+    building,
+    actions
   }
 })

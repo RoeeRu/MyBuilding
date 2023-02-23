@@ -11,16 +11,16 @@
 		<a-table :columns="columns" :data-source="data" :pagination="false">
 
 
-			<template slot="creator" slot-scope="creator">
+			<template slot="added_by_name" slot-scope="added_by_name">
 				<div class="source-info">
-					<h6 class="m-0">{{ creator.type }}</h6>
-					<p class="m-0 font-regular text-muted">{{ creator.details }}</p>
+					<h6 class="m-0">{{ added_by_name }}</h6>
+					<p class="m-0 font-regular text-muted">{{ added_by_name }}</p>
 				</div>
 			</template>
 
 			<template slot="item" slot-scope="item">
 				<div class="source-info">
-					<h6 class="m-0">{{ item.name }}</h6>
+					<h6 class="m-0">{{ item }}</h6>
 				</div>
 			</template>
 

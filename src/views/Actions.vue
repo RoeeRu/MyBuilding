@@ -1,6 +1,10 @@
 <!-- 
-	This is the maintenance page, it uses the dashboard layout in: 
+	This is the actions page, it uses the dashboard layout in: 
 	"./layouts/Dashboard.vue" .
+	It uses the CardActionsTable component in:
+	"./components/Cards/CardActionsTable.vue" .
+	It gets the data from the store in:
+	"./store/actions.js" .
  -->
 
 <template>
@@ -12,35 +16,37 @@
 			</a-col>
 
 		</a-row>
-		<!-- Maintenance Table -->
+		<!-- Actions Table -->
 		<a-row :gutter="24" type="flex">
 
-			<!-- Maintenance Table Column -->
+			<!-- Actions Table Column -->
 			<a-col :span="24" class="mb-24">
 
-				<!-- Maintenance Table Card -->
+				<!-- Actions Table Card -->
 				<CardActionsTable
 					:data="table1Data"
 					:columns="table1Columns"
 				></CardActionsTable>
-				<!-- / Maintenance Table Card -->
+				<!-- / Actions Table Card -->
 
 			</a-col>
-			<!-- / Maintenance Table Column -->
+			<!-- / Actions Table Column -->
 
 		</a-row>
-		<!-- / Maintenance Table -->
+		<!-- / Actions Table -->
 
 	</div>
 </template>
 
 <script>
 
-	// "Maintenance" table component.
+	// "Actions" table component.
 	import CardActionsTable from '../components/Cards/CardActionsTable.vue';
 	import CardActionsActions from '../components/Cards/CardActionsActions.vue';
+	import { mapActions } from 'vuex'
+	import { mapState } from 'vuex'
 	
-	// "Maintenance" table list of columns and their properties.
+	// "Actions" table list of columns and their properties.
 	const table1Columns = [
 		{
 			title: 'Item',
@@ -50,11 +56,11 @@
 		
 		{
 			title: 'Added By',
-			dataIndex: 'creator',
-			scopedSlots: { customRender: 'creator' },
+			dataIndex: 'added_by_name', 
+			scopedSlots: { customRender: 'added_by_name' },
 		},
 		{
-			title: 'STATUS',
+			title: 'Status',
 			dataIndex: 'status',
 			scopedSlots: { customRender: 'status' },
 		},
@@ -65,8 +71,8 @@
 		},
 		{
 			title: 'Due Date',
-			dataIndex: 'date',
-			class: 'text-muted',
+			dataIndex: 'due_date',
+			class: 'font-semibold text-muted text-sm',
 		},
 		
 		
@@ -77,35 +83,6 @@
 		},
 	];
 
-	// "Maintenance" table list of rows and their properties.
-	const table1Data = [
-		{
-			key: '1',
-			
-			date: '23/04/18',
-			
-			creator: {
-				type: 'Omri Gold',
-				details: 'Apt. 3a',
-			},
-			status: 1,
-			item: {name: "Prepare agenda for board meeting"},
-			details: "The handle on the entrance door is very loose and about to fall",
-		},
-		{
-			key: '2',
-			
-			date: '23/12/20',
-			
-			creator: {
-				type: 'Domos Team',
-			},
-			item: {name: "Upload insurance doc"},
-			status: 0,
-			details: "I see some wetnes on our northen wall",
-		},
-		
-	];
 	
 	
 
@@ -118,14 +95,24 @@
 },
 		data() {
 			return {
-				// Associating "Maintenance" table data with its corresponding property.
-				table1Data: table1Data,
 
-				// Associating "Maintenance" table columns with its corresponding property.
+				// Associating "Actions" table columns with its corresponding property.
 				table1Columns: table1Columns,
 
-				
 			}
+		},
+		computed: {
+			...mapState({
+				table1Data: state => state.actions.actionsInfo,
+			})
+		},
+		methods: {
+			...mapActions({
+				getActions: 'actions/getActions',
+			}),
+		},
+		mounted() {
+			this.getActions();
 		},
 	})
 
