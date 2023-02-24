@@ -3,7 +3,7 @@ axios.defaults.withCredentials = true;
 
 
 export function getActions(idToken) {
-  return axios.get(process.env.VUE_APP_SYSTEM_DOMAIN + '/actions/getActions', {
+  return axios.get(process.env.VUE_APP_SYSTEM_DOMAIN + '/action/getActions', {
     headers: {
       Authorization: `Bearer ${idToken}`
     }
