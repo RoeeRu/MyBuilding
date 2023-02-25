@@ -23,7 +23,14 @@
 					<!-- / Header Search Input -->
 				</a-col>
 			</a-row>
-			<MainModal :visible="visible" @handleOk="modalHandleOk" @handleCancel="modalHandleCancel"></MainModal>
+			<MainModal
+					:visible="visible"
+					:title="modelTitle"
+				 	@handleOk="modalHandleOk"
+					:handle-cancel="modalHandleCancel"
+				>
+				<MainForm ref="formFields" :formFields="transactionInputs" :formState="formState"></MainForm>
+			</MainModal>
 			</a-modal>
 		</template>
 
@@ -34,14 +41,21 @@
 
 <script>
 import MainModal from '../Modal/MainModal.vue';
-
+import MainForm from '../Forms/MainForm.vue';
 	export default ({
 		components: {
-		  MainModal
+		  MainModal, MainForm
 		},
 		data() {
 			return {
-				visible: false
+				visible: false,
+				modelTitle: "Add Transaction",
+				transactionInputs: [
+	        { name: 'name', label: 'Full Name', placeholder: 'Enter your name'},
+	        { name: 'apt', label: 'Appratment', placeholder: 'Enter Appratment'},
+	        { name: 'amount', label: 'Amount', placeholder:'Enter Amount'}
+      	],
+				formState: {'name': '', 'apt': '', 'amount': ''}
 			}
 		},
 		methods: {
@@ -51,11 +65,16 @@ import MainModal from '../Modal/MainModal.vue';
 			modalHandleCancel() {
 				this.visible = false
 			},
-			async modalHandleOk(closeDialog) {
-				this.loading = true;
+			async modalHandleOk(handleLoading) {
 				return await setTimeout(async () => {
-					this.visible = false;
-					closeDialog()
+					handleLoading()
+					console.log(this.formState);
+					if(true) {
+						this.$refs.formFields.onFinish(true);
+						this.visible = false;
+					} else {
+						this.$refs.formFields.onFinish(false);
+					}
 					return;
 				}, 5000);
 		  },

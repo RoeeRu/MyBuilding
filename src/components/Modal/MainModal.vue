@@ -1,34 +1,46 @@
 <template>
   <div>
-    <a-modal v-model:visible="visible" title="Title" @ok="handleOk">
+    <a-modal
+    v-model:visible="visible"
+    :title="title"
+    @ok="handleOk"
+    :mask-closable="false"
+    :destroyOnClose="true"
+    >
       <template #footer>
         <a-button key="back" @click="handleCancel">Return</a-button>
         <a-button key="submit" type="primary" :loading="loading" @click="handleOk">Submit</a-button>
       </template>
-      <p>Some contents...</p>
+      <slot></slot>
     </a-modal>
   </div>
 </template>
 <script>
 
 export default ({
-  props: ['visible', 'loading'],
+  props: ['visible', 'title', 'handleCancel'],
   data() {
-    return {}
+    return {
+      loading: false
+    }
   },
   methods: {
-    handleCancel() {
-      console.log('handleCancel');
-      this.$emit('handleCancel');
-    },
     async handleOk() {
       this.loading = true;
-      this.$emit('handleOk', () => this.closeDialog())
+      this.$emit('handleOk', () => this.handleLoading())
     },
-    closeDialog() {
+    handleLoading() {
       this.loading = false;
+      this.modalVisible = false
     }
   }
 })
 
 </script>
+
+
+<style media="screen">
+  .ant-modal-close{
+    display: none;
+  }
+</style>
