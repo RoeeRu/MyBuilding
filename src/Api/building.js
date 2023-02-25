@@ -7,10 +7,9 @@ export function getBuildingInfo(idToken) {
         Authorization: `Bearer ${idToken}`
       }
     }).then(response => {
-        console.log("res.res", response.data.data);
         return response.data;
      }).catch((e) => {
-       console.error(e.message); // "oh, no!"
+       console.error(e.message);
        return e.message;
     });
 }
@@ -21,10 +20,9 @@ export function getBuildingMembers(idToken) {
       Authorization: `Bearer ${idToken}`
     }
   }).then(response => {
-      console.log("res.res", response.data.data);
       return response.data;
    }).catch((e) => {
-     console.error(e.message); // "oh, no!"
+     console.error(e.message);
      return e.message;
   });
 }

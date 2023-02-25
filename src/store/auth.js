@@ -33,8 +33,6 @@ export default {
 
         const auth = await getAuth();
         await onAuthStateChanged(auth, async (user) => {
-            console.log('test');
-
             if (user) {
               const uid = user.uid;
               user.getIdToken().then(async (idToken) => {

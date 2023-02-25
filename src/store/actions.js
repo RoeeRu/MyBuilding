@@ -1,7 +1,4 @@
-import { FirebaseConfig } from '../firebaseConfig';
-import * as firebase from "firebase/app";
 import { getActions } from '@/Api/actions.js';
-import 'firebase/auth';
 
 
 export default {
@@ -24,9 +21,8 @@ export default {
         return false;
       }
       commit('actionsInfo', res.data);
-      console.log("res", res);
     },
-    
+
 
   }
 }

@@ -1,7 +1,4 @@
-import { FirebaseConfig } from '../firebaseConfig';
-import * as firebase from "firebase/app";
 import { getMaintenance } from '@/Api/maintenance.js';
-import 'firebase/auth';
 
 
 export default {
@@ -27,7 +24,7 @@ export default {
       commit('maintenanceInfo', res.data);
       console.log("res", res);
     },
-    
+
 
   }
 }

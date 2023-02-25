@@ -1,7 +1,4 @@
-import { FirebaseConfig } from '../firebaseConfig';
-import * as firebase from "firebase/app";
 import { getPersonalInfo, getPlaidLinkToken, exchangePublicToken, hasBankAccout, getAccountData } from '@/Api/profile.js';
-import 'firebase/auth';
 
 
 export default {
@@ -28,7 +25,6 @@ export default {
         return false;
       }
       commit('userInfo', res.data);
-      console.log("res", res);
     },
     async getPlaidLinkToken({ state, rootState, commit }) {
       let res = await getPlaidLinkToken(rootState.auth.user.accessToken);

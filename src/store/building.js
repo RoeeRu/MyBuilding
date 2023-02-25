@@ -1,7 +1,4 @@
-import { FirebaseConfig } from '../firebaseConfig';
-import * as firebase from "firebase/app";
 import { getBuildingInfo, getBuildingMembers } from '@/Api/building.js';
-import 'firebase/auth';
 
 
 export default {
@@ -32,7 +29,6 @@ export default {
         return false;
       }
       commit('buildingInfo', res.data);
-      console.log("res", res);
     },
 
     async getMembersInformation({ state, rootState, commit }) {
@@ -42,7 +38,6 @@ export default {
         return false;
       }
       commit('membersInfo', res.data);
-      console.log("res", res);
     },
 
     async hasBankAccout({ state, rootState, commit }) {
