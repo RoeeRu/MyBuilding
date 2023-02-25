@@ -1,5 +1,5 @@
-<!-- 
-	This is the transactions page, it uses the dashboard layout in: 
+<!--
+	This is the transactions page, it uses the dashboard layout in:
 	"./layouts/Dashboard.vue" .
  -->
 
@@ -20,8 +20,8 @@
 
 				<!-- Transactions Table Card -->
 				<CardTransactionsTable
-					:data="table1Data"
-					:columns="table1Columns"
+					:data="transactionsData"
+					:columns="tableColumns"
 				></CardTransactionsTable>
 				<!-- / Transactions Table Card -->
 
@@ -39,9 +39,11 @@
 	// "Transactions" table component.
 	import CardTransactionsTable from '../components/Cards/CardTransactionsTable.vue';
 	import CardTransactionsActions from '../components/Cards/CardTransactionsActions.vue';
-	
+	import { mapActions } from 'vuex'
+	import { mapState } from 'vuex'
+
 	// "Transactions" table list of columns and their properties.
-	const table1Columns = [
+	const tableColumns = [
 		{
 			title: 'Transaction Date',
 			dataIndex: 'date',
@@ -62,8 +64,8 @@
 			dataIndex: 'details',
 			class: 'font-semibold text-muted text-sm',
 		},
-		
-		
+
+
 		{
 			title: '',
 			scopedSlots: { customRender: 'actionsBtn' },
@@ -72,12 +74,12 @@
 	];
 
 	// "Transactions" table list of rows and their properties.
-	const table1Data = [
+	const tableData = [
 		{
 			key: '1',
-			
+
 			date: '23/04/18',
-			
+
 			source: {
 				type: 'Bank',
 				details: '(... 2341)',
@@ -90,9 +92,9 @@
 		},
 		{
 			key: '2',
-			
+
 			date: '23/12/20',
-			
+
 			source: {
 				type: 'Manual',
 				details: 'Daniel, apt. 3a',
@@ -103,28 +105,36 @@
 			},
 			details: "Monthly payment",
 		},
-		
 	];
-	
-	
 
-	
 
 	export default ({
 		components: {
-    CardTransactionsTable,
-	CardTransactionsActions
-},
+	    CardTransactionsTable,
+			CardTransactionsActions
+		},
 		data() {
 			return {
 				// Associating "Transactions" table data with its corresponding property.
-				table1Data: table1Data,
-
+				tableData: tableData,
 				// Associating "Transactions" table columns with its corresponding property.
-				table1Columns: table1Columns,
-
-				
+				tableColumns: tableColumns,
 			}
+		},
+		async mounted() {
+			console.log('Maintenance mounted'),
+			await this.getMaintenance();
+		},
+		computed: {
+			...mapState({
+				transactionsData: state => state.transactions.transactions,
+			})
+		},
+		methods: {
+			...mapActions({
+				getMaintenance: 'transactions/getTransactions',
+
+			}),
 		},
 	})
 

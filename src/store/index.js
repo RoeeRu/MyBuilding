@@ -5,7 +5,7 @@ import profile from './profile'
 import building from './building'
 import actions from './actions'
 import maintenance from './maintenance'
-
+import transactions from './transactions'
 
 
 Vue.use(Vuex)
@@ -17,5 +17,6 @@ export default new Vuex.Store({
     building,
     actions,
     maintenance,
+    transactions
   }
 })
