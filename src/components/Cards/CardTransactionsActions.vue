@@ -53,7 +53,9 @@ import MainForm from '../Forms/MainForm.vue';
 				transactionInputs: [
 	        { name: 'name', label: 'Full Name', placeholder: 'Enter your name'},
 	        { name: 'apt', label: 'Appratment', placeholder: 'Enter Appratment'},
-	        { name: 'amount', label: 'Amount', placeholder:'Enter Amount'}
+	        { name: 'amount', label: 'Amount', placeholder:'Enter Amount'},
+					{ name: 'date', label: 'Date', placeholder: 'Enter Date'},
+	        { name: 'details', label: 'Details', placeholder:'Enter Details'}
       	],
 				formState: {'name': '', 'apt': '', 'amount': ''}
 			}

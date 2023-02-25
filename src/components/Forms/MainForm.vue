@@ -30,7 +30,7 @@ export default ({
           span: 8,
         },
         wrapperCol: {
-          span: 10,
+          span: 13,
         }
       },
       formRules: {
