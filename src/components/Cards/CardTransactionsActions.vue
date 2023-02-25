@@ -2,12 +2,14 @@
 
 	<!-- Transactions actions Card -->
 	<a-card :bordered="false" class="header-solid h-full" :bodyStyle="{paddingTop: 0,}">
-		
+
 		<template #title>
 			<a-row type="flex" align="middle">
-				
+
 				<a-col :span="24" :md="4" >
-					<a-button type="primary">
+					<a-button type="primary"
+						@click="showModal"
+					>
 						Add Transaction
 					</a-button>
 				</a-col>
@@ -21,20 +23,43 @@
 					<!-- / Header Search Input -->
 				</a-col>
 			</a-row>
+			<MainModal :visible="visible" @handleOk="modalHandleOk" @handleCancel="modalHandleCancel"></MainModal>
+			</a-modal>
 		</template>
-	
+
 	</a-card>
 	<!-- Transactions actions Card -->
 
 </template>
 
 <script>
+import MainModal from '../Modal/MainModal.vue';
 
 	export default ({
+		components: {
+		  MainModal
+		},
 		data() {
 			return {
+				visible: false
 			}
 		},
+		methods: {
+		  showModal() {
+		    this.visible = true
+		  },
+			modalHandleCancel() {
+				this.visible = false
+			},
+			async modalHandleOk(closeDialog) {
+				this.loading = true;
+				return await setTimeout(async () => {
+					this.visible = false;
+					closeDialog()
+					return;
+				}, 5000);
+		  },
+		}
 	})
 
 </script>
