@@ -20,7 +20,7 @@
 
 				<!-- Transactions Table Card -->
 				<CardTransactionsTable
-					:data="transactionsData"
+					:data="tableData"
 					:columns="tableColumns"
 				></CardTransactionsTable>
 				<!-- / Transactions Table Card -->
