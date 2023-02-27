@@ -7,7 +7,9 @@
 			<a-row type="flex" align="middle">
 				
 				<a-col :span="24" :md="4" >
-					<a-button type="primary">
+					<a-button type="primary"
+						@click="showModal"
+					>
 						Add Action Item
 					</a-button>
 				</a-col>
@@ -21,6 +23,14 @@
 					<!-- / Header Search Input -->
 				</a-col>
 			</a-row>
+			<MainModal
+					:visible="visible"
+					:title="modelTitle"
+				 	@handleOk="modalHandleOk"
+					:handle-cancel="modalHandleCancel"
+				>
+				<MainForm ref="formFields" :formFields="transactionInputs" :formState="formState"></MainForm>
+			</MainModal>
 		</template>
 	
 	</a-card>
@@ -29,12 +39,47 @@
 </template>
 
 <script>
+import MainModal from '../Modal/MainModal.vue';
+import MainForm from '../Forms/MainForm.vue';
+
 
 	export default ({
+		components: {
+		  MainModal, MainForm
+		},
 		data() {
 			return {
+				visible: false,
+				modelTitle: "Add New Action Item",
+				transactionInputs: [
+	        		{ name: 'item', label: 'Item', placeholder:'Enter Details'},
+	        		{ name: 'details', label: 'Details', placeholder:'Enter Details'},
+					{ name: 'due_date', label: 'Due Date', placeholder: 'Enter Date (mm/dd/yyyy)'},
+      	],
+				formState: {'details': '', 'amount': '', 'due_date': ''}
 			}
 		},
+		methods: {
+		  showModal() {
+		    this.visible = true
+		  },
+			modalHandleCancel() {
+				this.visible = false
+			},
+			async modalHandleOk(handleLoading) {
+				return await setTimeout(async () => {
+					handleLoading()
+					console.log(this.formState);
+					if(true) {
+						this.$refs.formFields.onFinish(true);
+						this.visible = false;
+					} else {
+						this.$refs.formFields.onFinish(false);
+					}
+					return;
+				}, 5000);
+		  },
+		}
 	})
 
 </script>

@@ -7,8 +7,10 @@
 			<a-row type="flex" align="middle">
 				
 				<a-col :span="24" :md="4" >
-					<a-button type="primary">
-						Create New Request
+					<a-button type="primary"
+						@click="showModal"
+					>
+						Add Request
 					</a-button>
 				</a-col>
 				<a-col :span="24" :md="8">
@@ -21,6 +23,14 @@
 					<!-- / Header Search Input -->
 				</a-col>
 			</a-row>
+			<MainModal
+					:visible="visible"
+					:title="modelTitle"
+				 	@handleOk="modalHandleOk"
+					:handle-cancel="modalHandleCancel"
+				>
+				<MainForm ref="formFields" :formFields="MaintenanceInputs" :formState="formState"></MainForm>
+			</MainModal>
 		</template>
 	
 	</a-card>
@@ -29,12 +39,44 @@
 </template>
 
 <script>
-
+import MainModal from '../Modal/MainModal.vue';
+import MainForm from '../Forms/MainForm.vue';
 	export default ({
+		components: {
+		  MainModal, MainForm
+		},
 		data() {
 			return {
+				visible: false,
+				modelTitle: "Add Request",
+				MaintenanceInputs: [
+					{ name: 'issue', label: 'Issue', placeholder: 'Enter Date'},
+	        		{ name: 'details', label: 'Details', placeholder:'Enter Details'}
+      	],
+				formState: {'name': '', 'apt': '', 'amount': ''}
 			}
 		},
+		methods: {
+		  showModal() {
+		    this.visible = true
+		  },
+			modalHandleCancel() {
+				this.visible = false
+			},
+			async modalHandleOk(handleLoading) {
+				return await setTimeout(async () => {
+					handleLoading()
+					console.log(this.formState);
+					if(true) {
+						this.$refs.formFields.onFinish(true);
+						this.visible = false;
+					} else {
+						this.$refs.formFields.onFinish(false);
+					}
+					return;
+				}, 5000);
+		  },
+		}
 	})
 
 </script>
