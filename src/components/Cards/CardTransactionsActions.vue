@@ -31,7 +31,6 @@
 				>
 				<MainForm ref="formFields" :formFields="transactionInputs" :formState="formState"></MainForm>
 			</MainModal>
-			</a-modal>
 		</template>
 
 	</a-card>
@@ -42,6 +41,8 @@
 <script>
 import MainModal from '../Modal/MainModal.vue';
 import MainForm from '../Forms/MainForm.vue';
+
+
 	export default ({
 		components: {
 		  MainModal, MainForm
@@ -51,13 +52,11 @@ import MainForm from '../Forms/MainForm.vue';
 				visible: false,
 				modelTitle: "Add Transaction",
 				transactionInputs: [
-	        { name: 'name', label: 'Full Name', placeholder: 'Enter your name'},
-	        { name: 'apt', label: 'Appratment', placeholder: 'Enter Appratment'},
-	        { name: 'amount', label: 'Amount', placeholder:'Enter Amount'},
-					{ name: 'date', label: 'Date', placeholder: 'Enter Date'},
-	        { name: 'details', label: 'Details', placeholder:'Enter Details'}
+					{ name: 'date', label: 'Transaction Date', placeholder: 'Enter Date (mm/dd/yyyy)'},
+	        		{ name: 'amount', label: 'Amount', placeholder:'Enter Amount'},
+	        		{ name: 'details', label: 'Details', placeholder:'Enter Details'}
       	],
-				formState: {'name': '', 'apt': '', 'amount': ''}
+				formState: {'details': '', 'amount': '', 'date': new Date().toLocaleDateString()}
 			}
 		},
 		methods: {
