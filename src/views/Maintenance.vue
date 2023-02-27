@@ -51,8 +51,8 @@
 		},
 		{
 			title: 'Created By',
-			dataIndex: 'created_by_name',
-			scopedSlots: { customRender: 'created_by_name' },
+			dataIndex: 'created_by',
+			scopedSlots: { customRender: 'created_by' },
 		},
 		{
 			title: 'Issue',

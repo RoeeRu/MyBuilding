@@ -11,10 +11,10 @@
 		<a-table :columns="columns" :data-source="data" :pagination="false">
 
 
-			<template slot="added_by_name" slot-scope="added_by_name">
+			<template slot="created_by" slot-scope="created_by">
 				<div class="source-info">
-					<h6 class="m-0">{{ added_by_name }}</h6>
-					<p class="m-0 font-regular text-muted">{{ added_by_name }}</p>
+					<h6 class="m-0">{{ created_by.created_by_name }}</h6>
+					<p class="m-0 font-regular text-muted">{{ created_by.created_by_apt }}</p>
 				</div>
 			</template>
 

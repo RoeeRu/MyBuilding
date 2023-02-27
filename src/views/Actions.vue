@@ -55,9 +55,9 @@
 		},
 		
 		{
-			title: 'Added By',
-			dataIndex: 'added_by_name', 
-			scopedSlots: { customRender: 'added_by_name' },
+			title: 'Created By',
+			dataIndex: 'created_by', 
+			scopedSlots: { customRender: 'created_by' },
 		},
 		{
 			title: 'Status',
