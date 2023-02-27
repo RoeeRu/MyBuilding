@@ -34,6 +34,9 @@
 			<a-descriptions-item label="Tax ID">
 				{{buildingInfo.tax_id}}
 			</a-descriptions-item>
+			<a-descriptions-item label="Budget 2023">
+				{{buildingInfo.budget}}
+			</a-descriptions-item>
 		</a-descriptions>
 	</a-card>
 	<!-- / Profile Information Card -->
