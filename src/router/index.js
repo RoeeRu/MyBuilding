@@ -72,6 +72,18 @@ let routes = [
 		component: () => import('../views/Maintenance.vue'),
 	},
 	{
+		path: '/services',
+		name: 'Services',
+		layout: "dashboard",
+		component: () => import('../views/Services.vue'),
+	},
+	{
+		path: '/dashboard-template',
+		name: 'Dashboard Template',
+		layout: "dashboard",
+		component: () => import('../views/DashboardTemplate.vue'),
+	},
+	{
 		path: '/billing',
 		name: 'Billing',
 		layout: "dashboard",
