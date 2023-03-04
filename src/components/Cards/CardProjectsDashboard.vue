@@ -3,13 +3,13 @@
 	<!-- Project Card -->
 	<a-card class="card-project">
 
-		<a-row type="flex" :lg="2" :gutter="[12,12]" align="top" >
+		<a-row type="flex" :lg="2" :gutter="6" align="top" >
 			<h6 >{{ title }}</h6>
 			<p>
 				{{ content }}
 			</p>
 		</a-row>
-		<a-row type="flex" :gutter="[6,7]" class="card-footer" align="middle">
+		<a-row type="flex" :gutter="6" class="card-footer" align="middle">
 			<a-col :span="12" >
 				<div v-if="link === '/actions'" class="team">
 					<a-button @click="$router.push('/actions')" size="small"> {{ button }}</a-button>
