@@ -20,7 +20,7 @@
 
 				<!-- Transactions Table Card -->
 				<CardTransactionsTable
-					:data="tableData"
+					:data="transactionsData"
 					:columns="tableColumns"
 				></CardTransactionsTable>
 				<!-- / Transactions Table Card -->
@@ -73,40 +73,6 @@
 		},
 	];
 
-	// "Transactions" table list of rows and their properties.
-	const tableData = [
-		{
-			key: '1',
-
-			date: '23/04/18',
-
-			source: {
-				type: 'Bank',
-				details: '(... 2341)',
-			},
-			transaction_amount: {
-				amount: '14,000',
-				type: -1,// 0 is for pending, 1 is for deposit, -1 is for withdrawal.
-			},
-			details: "Payment for boiler intallation",
-		},
-		{
-			key: '2',
-
-			date: '23/12/20',
-
-			source: {
-				type: 'Manual',
-				details: 'Daniel, apt. 3a',
-			},
-			transaction_amount: {
-				amount: '1,000',
-				type: 1,// 0 is for pending, 1 is for deposit, -1 is for withdrawal.
-			},
-			details: "Monthly payment",
-		},
-	];
-
 
 	export default ({
 		components: {
@@ -115,8 +81,6 @@
 		},
 		data() {
 			return {
-				// Associating "Transactions" table data with its corresponding property.
-				tableData: tableData,
 				// Associating "Transactions" table columns with its corresponding property.
 				tableColumns: tableColumns,
 			}
