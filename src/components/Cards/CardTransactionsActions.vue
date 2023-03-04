@@ -55,9 +55,11 @@ import { mapActions } from 'vuex'
 				transactionInputs: [
 							{ name: 'date', label: 'Transaction Date', placeholder: 'Enter Date (mm/dd/yyyy)'},
 	        		{ name: 'amount', label: 'Amount', placeholder:'Enter Amount'},
-	        		{ name: 'details', label: 'Details', placeholder:'Enter Details'}
+	        		{ name: 'details', label: 'Details', placeholder:'Enter Details'},
+							{ name: 'manual_apt', label: 'Appratment', placeholder: 'Enter Appratment'},
+							{ name: 'manual_name', label: 'Tenant Name', placeholder: 'Enter Name'},
       	],
-				formState: {'details': '', 'amount': '', 'date': ''}
+				formState: {'details': '', 'amount': '', 'date': '', 'manual_apt': '', 'manual_name': ''}
 			}
 		},
 		computed: {
@@ -70,7 +72,6 @@ import { mapActions } from 'vuex'
 	    }
 	  },
 		created() {
-			console.log("this.formattedDate", this.formattedDate);
 	    this.formState.date = this.formattedDate;
 	  },
 		methods: {
@@ -79,6 +80,7 @@ import { mapActions } from 'vuex'
 		  },
 			modalHandleCancel() {
 				this.visible = false
+				this.formState = {'details': '', 'amount': '', 'date': this.formattedDate, 'manual_apt': '', 'manual_name': ''}
 			},
 			async modalHandleOk(handleOnFinish) {
 				try {
@@ -86,11 +88,14 @@ import { mapActions } from 'vuex'
 					if(res) {
 						this.$refs.formFields.onFinish(true);
 						this.visible = false;
+						this.formState = {'details': '', 'amount': '', 'date': '', 'manual_apt': '', 'manual_name': ''}
 					} else {
 						this.$refs.formFields.onFinish(false);
 					}
 				} catch (e) {
 					this.$refs.formFields.onFinish(false);
+				} finally {
+					handleOnFinish()
 				}
 		  },
 			...mapActions('transactions', ['addTransaction'])
