@@ -41,6 +41,7 @@
 <script>
 import MainModal from '../Modal/MainModal.vue';
 import MainForm from '../Forms/MainForm.vue';
+import { mapActions } from 'vuex'
 
 
 	export default ({
@@ -52,13 +53,26 @@ import MainForm from '../Forms/MainForm.vue';
 				visible: false,
 				modelTitle: "Add Transaction",
 				transactionInputs: [
-					{ name: 'date', label: 'Transaction Date', placeholder: 'Enter Date (mm/dd/yyyy)'},
+							{ name: 'date', label: 'Transaction Date', placeholder: 'Enter Date (mm/dd/yyyy)'},
 	        		{ name: 'amount', label: 'Amount', placeholder:'Enter Amount'},
 	        		{ name: 'details', label: 'Details', placeholder:'Enter Details'}
       	],
-				formState: {'details': '', 'amount': '', 'date': new Date().toLocaleDateString()}
+				formState: {'details': '', 'amount': '', 'date': ''}
 			}
 		},
+		computed: {
+	    formattedDate() {
+	      const today = new Date();
+	      const year = today.getFullYear();
+	      const month = String(today.getMonth() + 1).padStart(2, '0');
+	      const day = String(today.getDate()).padStart(2, '0');
+	      return `${year}-${month}-${day}`;
+	    }
+	  },
+		created() {
+			console.log("this.formattedDate", this.formattedDate);
+	    this.formState.date = this.formattedDate;
+	  },
 		methods: {
 		  showModal() {
 		    this.visible = true
@@ -66,20 +80,21 @@ import MainForm from '../Forms/MainForm.vue';
 			modalHandleCancel() {
 				this.visible = false
 			},
-			async modalHandleOk(handleLoading) {
-				return await setTimeout(async () => {
-					handleLoading()
-					console.log(this.formState);
-					if(true) {
+			async modalHandleOk(handleOnFinish) {
+				try {
+					let res = await this.addTransaction({transaction: this.formState})
+					if(res) {
 						this.$refs.formFields.onFinish(true);
 						this.visible = false;
 					} else {
 						this.$refs.formFields.onFinish(false);
 					}
-					return;
-				}, 5000);
+				} catch (e) {
+					this.$refs.formFields.onFinish(false);
+				}
 		  },
-		}
+			...mapActions('transactions', ['addTransaction'])
+		},
 	})
 
 </script>

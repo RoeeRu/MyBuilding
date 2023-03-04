@@ -1,5 +1,5 @@
-<!-- 
-	This is the dashboard page, it uses the dashboard layout in: 
+<!--
+	This is the dashboard page, it uses the dashboard layout in:
 	"./layouts/Dashboard.vue" .
  -->
 
@@ -25,7 +25,7 @@
 		<!-- First row -->
 		<a-row :gutter="24" type="flex" align="stretch">
 			<a-col :span="24" :lg="16" class="mb-24">
-				
+
 				<!-- Sales Overview Card -->
 				<CardFinanceChart></CardFinanceChart>
 				<!-- / Sales Overview Card -->
@@ -45,7 +45,7 @@
 
 		<!-- Table & Timeline -->
 		<!-- Projects Card -->
-		<a-row  type="flex" align="stretch">	
+		<a-row  type="flex" align="stretch">
 			<a-col :span="24" :lg="24" class="mb-24">
 				<a-card :bordered="false" class="header-solid h-full mb-24" :bodyStyle="{paddingTop: '2px'}">
 					<template #title>
