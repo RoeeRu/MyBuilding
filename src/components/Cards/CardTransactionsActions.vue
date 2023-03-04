@@ -53,11 +53,13 @@ import { mapActions } from 'vuex'
 				visible: false,
 				modelTitle: "Add Transaction",
 				transactionInputs: [
-							{ name: 'date', label: 'Transaction Date', placeholder: 'Enter Date (mm/dd/yyyy)'},
-	        		{ name: 'amount', label: 'Amount', placeholder:'Enter Amount'},
-	        		{ name: 'details', label: 'Details', placeholder:'Enter Details'},
-							{ name: 'manual_apt', label: 'Appratment', placeholder: 'Enter Appratment'},
-							{ name: 'manual_name', label: 'Tenant Name', placeholder: 'Enter Name'},
+							{ name: 'date', label: 'Transaction Date', type:'date'},
+	        		{ name: 'amount', label: 'Amount', placeholder:'Enter Amount', type:'text'},
+	        		{ name: 'details', label: 'Details', placeholder:'Enter Details', type:'text'},
+							{ name: 'manual_apt', label: 'Appratment', placeholder: 'Enter Appratment', type:'text'},
+							{ name: 'manual_name', label: 'Tenant Name', placeholder: 'Enter Name', type:'text'},
+							// { name: 'age', label: 'Select Age', type:'selectBox', 'options': [{value: 'minor', text: '11-22'}, {value: 'addult', text: '22-44'}]},
+							// { name: 'file', label: 'Upload File', type:'uploadFile'},
       	],
 				formState: {'details': '', 'amount': '', 'date': '', 'manual_apt': '', 'manual_name': ''}
 			}
@@ -72,7 +74,7 @@ import { mapActions } from 'vuex'
 	    }
 	  },
 		created() {
-	    this.formState.date = this.formattedDate;
+	    // this.formState.date = this.formattedDate;
 	  },
 		methods: {
 		  showModal() {
@@ -84,6 +86,7 @@ import { mapActions } from 'vuex'
 			},
 			async modalHandleOk(handleOnFinish) {
 				try {
+					this.formState.date = this.formState.date.format('YYYY-MM-DD');
 					let res = await this.addTransaction({transaction: this.formState})
 					if(res) {
 						this.$refs.formFields.onFinish(true);

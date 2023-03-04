@@ -8,9 +8,25 @@
     :validate-messages="validateMessages"
     @finish="onFinish"
   >
-    <a-form-item v-for="(input, index) in formFields" :key="index" :label="input.label" :prop="input.name">
-        <a-input v-model="formState[input.name]" :placeholder="input.placeholder"/>
+
+    <a-form-item v-for="(input, index) in formFields" :key="index" :label="input.label" :prop="input.name"  :colon="false">
+        <a-input v-if="input.type == 'text'" v-model="formState[input.name]" :placeholder="input.placeholder"/>
+
+        <a-select v-else-if="input.type == 'selectBox'" v-model="formState[input.name]">
+          <a-select-option v-for="(option, index) in input.options" :key="index" :value="option.value">{{option.text}}</a-select-option>
+        </a-select>
+
+        <a-date-picker v-else-if="input.type == 'date'" v-model="formState[input.name]" :format="'YYYY-MM-DD'" />
+
+        <a-upload v-else-if="input.type == 'uploadFile'"
+            :v-model="formState[input.name]"
+            :show-upload-list="true"
+           >
+            <a-button>Click to Upload</a-button>
+        </a-upload>
+
     </a-form-item>
+
     <p style="color:red;" v-if="!isSuccess">Error in submit new transaction: Please try again</p>
 
   </a-form>
@@ -58,13 +74,6 @@ export default ({
     onFinish(isSuccess) {
       //handle validation
       this.isSuccess = isSuccess
-      if(isSuccess){
-        console.log('isSuccess');
-      } else {
-        console.log('isNotSuccess');
-      }
-
-
     },
     resetForm() {
       // form.resetFields();
