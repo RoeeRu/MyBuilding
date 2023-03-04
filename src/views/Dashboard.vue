@@ -49,7 +49,7 @@
 			<a-col :span="24" :lg="24" class="mb-24">
 				<a-card :bordered="false" class="header-solid h-full mb-24" :bodyStyle="{paddingTop: '2px'}">
 					<template #title>
-						<h6 class="font-semibold">Open Projects</h6>
+						<h5 class="font-semibold">Open Projects</h5>
 					</template>
 					<a-row type="flex" :gutter="[48,24]" align="stretch">
 
