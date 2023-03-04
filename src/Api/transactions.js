@@ -2,7 +2,7 @@ import axios from 'axios';
 axios.defaults.withCredentials = true;
 
 
-export function getTransactions(idToken, limit = 20) {
+export function getTransactions(idToken, limit) {
   return axios.get(process.env.VUE_APP_SYSTEM_DOMAIN + '/transactions/getTransactions', {
     headers: {
       Authorization: `Bearer ${idToken}`,

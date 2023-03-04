@@ -5,7 +5,8 @@ export default {
   namespaced: true,
   state () {
     return {
-      transactions: []
+      transactions: [],
+      limit :15,
     }
   },
   mutations: {
@@ -15,7 +16,7 @@ export default {
   },
   actions: {
     async getTransactions({ state, rootState, commit }) {
-      let res = await getTransactions(rootState.auth.user.accessToken);
+      let res = await getTransactions(rootState.auth.user.accessToken, state.limit);
       if(!res.status) {
         console.log("faield", res.data);
         return false;
