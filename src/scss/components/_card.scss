@@ -1,7 +1,7 @@
 // _card.scss
-// 
+//
 // Template's cards styles.
-// 
+//
 
 // Cards
 
@@ -70,7 +70,7 @@
 		flex-grow: 1;
 		flex-shrink: 0;
 		margin-top: 20px;
-				
+
 		@media( min-width: $xl ){
 			width: auto;
 			flex-shrink: 1;
@@ -87,7 +87,7 @@
 		box-shadow: $shadow-2;
 		position: relative;
 		overflow: hidden;
-				
+
 		@media( min-width: $xl ){
 			width: 220px;
 			height: 220px;
@@ -131,6 +131,7 @@
 		border-radius: 8px;
 		background-size: cover;
 	}
+
 	h6,
 	h5,
 	p,
@@ -185,8 +186,9 @@
 		align-items: center;
 		justify-content: space-between;
 	}
-	
+
 	h6 {
+    font-size: 4px;
 		font-weight: $fw-semibold;
 		margin-bottom: 0;
 	}
@@ -358,7 +360,7 @@
 	border-radius: 12px;
 	margin-top: -190px;
 	margin-bottom: 20px;
-			
+
 	@media( min-width: $md ) {
 		margin-bottom: 120px;
 	}
@@ -372,7 +374,7 @@
 			height: 60px;
 			width: 70px;
 			box-shadow: none;
-			
+
 			@media( min-width: $md ) {
 				width: 100px;
 			}

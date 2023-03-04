@@ -27,11 +27,10 @@ export default ({
   methods: {
     async handleOk() {
       this.loading = true;
-      this.$emit('handleOk', () => this.handleLoading())
+      this.$emit('handleOk', () => this.handleOnFinish())
     },
-    handleLoading() {
+    handleOnFinish() {
       this.loading = false;
-      this.modalVisible = false
     }
   }
 })
