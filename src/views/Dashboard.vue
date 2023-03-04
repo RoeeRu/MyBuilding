@@ -34,7 +34,8 @@
 			<a-col :span="24" :lg="8" class="mb-24">
 
 				<!-- Orders History Timeline Card -->
-				<CardTransactionHistory></CardTransactionHistory>
+				<CardTransactionHistory 
+					:data="transactionsData"></CardTransactionHistory>
 				<!-- / Orders History Timeline Card -->
 
 			</a-col>
@@ -50,7 +51,7 @@
 					<template #title>
 						<h6 class="font-semibold">Open Projects</h6>
 					</template>
-					<a-row type="flex" :gutter="[12,24]" align="stretch">
+					<a-row type="flex" :gutter="[48,24]" align="stretch">
 
 						<!-- Project Column -->
 						<a-col :span="24" :md="12" :lg="24" :xl="6" v-for="(project, index) in projects" :key="index">
@@ -72,32 +73,11 @@
 			</a-col>
 		</a-row>
 
-		<!-- Cards -->
-		<a-row :gutter="24" type="flex" align="stretch">
-			<a-col :span="24" :xl="14" class="mb-24">
-
-				<!-- Information Card 1 -->
-				<CardInfo></CardInfo>
-				<!-- / Information Card 1 -->
-
-			</a-col>
-			<a-col :span="24" :xl="10" class="mb-24">
-
-				<!-- Information Card 2 -->
-				<CardInfo2></CardInfo2>
-				<!-- / Information Card 2 -->
-
-			</a-col>
-		</a-row>
-		<!-- / Cards -->
-
 	</div>
 </template>
 
 <script>
 
-	// Bar chart for "Active Users" card.
-	import CardBarChart from '../components/Cards/CardBarChart' ;
 
 	// Line chart for "Sales Overview" card.
 	import CardFinanceChart from '../components/Cards/CardFinanceChart' ;
@@ -105,17 +85,14 @@
 	// Counter Widgets
 	import WidgetCounter from '../components/Widgets/WidgetCounter' ;
 
-	// Information card 1.
-	import CardInfo from '../components/Cards/CardInfo' ;
-
-	// Information card 2.
-	import CardInfo2 from '../components/Cards/CardInfo2' ;
-	
 	// Orders History Timeline Card
 	import CardTransactionHistory from '../components/Cards/CardTransactionHistory.vue';
 
 	// ProjectsDashboard card
 	import CardProjectsDashboard from '../components/Cards/CardProjectsDashboard.vue';
+	
+	import { mapActions } from 'vuex'
+	import { mapState } from 'vuex'
 
 	// Counter Widgets stats
 	const stats = [
@@ -147,7 +124,7 @@
 		{
 			title: "Expenses 2023 (Jan-Today)",
 			value: 20030,
-			prefix: "+",
+			prefix: "$",
 			status: "danger",
 			suffix: "-20%",
 			icon: `
@@ -229,11 +206,8 @@
 
 	export default ({
 		components: {
-    CardBarChart,
     CardFinanceChart,
     WidgetCounter,
-    CardInfo,
-    CardInfo2,
     CardTransactionHistory,
 	CardProjectsDashboard,
 },
@@ -247,6 +221,20 @@
 				// Project cards data
 				projects,
 			}
+		},
+		async mounted() {
+			await this.getTransactions();
+		},
+		computed: {
+			...mapState({
+				transactionsData: state => state.transactions.transactions,
+			})
+		},
+		methods: {
+			...mapActions({
+				getTransactions: 'transactions/getTransactions',
+
+			}),
 		},
 	})
 
