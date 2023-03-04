@@ -86,8 +86,7 @@
 			}
 		},
 		async mounted() {
-			console.log('Maintenance mounted'),
-			await this.getMaintenance();
+			await this.getTransactions();
 		},
 		computed: {
 			...mapState({
@@ -96,7 +95,7 @@
 		},
 		methods: {
 			...mapActions({
-				getMaintenance: 'transactions/getTransactions',
+				getTransactions: 'transactions/getTransactions',
 
 			}),
 		},
