@@ -93,9 +93,11 @@ import { mapActions } from 'vuex'
 						this.visible = false;
 						this.formState = {'details': '', 'amount': '', 'date': '', 'manual_apt': '', 'manual_name': ''}
 					} else {
+						console.log('modalHandleOk',res )
 						this.$refs.formFields.onFinish(false);
 					}
 				} catch (e) {
+					console.log('modalHandleOk',e )
 					this.$refs.formFields.onFinish(false);
 				} finally {
 					handleOnFinish()

@@ -55,7 +55,7 @@
 		},
 		
 		{
-			title: 'Created By',
+			title: 'Submitted By',
 			dataIndex: 'created_by', 
 			scopedSlots: { customRender: 'created_by' },
 		},
@@ -104,7 +104,7 @@
 		},
 		computed: {
 			...mapState({
-				table1Data: state => state.actions.actionsInfo,
+				table1Data: state => state.actions.actions,
 			})
 		},
 		methods: {

@@ -1,16 +1,16 @@
-import { getActions } from '@/Api/actions.js';
+import { getActions, addNewAction } from '@/Api/actions.js';
 
 
 export default {
   namespaced: true,
   state () {
     return {
-      actionsInfo: []
+      actions: []
     }
   },
   mutations: {
-    actionsInfo (state, actionsInfo) {
-      state.actionsInfo = actionsInfo
+    actionsInfo (state, actions) {
+      state.actions = actions
     },
   },
   actions: {
@@ -22,7 +22,15 @@ export default {
       }
       commit('actionsInfo', res.data);
     },
-
+    async addAction({ state, rootState, commit }, actionPayload) {
+      let res = await addNewAction(rootState.auth.user.accessToken, actionPayload);
+      if(!res.status) {
+        console.log("res.status faield", res.status);
+        return false;
+      }
+      commit('actionsInfo', [...res.data, ...state.actions])
+      return true;
+    }
 
   }
 }

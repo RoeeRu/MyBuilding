@@ -29,7 +29,7 @@
 				 	@handleOk="modalHandleOk"
 					:handle-cancel="modalHandleCancel"
 				>
-				<MainForm ref="formFields" :formFields="transactionInputs" :formState="formState"></MainForm>
+				<MainForm ref="formFields" :formFields="actionInputs" :formState="formState"></MainForm>
 			</MainModal>
 		</template>
 	
@@ -41,6 +41,7 @@
 <script>
 import MainModal from '../Modal/MainModal.vue';
 import MainForm from '../Forms/MainForm.vue';
+import { mapActions } from 'vuex'
 
 
 	export default ({
@@ -51,34 +52,56 @@ import MainForm from '../Forms/MainForm.vue';
 			return {
 				visible: false,
 				modelTitle: "Add New Action Item",
-				transactionInputs: [
-	        		{ name: 'item', label: 'Item', placeholder:'Enter Details'},
-	        		{ name: 'details', label: 'Details', placeholder:'Enter Details'},
-					{ name: 'due_date', label: 'Due Date', placeholder: 'Enter Date (mm/dd/yyyy)'},
+				actionInputs: [
+	        		{ name: 'item', label: 'Item', placeholder:'Enter Details', type:'text'},
+	        		{ name: 'details', label: 'Details', placeholder:'Enter Details', type:'text'},
+					{ name: 'due_date', label: 'Due Date', type:'date'},
+					{ name: 'created_by_name', label: 'Owner (Name)', placeholder: 'Enter Name', type:'text'},
+					{ name: 'created_by_apt', label: 'Owner (Aparatment)', placeholder: 'Enter Appratment', type:'text'},
       	],
-				formState: {'details': '', 'amount': '', 'due_date': ''}
+				formState: {'item': '', 'details': '', 'due_date': '', 'created_by_apt': '', 'created_by_name': '', 'status': 'open'}
 			}
 		},
+		computed: {
+	    formattedDate() {
+	      const today = new Date();
+	      const year = today.getFullYear();
+	      const month = String(today.getMonth() + 1).padStart(2, '0');
+	      const day = String(today.getDate()).padStart(2, '0');
+	      return `${year}-${month}-${day}`;
+	    }
+	  },
+		created() {
+	    // this.formState.due_date = this.formattedDate;
+	  },
 		methods: {
 		  showModal() {
 		    this.visible = true
 		  },
 			modalHandleCancel() {
 				this.visible = false
+				this.formState = {'item': '', 'details': '', 'due_date': this.formattedDate, 'created_by_apt': '', 'created_by_name': ''}
 			},
-			async modalHandleOk(handleLoading) {
-				return await setTimeout(async () => {
-					handleLoading()
-					console.log(this.formState);
-					if(true) {
+			async modalHandleOk(handleOnFinish) {
+				try {
+					this.formState.due_date = this.formState.due_date.format('YYYY-MM-DD');
+					let res = await this.addAction({action: this.formState})
+					if(res) {
 						this.$refs.formFields.onFinish(true);
 						this.visible = false;
+						this.formState = {'item': '', 'details': '', 'due_date': '', 'created_by_apt': '', 'created_by_name': ''}
 					} else {
+						console.log('modalHandleOk false', res)
 						this.$refs.formFields.onFinish(false);
 					}
-					return;
-				}, 5000);
+				} catch (e) {
+					console.log('modalHandleOk error', e)
+					this.$refs.formFields.onFinish(false);
+				} finally {
+					handleOnFinish()
+				}
 		  },
+			...mapActions('actions', ['addAction'])
 		}
 	})
 
