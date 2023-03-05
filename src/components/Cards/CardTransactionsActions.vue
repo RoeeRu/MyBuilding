@@ -61,7 +61,7 @@ import { mapActions } from 'vuex'
 							// { name: 'age', label: 'Select Age', type:'selectBox', 'options': [{value: 'minor', text: '11-22'}, {value: 'addult', text: '22-44'}]},
 							// { name: 'file', label: 'Upload File', type:'uploadFile'},
       	],
-				formState: {'details': '', 'amount': '', 'date': '', 'manual_apt': '', 'manual_name': ''}
+				formState: {'details': '', 'amount': '', 'date': '', 'manual_apt': '', 'manual_name': '', 'source': 'Manual'}
 			}
 		},
 		computed: {
