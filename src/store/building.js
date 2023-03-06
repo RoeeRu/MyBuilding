@@ -7,7 +7,6 @@ export default {
     return {
       buildingInfo: {},
       membersInfo: [],
-      hasBankAccout: false
     }
   },
   mutations: {
@@ -17,9 +16,6 @@ export default {
     membersInfo (state, membersInfo) {
       state.membersInfo = membersInfo
     },
-    hasBankAccout (state, hasBankAccout) {
-      state.hasBankAccout = hasBankAccout
-    }
   },
   actions: {
     async getBuildingInformation({ state, rootState, commit }) {
@@ -40,14 +36,6 @@ export default {
       commit('membersInfo', res.data);
     },
 
-    async hasBankAccout({ state, rootState, commit }) {
-      const res =  await hasBankAccout(rootState.auth.user.accessToken);
-      if(res.status) {
-        commit('hasBankAccout', res.hasBankAccout);
-      } else {
-        commit('hasBankAccout', false);
-      }
-    },
 
   }
 }
