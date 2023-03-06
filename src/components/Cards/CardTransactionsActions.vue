@@ -61,7 +61,7 @@ import { mapActions } from 'vuex'
 							// { name: 'age', label: 'Select Age', type:'selectBox', 'options': [{value: 'minor', text: '11-22'}, {value: 'addult', text: '22-44'}]},
 							// { name: 'file', label: 'Upload File', type:'uploadFile'},
       	],
-				formState: {'details': '', 'amount': '', 'date': '', 'manual_apt': '', 'manual_name': '', 'source': 'Manual'}
+				formState: {'details': '', 'amount': '', 'date': '', 'manual_apt': '', 'manual_name': '', 'source': 'Manual', 'key': this.randomID}
 			}
 		},
 		computed: {
@@ -71,10 +71,15 @@ import { mapActions } from 'vuex'
 	      const month = String(today.getMonth() + 1).padStart(2, '0');
 	      const day = String(today.getDate()).padStart(2, '0');
 	      return `${year}-${month}-${day}`;
-	    }
+	    },
+		randomID() {
+			const r = (Math.random() + 1).toString(36).substring(7);
+			return r;
+		}, 
 	  },
 		created() {
 	    // this.formState.date = this.formattedDate;
+		 this.formState.key = this.randomID;
 	  },
 		methods: {
 		  showModal() {
@@ -82,7 +87,7 @@ import { mapActions } from 'vuex'
 		  },
 			modalHandleCancel() {
 				this.visible = false
-				this.formState = {'details': '', 'amount': '', 'date': this.formattedDate, 'manual_apt': '', 'manual_name': ''}
+				this.formState = {'details': '', 'amount': '', 'date': this.formattedDate, 'manual_apt': '', 'manual_name': '', 'key': this.randomID}
 			},
 			async modalHandleOk(handleOnFinish) {
 				try {
@@ -91,7 +96,7 @@ import { mapActions } from 'vuex'
 					if(res) {
 						this.$refs.formFields.onFinish(true);
 						this.visible = false;
-						this.formState = {'details': '', 'amount': '', 'date': '', 'manual_apt': '', 'manual_name': ''}
+						this.formState = {'details': '', 'amount': '', 'date': '', 'manual_apt': '', 'manual_name': '', 'key': this.randomID}
 					} else {
 						console.log('modalHandleOk',res )
 						this.$refs.formFields.onFinish(false);
