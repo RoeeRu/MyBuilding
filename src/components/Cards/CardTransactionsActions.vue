@@ -53,15 +53,16 @@ import { mapActions } from 'vuex'
 				visible: false,
 				modelTitle: "Add Transaction",
 				transactionInputs: [
-							{ name: 'date', label: 'Transaction Date', type:'date'},
+					{ name: 'date', label: 'Transaction Date', type:'date'},
+					{ name: 'type', label: 'Transaction Type', type:'selectBox', 'options': [{value: '-1', text: 'Cost'}, {value: '1', text: 'Income'}]},
 	        		{ name: 'amount', label: 'Amount', placeholder:'Enter Amount', type:'text'},
 	        		{ name: 'details', label: 'Details', placeholder:'Enter Details', type:'text'},
-							{ name: 'manual_apt', label: 'Appratment', placeholder: 'Enter Appratment', type:'text'},
-							{ name: 'manual_name', label: 'Tenant Name', placeholder: 'Enter Name', type:'text'},
-							// { name: 'age', label: 'Select Age', type:'selectBox', 'options': [{value: 'minor', text: '11-22'}, {value: 'addult', text: '22-44'}]},
-							// { name: 'file', label: 'Upload File', type:'uploadFile'},
+					{ name: 'manual_name', label: 'Paid By (Name)', placeholder: 'Enter Name', type:'text'},
+					{ name: 'manual_apt', label: 'Paid By (Appratment)', placeholder: 'Enter Appratment', type:'text'},
+					// { name: 'age', label: 'Select Age', type:'selectBox', 'options': [{value: 'minor', text: '11-22'}, {value: 'addult', text: '22-44'}]},
+					// { name: 'file', label: 'Upload File', type:'uploadFile'},
       	],
-				formState: {'details': '', 'amount': '', 'date': '', 'manual_apt': '', 'manual_name': '', 'source': 'Manual', 'key': this.randomID}
+				formState: {'details': '', 'amount': '', 'type':'-1', 'date': '', 'manual_apt': '', 'manual_name': '', 'source': 'Manual', 'key': this.randomID}
 			}
 		},
 		computed: {
@@ -96,7 +97,7 @@ import { mapActions } from 'vuex'
 					if(res) {
 						this.$refs.formFields.onFinish(true);
 						this.visible = false;
-						this.formState = {'details': '', 'amount': '', 'date': '', 'manual_apt': '', 'manual_name': '', 'key': this.randomID}
+						this.formState = {'details': '', 'amount': '', 'date': null , 'manual_apt': '', 'manual_name': '', 'key': this.randomID}
 					} else {
 						console.log('modalHandleOk',res )
 						this.$refs.formFields.onFinish(false);
