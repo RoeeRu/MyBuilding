@@ -71,7 +71,7 @@ import { mapActions } from 'vuex'
 		randomID() {
 			const r = (Math.random() + 1).toString(36).substring(7);
 			return r;
-		},
+		}, 
 		},
 		created() {
 	     this.formState.date = this.formattedDate;
@@ -89,9 +89,7 @@ import { mapActions } from 'vuex'
 			async modalHandleOk(handleOnFinish) {
 				try {
 					//this.formState.date = this.formState.date.format('YYYY-MM-DD');
-					console.log('key', this.formState.key)
 					let res = await this.addMaintenance({maintenance: this.formState})
-					console.log('modalHandleOk', res)
 					if(res) {
 						this.$refs.formFields.onFinish(true);
 						this.visible = false;

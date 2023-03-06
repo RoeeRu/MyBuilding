@@ -5,7 +5,11 @@
 		<template #title>
 			<a-row type="flex" align="middle">
 				<a-col :span="24" :md="12">
-					<h6 class="font-semibold m-0">Payment Methods</h6>
+					<h5 class="font-semibold m-0">Bank Info</h5>
+					
+					<h6 class="font-semibold m-0">{{ bankName }}</h6>
+					<p class="text-dark">{{ bankAccountNumber }}</p>
+
 				</a-col>
 				<a-col :span="24" :md="12" style="display: flex; align-items: center; justify-content: flex-end">
 					<a-button @click="handlePlaidLinkClick" type="primary">
@@ -14,6 +18,7 @@
 				</a-col>
 			</a-row>
 		</template>
+		<!-- credit cards 
 		<a-row :gutter="[24, 24]">
 			<a-col :span="24" :md="12">
 				<a-card class="payment-method-card">
@@ -40,6 +45,7 @@
 				</a-card>
 			</a-col>
 		</a-row>
+		-->
 	</a-card>
 	<!-- Payment Methods Card -->
 
@@ -63,7 +69,9 @@ import { mapState } from 'vuex'
 					 onSuccess: this.handlePlaidSuccess,
 		 	 	},
 				plaidHanler: null,
-				addBankText:'Add Bank Account'
+				addBankText:'Add Bank Account',
+				bankName: 'Bank Name',
+				bankAccountNumber: 'Account Number',
 			}
 		},
 		async mounted() {
@@ -72,6 +80,8 @@ import { mapState } from 'vuex'
 				this.addBankText = 'Change Bank Account';
 				let accountData = await this.getAccountData();
 				this.addBankText = 'Change Bank Account';
+				this.bankName = accountData.name;
+				this.bankAccountNumber = accountData.account_id;
 				this.$emit('accountData', accountData);
 			}
 

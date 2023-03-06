@@ -39,9 +39,18 @@
 
 		</a-row>
 		
-		<!-- Documents Card -->
+		<!-- Bank Card -->
+		<a-col :span="12" :md="8" :lg="8" :xl="12" class="mb-24">
+
+			<!-- Payment Methods Card -->
+			<CardPaymentMethods
+				v-on:accountData="handleAccountData">
+			</CardPaymentMethods>
+			<!-- Payment Methods Card -->
+
+</a-col>
 		
-		<!-- / Documents Card -->
+		<!-- / Bank Card -->
 
 	</div>
 </template>
@@ -50,19 +59,21 @@
 
 	import CardBuildingInformation from "../components/Cards/CardBuildingInformation"
 	import CardMembers from "../components/Cards/CardMembers"
+	import CardPaymentMethods from "../components/Cards/CardPaymentMethods"
 	import { mapActions } from 'vuex'
 	import { mapState } from 'vuex'
 
-
+	let accountInfo = {};
 
 	export default ({
 		components: {
 			CardBuildingInformation,
 			CardMembers,
+			CardPaymentMethods,
 		},
 		data() {
 			return {
-				
+				accountInfo,
 			}
 		},
 		computed: {
@@ -77,6 +88,9 @@
 			await this.getMembersInformation();
 		},
 		methods: {
+		  handleAccountData(accountData) {
+		    this.accountInfo = accountData;
+		  },
 			...mapActions({
 				getBuildingInformation: 'building/getBuildingInformation',
 				getMembersInformation: 'building/getMembersInformation'

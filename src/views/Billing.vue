@@ -38,11 +38,11 @@
 					</a-col>
 					<a-col :span="24" class="mb-24">
 
-						<!-- Payment Methods Card -->
+						<!-- Payment Methods Card
 						<CardPaymentMethods
 							v-on:accountData="handleAccountData">
 						</CardPaymentMethods>
-						<!-- Payment Methods Card -->
+						Payment Methods Card -->
 
 					</a-col>
 				</a-row>
@@ -216,7 +216,9 @@
 		},
 		methods: {
 		  handleAccountData(accountData) {
-		    this.accountInfo = accountData;
+		    //this.accountInfo = accountData;
+			
+		    this.accountInfo = null;
 		  }
 		}
 	})
