@@ -6,7 +6,8 @@ export default {
   state () {
     return {
       userInfo: {},
-      hasBankAccout: false
+      hasBankAccout: false,
+      bankAccountDetails: {}
     }
   },
   mutations: {
@@ -15,6 +16,9 @@ export default {
     },
     hasBankAccout (state, hasBankAccout) {
       state.hasBankAccout = hasBankAccout
+    },
+    bankAccountDetails (state, bankAccountDetails) {
+      state.bankAccountDetails = bankAccountDetails
     }
   },
   actions: {
@@ -38,7 +42,7 @@ export default {
       const res =  await exchangePublicToken(data.public_token, rootState.auth.user.accessToken);
       if(res.status) {
         commit('hasBankAccout', true);
-        return res.data.accounts[0].balances;
+        return res.data.accounts[0];
       } else{
         commit('hasBankAccout', false);
         return [];
@@ -57,11 +61,11 @@ export default {
     async getAccountData({ state, rootState }) {
       const res =  await getAccountData(rootState.auth.user.accessToken);
       if(res.status) {
-        return res.data.accounts[0].balances;
+        return res.data.accounts[0];
       } else {
         return false;
       }
-    }
+    },
 
   }
 }
