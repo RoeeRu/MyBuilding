@@ -27,7 +27,7 @@
 
     </a-form-item>
 
-    <p style="color:red;" v-if="!isSuccess">Error in submit new transaction: Please try again</p>
+    <p style="color:red;" v-if="!isSuccess">Error in submit form: Please try again</p>
 
   </a-form>
 </template>

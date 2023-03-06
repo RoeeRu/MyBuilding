@@ -96,7 +96,7 @@
 		},
 		computed: {
 			...mapState({
-				table1Data: state => state.maintenance.maintenanceInfo,
+				table1Data: state => state.maintenance.maintenance,
 			})
 		},
 		methods: {

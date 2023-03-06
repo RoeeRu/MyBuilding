@@ -41,6 +41,8 @@
 <script>
 import MainModal from '../Modal/MainModal.vue';
 import MainForm from '../Forms/MainForm.vue';
+import { mapActions } from 'vuex'
+
 	export default ({
 		components: {
 		  MainModal, MainForm
@@ -50,33 +52,63 @@ import MainForm from '../Forms/MainForm.vue';
 				visible: false,
 				modelTitle: "Add Request",
 				MaintenanceInputs: [
-					{ name: 'issue', label: 'Issue', placeholder: 'Enter Date'},
-	        		{ name: 'details', label: 'Details', placeholder:'Enter Details'}
+					{ name: 'issue', label: 'Issue', placeholder: 'Enter Date', type:'text'},
+	        		{ name: 'details', label: 'Details', placeholder:'Enter Details', type:'text'},
+					{ name: 'created_by_name', label: 'Owner (Name)', placeholder: 'Enter Name', type:'text'},
+					{ name: 'created_by_apt', label: 'Owner (Aparatment)', placeholder: 'Enter Appratment', type:'text'},
       	],
-				formState: {'name': '', 'apt': '', 'amount': ''}
+				formState: {'issue': '', 'details': '', 'created_by_name': '', 'created_by_apt': '', 'status': 'open', 'date': this.formattedDate, 'key': this.randomID}
 			}
 		},
+		computed: {
+	    formattedDate() {
+	      const today = new Date();
+	      const year = today.getFullYear();
+	      const month = String(today.getMonth() + 1).padStart(2, '0');
+	      const day = String(today.getDate()).padStart(2, '0');
+	      return `${year}-${month}-${day}`;
+	    },
+		randomID() {
+			const r = (Math.random() + 1).toString(36).substring(7);
+			return r;
+		},
+		},
+		created() {
+	     this.formState.date = this.formattedDate;
+		 this.formState.key = this.randomID;
+	  
+	  },
 		methods: {
 		  showModal() {
 		    this.visible = true
 		  },
 			modalHandleCancel() {
 				this.visible = false
+				this.formState = {'issue': '', 'details': '', 'date': this.formattedDate, 'created_by_apt': '', 'created_by_name': '', 'key': this.randomID}
 			},
-			async modalHandleOk(handleLoading) {
-				return await setTimeout(async () => {
-					handleLoading()
-					console.log(this.formState);
-					if(true) {
+			async modalHandleOk(handleOnFinish) {
+				try {
+					//this.formState.date = this.formState.date.format('YYYY-MM-DD');
+					console.log('key', this.formState.key)
+					let res = await this.addMaintenance({maintenance: this.formState})
+					console.log('modalHandleOk', res)
+					if(res) {
 						this.$refs.formFields.onFinish(true);
 						this.visible = false;
+						this.formState = {'issue': '', 'details': '', 'date': this.randomID, 'created_by_apt': '', 'created_by_name': '', 'key': this.randomID}
 					} else {
+						console.log('modalHandleOk false', res)
 						this.$refs.formFields.onFinish(false);
 					}
-					return;
-				}, 5000);
+				} catch (e) {
+					console.log('modalHandleOk error', e)
+					this.$refs.formFields.onFinish(false);
+				} finally {
+					handleOnFinish()
+				}
 		  },
-		}
+			...mapActions('maintenance', ['addMaintenance'])
+		  },
 	})
 
 </script>
