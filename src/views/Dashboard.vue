@@ -7,18 +7,9 @@
 	<div>
 		<!-- Counter Widgets -->
 		<a-row :gutter="24">
-			<a-col :span="24" :lg="12" :xl="6" class="mb-24" v-for="(stat, index) in stats" :key="index">
-				<!-- Widget 1 Card -->
-				<WidgetCounter
-					:title="stat.title"
-					:value="stat.value"
-					:prefix="stat.prefix"
-					:suffix="stat.suffix"
-					:icon="stat.icon"
-					:status="stat.status"
-				></WidgetCounter>
-				<!-- / Widget 1 Card -->
-			</a-col>
+			<CardDashboardWidgets
+			:stats="stats">
+		</CardDashboardWidgets>
 		</a-row>
 		<!-- / Counter Widgets -->
 
@@ -82,15 +73,14 @@
 	// Line chart for "Sales Overview" card.
 	import CardFinanceChart from '../components/Cards/CardFinanceChart' ;
 
-	// Counter Widgets
-	import WidgetCounter from '../components/Widgets/WidgetCounter' ;
-
 	// Orders History Timeline Card
 	import CardTransactionHistory from '../components/Cards/CardTransactionHistory.vue';
 
 	// ProjectsDashboard card
 	import CardProjectsDashboard from '../components/Cards/CardProjectsDashboard.vue';
 	
+	import CardDashboardWidgets from '../components/Cards/CardDashboardWidgets.vue';
+
 	import { mapActions } from 'vuex'
 	import { mapState } from 'vuex'
 
@@ -100,7 +90,6 @@
 			title: "Reserves",
 			value: 53000,
 			prefix: "$",
-			suffix: "+30%",
 			icon: `
 						<svg width="22" height="22" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
 							<path d="M8.43338 7.41784C8.58818 7.31464 8.77939 7.2224 9 7.15101L9.00001 8.84899C8.77939 8.7776 8.58818 8.68536 8.43338 8.58216C8.06927 8.33942 8 8.1139 8 8C8 7.8861 8.06927 7.66058 8.43338 7.41784Z" fill="#111827"/>
@@ -207,9 +196,9 @@
 	export default ({
 		components: {
     CardFinanceChart,
-    WidgetCounter,
     CardTransactionHistory,
 	CardProjectsDashboard,
+	CardDashboardWidgets,
 },
 		data() {
 			return {

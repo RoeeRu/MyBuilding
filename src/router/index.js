@@ -12,12 +12,10 @@ let routes = [
 	},
 	{
 		path: '/',
-		name: 'Home',
 		redirect: '/dashboard',
 	},
 	{
 		path: '/#',
-		name: 'Home',
 		redirect: '/dashboard',
 	},
 	{
