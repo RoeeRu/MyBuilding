@@ -11,7 +11,7 @@
 
     <a-form-item v-for="(input, index) in formFields" :key="index" :label="input.label" :prop="input.name"  :colon="false">
         <a-input v-if="input.type == 'text'" v-model="formState[input.name]" :placeholder="input.placeholder"/>
-
+        <a-input v-else-if="input.type == 'currency'" prefix="$" v-model="formState[input.name]" :placeholder="input.placeholder"/>
         <a-select v-else-if="input.type == 'selectBox'" v-model="formState[input.name]">
           <a-select-option v-for="(option, index) in input.options" :key="index" :value="option.value">{{option.text}}</a-select-option>
         </a-select>

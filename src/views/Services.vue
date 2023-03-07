@@ -91,7 +91,7 @@
                 superCard: {
                     above_title: "On-site",
                     title: "Super On Demand",
-                    email_body: "Hello Domos team, \n \nWe would like to use your on-demand super/handyman services. Here are some details about our needs:\nRequired scope of work: \nOne time / reccuring\nPreferred dates / days:\nPreferred hours of visit: \n\n\nThank you, ",
+                    email_body: "Hello Domos team, \n \nWe would like to use your on-demand super/handyman services. Here are some details about our needs:\n\nRequired scope of work: \n\nOne time / reccuring\\nnPreferred dates / days:\nPreferred hours of visit: \n\n\nThank you, ",
                     action: "Get a quote",
                     image_url: "images/super.jpeg",
                     description: "Schedule a one time visit from a Super to help you with your building maintenenace tasks."
@@ -100,7 +100,7 @@
                     above_title: "On-site",
                     title: "Vendors Network",
                     action: "Get a quote",
-                    email_body: "Hello Domos team, \n \nWe would need to get in touch with the following vendor type: \nHere are some details about the project we need help with: \nPlease see attached photos (if relevant)\n\n\nThank you, ",
+                    email_body: "Hello Domos team, \n \nWe would need to get in touch with the following vendor type: \n\nHere are some details about the project we need help with: \n\nPlease see attached photos (if relevant)\n\n\nThank you, ",
                     image_url: "images/vendors.jpeg",
                     description: "Need a plummber / roofer / other vendor? Tell us what's the issue and we will match you with an expert."
                 },

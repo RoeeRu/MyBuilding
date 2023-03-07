@@ -55,7 +55,7 @@ import { mapActions } from 'vuex'
 				transactionInputs: [
 					{ name: 'date', label: 'Transaction Date', type:'date'},
 					{ name: 'type', label: 'Transaction Type', type:'selectBox', 'options': [{value: '-1', text: 'Cost'}, {value: '1', text: 'Income'}]},
-	        		{ name: 'amount', label: 'Amount', placeholder:'Enter Amount', type:'text'},
+	        		{ name: 'amount', label: 'Amount', placeholder:'Enter Amount', type:'currency'},
 	        		{ name: 'details', label: 'Details', placeholder:'Enter Details', type:'text'},
 					{ name: 'manual_name', label: 'Paid By (Name)', placeholder: 'Enter Name', type:'text'},
 					{ name: 'manual_apt', label: 'Paid By (Appratment)', placeholder: 'Enter Appratment', type:'text'},
