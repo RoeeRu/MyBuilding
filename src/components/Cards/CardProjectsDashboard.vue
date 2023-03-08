@@ -1,27 +1,41 @@
 <template>
 
-	<!-- Project Card -->
-	<a-card class="card-project">
+<a-card :bordered="false" class="header-solid h-full mb-24" :bodyStyle="{paddingTop: '2px'}">
+					<template #title>
+						<h4 class="font-semibold">Open Projects</h4>
+					</template>
+					<a-row type="flex" :gutter="[48,24]" align="top">
 
-		<a-row type="flex" :lg="2" :gutter="6" align="top" >
-			<h6 >{{ title }}</h6>
-			<p>
-				{{ content }}
-			</p>
-		</a-row>
-		<a-row type="flex" :gutter="12" class="card-footer" align="middle">
-			<a-col :span="12" >
-				<div v-if="link === '/actions'" class="team">
-					<a-button @click="$router.push('/actions')" size="small"> {{ button }}</a-button>
-				</div>
-				<div v-else-if="link === '/maintenance'" class="team">
-					<a-button @click="$router.push('/maintenance')" size="small"> {{ button }}</a-button>
-				</div>
-			</a-col>
+						<!-- Project Column -->
+						<a-col :span="24" :md="12" :lg="24" :xl="6" v-for="(project, index) in projects" :key="index">
+							<!-- Project Card -->
+								<a-card class="card-project">
+								<div class="card-tag">Item #{{ project.id }} </div>
+								<br>
+								<h5 >{{ project.title }}</h5>
+								<p>
+									{{ project.content }}
+								</p>
+							<a-row type="flex" :gutter="12" class="card-footer" align="middle">
+								<a-col :span="12" >
+									<div v-if="project.link === '/actions'" class="team">
+										<a-button @click="$router.push('/actions')" size="small"> {{ project.button }}</a-button>
+									</div>
+									<div v-else-if="project.link === '/maintenance'" class="team">
+										<a-button @click="$router.push('/maintenance')" size="small"> {{ project.button }}</a-button>
+									</div>
+								</a-col>
 
-		</a-row>
-	</a-card>
-	<!-- / Project Card -->
+							</a-row>
+							</a-card>
+							<!-- / Project Card -->
+						</a-col>
+						<!-- / Project Column -->
+
+					</a-row>
+				</a-card>
+
+	
 
 </template>
 
@@ -29,34 +43,10 @@
 
 	export default ({
 		props: {
-			id: {
-				type: Number,
-				required: true,
-			},
-			button: {
-				type: String,
-				default: "",
-			},
-			title: {
-				type: String,
-				default: "",
-			},
-			content: {
-				type: String,
-				default: "",
-			},
-			cover: {
-				type: String,
-				default: "",
-			},
-			team: {
+			projects: {
 				type: Array,
-				default: () => [],
-			},
-			link: {
-				type: String,
-				default: "",
-			},
+				default: () => []
+			}
 		},
 		data() {
 			return {
