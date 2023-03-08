@@ -66,7 +66,7 @@ import { mapActions } from 'vuex'
 	      const year = today.getFullYear();
 	      const month = String(today.getMonth() + 1).padStart(2, '0');
 	      const day = String(today.getDate()).padStart(2, '0');
-	      return `${year}-${month}-${day}`;
+	      return `${month}/${day}/${year}`;
 	    },
 		randomID() {
 			const r = (Math.random() + 1).toString(36).substring(7);

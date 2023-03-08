@@ -16,7 +16,7 @@
           <a-select-option v-for="(option, index) in input.options" :key="index" :value="option.value">{{option.text}}</a-select-option>
         </a-select>
 
-        <a-date-picker v-else-if="input.type == 'date'" v-model="formState[input.name]" :format="'YYYY-MM-DD'" />
+        <a-date-picker v-else-if="input.type == 'date'" v-model="formState[input.name]" :format="'MM/DD/YYYY'" />
 
         <a-upload v-else-if="input.type == 'uploadFile'"
             :v-model="formState[input.name]"
