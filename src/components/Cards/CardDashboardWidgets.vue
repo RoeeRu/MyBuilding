@@ -21,6 +21,7 @@
 
 </template>
 
+
 <script>
 import WidgetCounter from '../Widgets/WidgetCounter' ;
 

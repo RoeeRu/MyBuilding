@@ -8,7 +8,7 @@
 		<!-- Counter Widgets -->
 		<a-row :gutter="24">
 			<CardDashboardWidgets
-			:stats="stats">
+			:stats="widgetsData">
 		</CardDashboardWidgets>
 		</a-row>
 		<!-- / Counter Widgets -->
@@ -213,15 +213,18 @@
 		},
 		async mounted() {
 			await this.getTransactions();
+			await this.getWidgets();
 		},
 		computed: {
 			...mapState({
 				transactionsData: state => state.transactions.transactions,
+				widgetsData: state => state.dashboard.widgetsInfo,
 			})
 		},
 		methods: {
 			...mapActions({
 				getTransactions: 'transactions/getTransactions',
+				getWidgets: 'dashboard/getWidgets',
 
 			}),
 		},

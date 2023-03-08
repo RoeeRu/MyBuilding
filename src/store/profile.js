@@ -61,7 +61,7 @@ export default {
     async getAccountData({ state, rootState }) {
       const res =  await getAccountData(rootState.auth.user.accessToken);
       if(res.status) {
-        return res.data.accounts[0];
+        return res.data;
       } else {
         return false;
       }

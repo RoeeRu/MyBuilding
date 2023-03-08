@@ -6,6 +6,7 @@ import building from './building'
 import actions from './actions'
 import maintenance from './maintenance'
 import transactions from './transactions'
+import dashboard from './dashboard'
 
 
 Vue.use(Vuex)
@@ -17,6 +18,7 @@ export default new Vuex.Store({
     building,
     actions,
     maintenance,
-    transactions
+    transactions,
+    dashboard,
   }
 })
