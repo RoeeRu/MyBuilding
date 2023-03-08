@@ -55,7 +55,7 @@ import { mapActions } from 'vuex'
 				actionInputs: [
 	        		{ name: 'item', label: 'Item', placeholder:'Enter Details', type:'text'},
 	        		{ name: 'details', label: 'Details', placeholder:'Enter Details', type:'text'},
-					{ name: 'due_date', label: 'Due Date',placeholder:'mm/dd/yyyy', type:'date'},
+					{ name: 'due_date', label: 'Due Date', type:'date'},
 					{ name: 'created_by_name', label: 'Owner (Name)', placeholder: 'Enter Name', type:'text'},
 					{ name: 'created_by_apt', label: 'Owner (Aparatment)', placeholder: 'Enter Appratment', type:'text'},
       	],

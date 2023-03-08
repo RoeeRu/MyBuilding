@@ -80,7 +80,6 @@
 		{
 			title: '',
 			scopedSlots: { customRender: 'actionsBtn' },
-			width: 50,
 		},
 	];
 

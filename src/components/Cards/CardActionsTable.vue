@@ -34,9 +34,36 @@
 			
 
 			<template slot="actionsBtn" slot-scope="row">
-				<a-button type="link" :data-id="row.key" class="btn-actions">
-					Actions
-				</a-button>
+				<a-dropdown>
+					<a class="ant-dropdown-link" @click="e => e.preventDefault()">
+					Actions <a-icon type="down" />
+					</a>
+					<a-menu slot="overlay">
+					<a-menu-item>
+						<a href="javascript:;">Edit</a>
+					</a-menu-item>
+					<a-menu-item>
+						<a href="javascript:;">Delete</a>
+					</a-menu-item>
+					<a-dropdown>
+					<a class="ant-dropdown-link" @click="e => e.preventDefault()">
+					Change Status: <a-icon type="down" />
+					</a>
+					<a-menu slot="overlay">
+					<a-menu-item>
+						<a href="javascript:;">Open</a>
+					</a-menu-item>
+					<a-menu-item>
+						<a href="javascript:;">In Progress</a>
+					</a-menu-item>
+					<a-menu-item>
+						<a href="javascript:;">Close</a>
+					</a-menu-item>
+					</a-menu>
+					
+				</a-dropdown>
+			</a-menu>
+				</a-dropdown>
 			</template>
 
 		</a-table>
