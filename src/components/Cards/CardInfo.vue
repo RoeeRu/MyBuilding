@@ -4,9 +4,8 @@
 		<a-row type="flex">
 			<a-col class="col-content" :span="24" :xl="12">
 				<div class="card-content">
-					<h6>Built by developers</h6>
-					<h5>Muse Dashboard for Ant Design</h5>
-					<p>From colors, cards, typography to complex elements, you will find the full documentation.</p>
+					<h6>Built by Domos</h6>
+					<h5>Domos Dashboard</h5>
 				</div>
 				<div class="card-footer">
 					<a href="#" size="small">

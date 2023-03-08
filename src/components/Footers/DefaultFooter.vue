@@ -56,8 +56,8 @@
 		
 		<!-- Copyright Notice -->
 		<p class="copyright">
-			Copyright © 2021 Muse
-			by <a href="https://creative-tim.com">Creative Tim</a>.
+			Copyright © 2022 Domos
+			by <a href="https://joindomos.com">Domos</a>.
 		</p>
 		<!-- / Copyright Notice -->
 
