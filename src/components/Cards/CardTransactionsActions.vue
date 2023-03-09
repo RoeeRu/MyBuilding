@@ -62,7 +62,7 @@ import { mapActions } from 'vuex'
 					// { name: 'age', label: 'Select Age', type:'selectBox', 'options': [{value: 'minor', text: '11-22'}, {value: 'addult', text: '22-44'}]},
 					// { name: 'file', label: 'Upload File', type:'uploadFile'},
       	],
-				formState: {'details': '', 'amount': '', 'type':'-1', 'date': '', 'manual_apt': '', 'manual_name': '', 'source': 'Manual', 'key': this.randomID}
+				formState: {'details': '', 'amount': '', 'type':'-1', 'date': '', 'manual_apt': '', 'manual_name': '', 'source': 'Manual'}
 			}
 		},
 		computed: {
@@ -80,7 +80,6 @@ import { mapActions } from 'vuex'
 	  },
 		created() {
 	    // this.formState.date = this.formattedDate;
-		 this.formState.key = this.randomID;
 	  },
 		methods: {
 		  showModal() {
@@ -88,7 +87,7 @@ import { mapActions } from 'vuex'
 		  },
 			modalHandleCancel() {
 				this.visible = false
-				this.formState = {'details': '', 'amount': '', 'date': this.formattedDate, 'manual_apt': '', 'manual_name': '', 'key': this.randomID}
+				this.formState = {'details': '', 'amount': '', 'date': this.formattedDate, 'manual_apt': '', 'manual_name': '',}
 			},
 			async modalHandleOk(handleOnFinish) {
 				try {
@@ -97,7 +96,7 @@ import { mapActions } from 'vuex'
 					if(res) {
 						this.$refs.formFields.onFinish(true);
 						this.visible = false;
-						this.formState = {'details': '', 'amount': '', 'date': null , 'manual_apt': '', 'manual_name': '', 'key': this.randomID}
+						this.formState = {'details': '', 'amount': '', 'date': null , 'manual_apt': '', 'manual_name': '', }
 					} else {
 						console.log('modalHandleOk',res )
 						this.$refs.formFields.onFinish(false);

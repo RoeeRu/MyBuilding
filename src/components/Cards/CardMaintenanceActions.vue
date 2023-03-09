@@ -57,7 +57,7 @@ import { mapActions } from 'vuex'
 					{ name: 'created_by_name', label: 'Owner (Name)', placeholder: 'Enter Name', type:'text'},
 					{ name: 'created_by_apt', label: 'Owner (Aparatment)', placeholder: 'Enter Appratment', type:'text'},
       	],
-				formState: {'issue': '', 'details': '', 'created_by_name': '', 'created_by_apt': '', 'status': 'open', 'date': this.formattedDate, 'key': this.randomID}
+				formState: {'issue': '', 'details': '', 'created_by_name': '', 'created_by_apt': '', 'status': 'open', 'date': this.formattedDate,}
 			}
 		},
 		computed: {
@@ -75,7 +75,6 @@ import { mapActions } from 'vuex'
 		},
 		created() {
 	     this.formState.date = this.formattedDate;
-		 this.formState.key = this.randomID;
 	  
 	  },
 		methods: {
@@ -84,7 +83,7 @@ import { mapActions } from 'vuex'
 		  },
 			modalHandleCancel() {
 				this.visible = false
-				this.formState = {'issue': '', 'details': '', 'date': this.formattedDate, 'created_by_apt': '', 'created_by_name': '', 'key': this.randomID}
+				this.formState = {'issue': '', 'details': '', 'date': this.formattedDate, 'created_by_apt': '', 'created_by_name': ''}
 			},
 			async modalHandleOk(handleOnFinish) {
 				try {
@@ -93,7 +92,7 @@ import { mapActions } from 'vuex'
 					if(res) {
 						this.$refs.formFields.onFinish(true);
 						this.visible = false;
-						this.formState = {'issue': '', 'details': '', 'date': this.randomID, 'created_by_apt': '', 'created_by_name': '', 'key': this.randomID}
+						this.formState = {'issue': '', 'details': '', 'date': this.randomID, 'created_by_apt': '', 'created_by_name': '', }
 					} else {
 						console.log('modalHandleOk false', res)
 						this.$refs.formFields.onFinish(false);
