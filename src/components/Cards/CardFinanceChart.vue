@@ -6,7 +6,7 @@
 		</template>
 		<template #extra>
 			<a-badge color="primary" class="badge-dot-primary" text="Income" />
-			<a-badge color="primary" class="badge-dot-secondary" text="Costs" />
+			<a-badge color="primary" class="badge-dot-danger" borderColor="FF0000" text="Costs" />
 		</template>
 		<chart-line :height="310" :data="lineChartData"></chart-line>
 	</a-card>
@@ -22,20 +22,26 @@
 		components: {
 			ChartLine,
 		},
+		props: {
+			chart_data: {
+				type: Object,
+				default: () => {}
+			}
+		},
 		data() {
 			return {
 
 				// Data for line chart.
 				lineChartData: {
-					labels: ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
+					labels: this.chart_data.chart_labels,
 					datasets: [{
-						label: "Budget",
+						label: "Expenses",
 						tension: 0.4,
 						borderWidth: 0,
-						pointRadius: 0,
+						pointRadius: 2,
 						borderColor: "#1890FF",
 						borderWidth: 3,
-						data: [500, 500, 500, 500, 500, 500, 600, 600, 600, 600, 600, 600],
+						data: this.chart_data.income_data,
 						maxBarThickness: 6
 
 					},
@@ -43,10 +49,10 @@
 						label: "Expenses",
 						tension: 0.4,
 						borderWidth: 0,
-						pointRadius: 0,
-						borderColor: "#B37FEB",
+						pointRadius: 2,
+						borderColor: "#FF0000",
 						borderWidth: 3,
-						data: [450, 330,700, 1300, 400, 500, 330, 700, 1300, 400, 500, 330],
+						data: this.chart_data.expenses_data,
 						maxBarThickness: 6
 
 					}],

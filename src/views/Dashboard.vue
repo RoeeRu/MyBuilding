@@ -18,7 +18,8 @@
 			<a-col :span="24" :lg="16" class="mb-24">
 
 				<!-- Sales Overview Card -->
-				<CardFinanceChart></CardFinanceChart>
+				<CardFinanceChart
+				:chart_data="chartData"></CardFinanceChart>
 				<!-- / Sales Overview Card -->
 			</a-col>
 			<!-- Timeline -->
@@ -61,6 +62,7 @@
 	import CardProjectsDashboard from '../components/Cards/CardProjectsDashboard.vue';
 	
 	import CardDashboardWidgets from '../components/Cards/CardDashboardWidgets.vue';
+	
 
 	import { mapActions } from 'vuex'
 	import { mapState } from 'vuex'
@@ -76,19 +78,27 @@
 	CardDashboardWidgets,
 },
 		data() {
+
 			return {
+				chart_data_static:{
+					chart_labels: ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
+					income_data: [500, 500, 500, 500, 500, 500, 600, 600, 600, 600, 600, 600],
+					expenses_data: [450, 330,700, 1300, 400, 500, 330, 700, 1300, 400, 500, 330],
+			}
 			}
 		},
 		async mounted() {
 			await this.getTransactions();
 			await this.getWidgets();
 			await this.getProjects();
+			await this.getChart();
 		},
 		computed: {
 			...mapState({
 				transactionsData: state => state.transactions.transactions,
 				widgetsData: state => state.dashboard.widgetsInfo,
 				projectsData: state => state.dashboard.projectsInfo,
+				chartData: state => state.dashboard.chartInfo,
 			})
 		},
 		methods: {
@@ -96,6 +106,7 @@
 				getTransactions: 'transactions/getTransactions',
 				getWidgets: 'dashboard/getWidgets',
 				getProjects: 'dashboard/getProjects',
+				getChart: 'dashboard/getChart',
 
 			}),
 		},

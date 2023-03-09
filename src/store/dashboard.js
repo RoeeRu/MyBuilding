@@ -1,4 +1,5 @@
 import { getWidgetsData } from '@/Api/dashboard.js';
+import { getChartData } from '@/Api/dashboard.js';
 import { getMaintenance } from '@/Api/maintenance.js';
 import { getActions } from '@/Api/actions.js';
 
@@ -8,6 +9,7 @@ export default {
         return {
             widgetsInfo: [],
             projectsInfo: [],
+            chartInfo: {},
         }
     },
     mutations: {
@@ -16,9 +18,13 @@ export default {
         },
         projectsInfo (state, projectsInfo) {
             state.projectsInfo = projectsInfo
+        },
+        chartInfo (state, chartInfo) {
+            state.chartInfo = chartInfo
         }
     },
     actions: {
+        
         async getWidgets({ state, rootState, commit }) {
             let res = await getWidgetsData(rootState.auth.user.accessToken);
             
@@ -28,6 +34,7 @@ export default {
             }
             commit('widgetsInfo', res.data);
         },
+
         async getProjects({ state, rootState, commit }) {
             let maintenanceRes = await getMaintenance(rootState.auth.user.accessToken);
             let actionsRes = await getActions(rootState.auth.user.accessToken);
@@ -73,6 +80,15 @@ export default {
             }
             
             commit('projectsInfo', result);
+        },
+
+        async getChart({ state, rootState, commit }) {
+            let res = await getChartData(rootState.auth.user.accessToken);
+            if(!res.status) {
+                console.log("faield", res);
+                return false;
+            }
+            commit('chartInfo', res.data);
         }
     }
 }

@@ -25,6 +25,8 @@
 				type: "line",
 				data: this.data,
      			options: {
+
+    lineTension: 0.2,
 					layout: {
 						padding: {
 							top: 30,
@@ -58,6 +60,7 @@
 								suggestedMin: 0,
 								suggestedMax: 1000,
 								display: true,
+								beginAtZero: true,
 								color: "#8C8C8C",
 								font: {
 									size: 14,
