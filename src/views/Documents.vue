@@ -22,7 +22,7 @@
 
 				<!-- Documents Table Card -->
 				<CardDocumentsTable
-					:data="table1Data"
+					:data="documentsData"
 					:columns="table1Columns"
 				></CardDocumentsTable>
 				<!-- / Documents Table Card -->
@@ -41,6 +41,8 @@
 	// "Documents" table component.
 	import CardDocumentsTable from '../components/Cards/CardDocumentsTable.vue';
 	import CardCardDocumentsActions from '../components/Cards/CardDocumentsActions.vue';
+	import { mapActions } from 'vuex'
+	import { mapState } from 'vuex'
 
 	// "Documents" table list of columns and their properties.
 	const table1Columns = [
@@ -64,7 +66,7 @@
 		},
 		{
 			title: 'Date Uploaded',
-			dataIndex: 'date',
+			dataIndex: 'upload_date',
 			class: 'font-semibold text-muted text-sm',
 		},
 		
@@ -81,7 +83,7 @@
 			key: '1',
 			document: 'insurance-2022-main.pdf',
 			type: "Insurance",
-			date: '23/04/18',
+			upload_date: '23/04/18',
 			
 			details: "Final version of our insurance doc from 2022",
 		},
@@ -89,15 +91,13 @@
 			key: '2',
 			document: 'insurance-2021-main.pdf',
 			type: "Other",
-			date: '23/12/20',
+			upload_date: '23/12/20',
 			
 			details: "Final version of our insurance doc from 2022",
 		},
 		
 	];
 	
-	
-
 	
 
 	export default ({
@@ -115,6 +115,20 @@
 
 				
 			}
+		},
+		async mounted() {
+			await this.getDocuments();
+		},
+		computed: {
+			...mapState({
+				documentsData: state => state.documents.documents,
+			})
+		},
+		methods: {
+			...mapActions({
+				getDocuments: 'documents/getDocuments',
+
+			}),
 		},
 	})
 

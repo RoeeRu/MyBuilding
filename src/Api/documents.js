@@ -2,8 +2,8 @@ import axios from 'axios';
 axios.defaults.withCredentials = true;
 
  
-export function getMaintenance(idToken) {
-  return axios.get(process.env.VUE_APP_SYSTEM_DOMAIN + '/maintenance/getMaintenance', {
+export function getDocuments(idToken) {
+  return axios.get(process.env.VUE_APP_SYSTEM_DOMAIN + '/documents/getDocuments', {
     headers: {
       Authorization: `Bearer ${idToken}`
     }
@@ -15,8 +15,8 @@ export function getMaintenance(idToken) {
   });
 }
 
-export function addNewMaintenance(idToken, newMaintenancePayload) {
-  return axios.post(process.env.VUE_APP_SYSTEM_DOMAIN + '/maintenance/addMaintenance', newMaintenancePayload, {
+export function addNewDocument(idToken, newDocumentPayload) {
+  return axios.post(process.env.VUE_APP_SYSTEM_DOMAIN + '/documents/addDocument', newDocumentPayload, {
     headers: {
       Authorization: `Bearer ${idToken}`
     }
