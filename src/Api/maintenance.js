@@ -27,3 +27,16 @@ export function addNewMaintenance(idToken, newMaintenancePayload) {
      return e.message;
   });
 }
+
+export function deleteMaintenance(idToken) {
+  return axios.post(process.env.VUE_APP_SYSTEM_DOMAIN + '/maintenance/deleteMaintenance', {
+    headers: {
+      Authorization: `Bearer ${idToken}`
+    }
+  }).then(response => {
+      return response.data;
+   }).catch((e) => {
+     console.error(e.message);
+     return e.message;
+  });
+}

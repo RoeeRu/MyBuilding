@@ -30,7 +30,16 @@ export default {
       }
       commit('maintenanceInfo', [...res.data, ...state.maintenance])
       return true;
-    }
+    },
+
+    async deleteMaintenance({ state, rootState, commit }) {
+      let res = await deleteMaintenance(rootState.auth.user.accessToken);
+      if(!res.status) {
+        console.log("faield", res.data);
+        return false;
+      }
+      commit('maintenanceInfo', res.data);
+    },
 
 
   }

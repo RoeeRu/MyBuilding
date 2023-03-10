@@ -39,7 +39,7 @@
 						<a href="javascript:;">Edit</a>
 					</a-menu-item>
 					<a-menu-item>
-						<a href="javascript:;">Delete</a>
+						<a href="javascript:;" v-on:click="DeleteRow(row)">Delete</a>
 					</a-menu-item>
 					<a-dropdown>
 					<a class="ant-dropdown-link" @click="e => e.preventDefault()">
@@ -84,6 +84,13 @@
 		data() {
 			return {
 			}
+		},
+		methods: {
+			DeleteRow(row) {
+			if(confirm("Do you really want to delete?")){
+				console.log("deleting", row.key);
+			}
+},
 		},
 	})
 
