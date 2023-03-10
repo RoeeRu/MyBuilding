@@ -18,6 +18,8 @@
 						<a href="javascript:;" v-on:click="DeleteRow(row)">Delete</a>
 					</a-menu-item>
 					</a-menu>
+				</a-dropdown>
+				
 			<MainModal
 					:visible="visible"
 					:title="modelTitle"
@@ -26,7 +28,6 @@
 				>
 				<MainForm ref="formFields" :formFields="DocumentInputs" :formState="formState"></MainForm>
 			</MainModal>
-				</a-dropdown>
 			</template>
 
 		</a-table>
@@ -59,11 +60,11 @@ import { mapActions } from 'vuex'
 				visible: false,
 				modelTitle: "Add Document",
 				DocumentInputs: [
-				{ name: 'upload_file', label: 'Upload File', type:'uploadFile'},
+					{ name: 'name', label: 'Upload File', type:'text'},
 	        		{ name: 'type', label: 'Type', placeholder:'Enter type', type:'selectBox', 'options': [{value: 'insurance', text: 'Insurance'}, {value: 'work_order', text: 'Work Order'}, {value: 'tax', text: 'Taxes'}, {value: 'other', text: 'Other'}]},
 	        		{ name: 'details', label: 'Details', placeholder:'Enter Details', type:'text'},
       	],
-				formState: {'type': '', 'details': '', 'upload_file': ''}
+				formState: {'type': '', 'details': '', 'name': '', 'upload_date': this.formattedDate, 'location': 'to_be_updated'}
 			
 			}
 		},
@@ -84,23 +85,26 @@ import { mapActions } from 'vuex'
 			async DeleteRow(row) {
 			if(confirm("Do you really want to delete?")){
 				console.log("deleting", row.key);
-			}
+			
 			try {
 				let res = await this.deleteDocument({document: row})					
 				} catch (e) {
 					console.log('modalHandleOk error', e)
 				} 
+			}
 			},
 			showModal(row) {
 				this.visible = true
 				this.formState.type = row.type
 				this.formState.details = row.details
-				this.formState.upload_file = row.upload_file
+				this.formState.name = row.name
 				this.formState.key = row.key
+				this.formState.upload_date = row.upload_date
+				this.formState.location = row.location
 		  },
 			modalHandleCancel() {
 				this.visible = false
-				this.formState = {'type': '', 'details': '', 'upload_file': ''}
+				this.formState = {'type': '', 'details': '', 'name': '', 'upload_date': this.formattedDate, 'location': 'to_be_updated'}
 			},
 			async modalHandleOk(handleOnFinish) {
 				try {
@@ -110,7 +114,7 @@ import { mapActions } from 'vuex'
 					if(res) {
 						this.$refs.formFields.onFinish(true);
 						this.visible = false;
-						this.formState = {'type': '', 'details': '', 'upload_file': ''}
+						this.formState = {'type': '', 'details': '', 'name': '', 'upload_date': this.formattedDate, 'location': 'to_be_updated'}
 					} else {
 						console.log('modalHandleOk false', res)
 						this.$refs.formFields.onFinish(false);

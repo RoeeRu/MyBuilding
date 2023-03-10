@@ -48,7 +48,7 @@
 	const table1Columns = [
 		{
 			title: 'Document Name',
-			dataIndex: 'document',
+			dataIndex: 'name',
 			class: 'font-bold',
 			
 		},
@@ -81,7 +81,7 @@
 	const table1Data = [
 		{
 			key: '1',
-			document: 'insurance-2022-main.pdf',
+			name: 'insurance-2022-main.pdf',
 			type: "Insurance",
 			upload_date: '23/04/18',
 			
@@ -89,7 +89,7 @@
 		},
 		{
 			key: '2',
-			document: 'insurance-2021-main.pdf',
+			name: 'insurance-2021-main.pdf',
 			type: "Other",
 			upload_date: '23/12/20',
 			

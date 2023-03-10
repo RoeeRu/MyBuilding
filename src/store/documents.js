@@ -1,4 +1,4 @@
-import { getDocuments, addNewDocument } from '@/Api/documents.js';
+import { getDocuments, addNewDocument, deleteDocument, updateDocument } from '@/Api/documents.js';
 
 export default {
   namespaced: true,

@@ -41,6 +41,8 @@
 <script>
 import MainModal from '../Modal/MainModal.vue';
 import MainForm from '../Forms/MainForm.vue';
+import { mapActions } from 'vuex';
+
 
 
 	export default ({
@@ -52,34 +54,56 @@ import MainForm from '../Forms/MainForm.vue';
 				visible: false,
 				modelTitle: "Add Documents",
 				documentsInputs: [
-					{ name: 'upload_file', label: 'Upload File', type:'text'},
+					{ name: 'name', label: 'Upload File', type:'text'},
 	        		{ name: 'type', label: 'Type', placeholder:'Enter type', type:'selectBox', 'options': [{value: 'insurance', text: 'Insurance'}, {value: 'work_order', text: 'Work Order'}, {value: 'tax', text: 'Taxes'}, {value: 'other', text: 'Other'}]},
 	        		{ name: 'details', label: 'Details', placeholder:'Enter Details', type:'text'},
       	],
-				formState: {'type': '', 'details': '', 'upload_file': ''}
+				formState: {'type': '', 'details': '', 'name': '', 'upload_date': this.formattedDate, 'location': 'to_be_updated'}
 			}
 		},
+		computed: {
+	    formattedDate() {
+	      const today = new Date();
+	      const year = today.getFullYear();
+	      const month = String(today.getMonth() + 1).padStart(2, '0');
+	      const day = String(today.getDate()).padStart(2, '0');
+	      return `${month}/${day}/${year}`;
+	    },
+		
+	  },
+		created() {
+	    	this.formState.upload_date = this.formattedDate;
+	  },
+		
 		methods: {
 		  showModal() {
 		    this.visible = true
 		  },
 			modalHandleCancel() {
 				this.visible = false
+				this.formState = {'type': '', 'details': '',  'name': '', 'upload_date': this.formattedDate, 'location': 'to_be_updated'}
 			},
-			async modalHandleOk(handleLoading) {
-				return await setTimeout(async () => {
-					handleLoading()
-					console.log(this.formState);
-					if(true) {
+			async modalHandleOk(handleOnFinish) {
+				try {
+					//this.formState.upload_date = this.formState.upload_date.format('MM/DD/YYYY');
+					let res = await this.addDocument({document: this.formState})
+					if(res) {
 						this.$refs.formFields.onFinish(true);
 						this.visible = false;
+						this.formState = {'type': '', 'details': '',  'name': '', 'upload_date': this.formattedDate, 'location': 'to_be_updated' }
 					} else {
+						console.log('modalHandleOk',res )
 						this.$refs.formFields.onFinish(false);
 					}
-					return;
-				}, 5000);
+				} catch (e) {
+					console.log('modalHandleOk',e )
+					this.$refs.formFields.onFinish(false);
+				} finally {
+					handleOnFinish()
+				}
 		  },
-		}
+			...mapActions('documents', ['addDocument'])
+		},
 	})
 
 </script>
