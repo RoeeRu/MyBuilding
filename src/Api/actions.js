@@ -30,3 +30,28 @@ export function addNewAction(idToken, newActionPayload) {
   });
 }
 
+export function deleteAction(idToken, ActionPayload) {
+  return axios.post(process.env.VUE_APP_SYSTEM_DOMAIN + '/action/deleteAction',ActionPayload, {
+    headers: {
+      Authorization: `Bearer ${idToken}`
+    }
+  }).then(response => {
+      return response.data;
+   }).catch((e) => {
+     console.error(e.message);
+     return e.message;
+  });
+}
+
+export function updateAction(idToken, ActionPayload) {
+  return axios.post(process.env.VUE_APP_SYSTEM_DOMAIN + '/action/updateAction', ActionPayload, {
+    headers: {
+      Authorization: `Bearer ${idToken}`
+    }
+  }).then(response => {
+      return response.data;
+   }).catch((e) => {
+     console.error(e.message);
+     return e.message;
+  });
+}

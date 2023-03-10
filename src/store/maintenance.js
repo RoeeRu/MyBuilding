@@ -1,4 +1,4 @@
-import { getMaintenance, addNewMaintenance } from '@/Api/maintenance.js';
+import { getMaintenance, addNewMaintenance, updateMaintenance, deleteMaintenance } from '@/Api/maintenance.js';
 
 
 export default {
@@ -22,6 +22,7 @@ export default {
       }
       commit('maintenanceInfo', res.data);
     },
+    
     async addMaintenance({ state, rootState, commit }, maintenancePayload) {
       let res = await addNewMaintenance(rootState.auth.user.accessToken, maintenancePayload);
       if(!res.status) {
@@ -32,14 +33,24 @@ export default {
       return true;
     },
 
-    async deleteMaintenance({ state, rootState, commit }) {
-      let res = await deleteMaintenance(rootState.auth.user.accessToken);
+    async deleteMaintenance({ state, rootState, commit }, maintenancePayload) {
+      let res = await deleteMaintenance(rootState.auth.user.accessToken, maintenancePayload);
       if(!res.status) {
         console.log("faield", res.data);
         return false;
       }
       commit('maintenanceInfo', res.data);
     },
+
+    async updateMaintenance({ state, rootState, commit }, maintenancePayload) {
+      let res = await updateMaintenance(rootState.auth.user.accessToken, maintenancePayload);
+      if(!res.status) {
+        console.log("faield", res.data);
+        return false;
+      }
+      commit('maintenanceInfo', res.data);
+      return true;
+    }
 
 
   }

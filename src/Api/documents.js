@@ -27,3 +27,29 @@ export function addNewDocument(idToken, newDocumentPayload) {
      return e.message;
   });
 }
+
+export function deleteDocument(idToken, DocumentPayload) { 
+  return axios.post(process.env.VUE_APP_SYSTEM_DOMAIN + '/documents/deleteDocument',DocumentPayload, {
+    headers: {
+      Authorization: `Bearer ${idToken}`
+    }
+  }).then(response => {
+      return response.data;
+   }).catch((e) => {
+     console.error(e.message);
+     return e.message;
+  });
+}
+
+export function updateDocument(idToken, DocumentPayload) {
+  return axios.post(process.env.VUE_APP_SYSTEM_DOMAIN + '/documents/updateDocument', DocumentPayload, {
+    headers: {
+      Authorization: `Bearer ${idToken}`
+    }
+  }).then(response => {
+      return response.data;
+   }).catch((e) => {
+     console.error(e.message);
+     return e.message;
+  });
+}

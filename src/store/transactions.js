@@ -1,4 +1,4 @@
-import { getTransactions, addNewTransaction } from '@/Api/transactions.js';
+import { getTransactions, addNewTransaction, deleteTransaction, updateTransaction } from '@/Api/transactions.js';
 
 export default {
   namespaced: true,
@@ -29,6 +29,27 @@ export default {
       }
       commit('transactionsInfo', [...res.data, ...state.transactions])
       return true;
+    },
+
+    async deleteTransaction({ state, rootState, commit }, transactionPayload) {
+      let res = await deleteTransaction(rootState.auth.user.accessToken, transactionPayload);
+      if(!res.status) {
+        console.log("faield", res.data);
+        return false;
+      }
+      commit('transactionsInfo', res.data);
+    },
+
+    async updateTransaction({ state, rootState, commit }, transactionPayload) {
+      let res = await updateTransaction(rootState.auth.user.accessToken, transactionPayload);
+      if(!res.status) {
+        console.log("faield", res.data);
+        return false;
+      }
+      commit('transactionsInfo', res.data);
+      return true;
     }
+
+
   }
 }

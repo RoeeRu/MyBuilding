@@ -28,8 +28,21 @@ export function addNewMaintenance(idToken, newMaintenancePayload) {
   });
 }
 
-export function deleteMaintenance(idToken) {
-  return axios.post(process.env.VUE_APP_SYSTEM_DOMAIN + '/maintenance/deleteMaintenance', {
+export function deleteMaintenance(idToken, MaintenancePayload) {
+  return axios.post(process.env.VUE_APP_SYSTEM_DOMAIN + '/maintenance/deleteMaintenance',MaintenancePayload, {
+    headers: {
+      Authorization: `Bearer ${idToken}`
+    }
+  }).then(response => {
+      return response.data;
+   }).catch((e) => {
+     console.error(e.message);
+     return e.message;
+  });
+}
+
+export function updateMaintenance(idToken, MaintenancePayload) {
+  return axios.post(process.env.VUE_APP_SYSTEM_DOMAIN + '/maintenance/updateMaintenance', MaintenancePayload, {
     headers: {
       Authorization: `Bearer ${idToken}`
     }

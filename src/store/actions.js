@@ -1,4 +1,4 @@
-import { getActions, addNewAction } from '@/Api/actions.js';
+import { getActions, addNewAction, deleteAction, updateAction } from '@/Api/actions.js';
 
 
 export default {
@@ -29,6 +29,26 @@ export default {
         return false;
       }
       commit('actionsInfo', [...res.data, ...state.actions])
+      return true;
+    },
+
+    async deleteAction({ state, rootState, commit }, actionPayload) {
+      let res = await deleteAction(rootState.auth.user.accessToken, actionPayload);
+      if(!res.status) {
+        console.log("faield", res.data);
+        return false;
+      }
+      commit('actionsInfo', res.data);
+    },
+
+    async updateAction({ state, rootState, commit }, actionPayload) {
+      console.log("actionPayload", actionPayload);
+      let res = await updateAction(rootState.auth.user.accessToken, actionPayload);
+      if(!res.status) {
+        console.log("faield", res.data);
+        return false;
+      }
+      commit('actionsInfo', res.data);
       return true;
     }
 

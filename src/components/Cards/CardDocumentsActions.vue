@@ -52,7 +52,7 @@ import MainForm from '../Forms/MainForm.vue';
 				visible: false,
 				modelTitle: "Add Documents",
 				documentsInputs: [
-					{ name: 'upload_file', label: 'Upload File', type:'uploadFile'},
+					{ name: 'upload_file', label: 'Upload File', type:'text'},
 	        		{ name: 'type', label: 'Type', placeholder:'Enter type', type:'selectBox', 'options': [{value: 'insurance', text: 'Insurance'}, {value: 'work_order', text: 'Work Order'}, {value: 'tax', text: 'Taxes'}, {value: 'other', text: 'Other'}]},
 	        		{ name: 'details', label: 'Details', placeholder:'Enter Details', type:'text'},
       	],

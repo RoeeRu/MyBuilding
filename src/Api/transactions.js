@@ -32,3 +32,29 @@ export function addNewTransaction(idToken, newTransactionPayload) {
      return e.message;
   });
 }
+
+export function deleteTransaction(idToken, TransactionPayload) {
+  return axios.post(process.env.VUE_APP_SYSTEM_DOMAIN + '/transactions/deleteTransaction',TransactionPayload, {
+    headers: {
+      Authorization: `Bearer ${idToken}`
+    }
+  }).then(response => {
+      return response.data;
+   }).catch((e) => {
+     console.error(e.message);
+     return e.message;
+  });
+}
+
+export function updateTransaction(idToken, TransactionPayload) {
+  return axios.post(process.env.VUE_APP_SYSTEM_DOMAIN + '/transactions/updateTransaction', TransactionPayload, {
+    headers: {
+      Authorization: `Bearer ${idToken}`
+    }
+  }).then(response => {
+      return response.data;
+   }).catch((e) => {
+     console.error(e.message);
+     return e.message;
+  });
+}
