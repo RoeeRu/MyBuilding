@@ -131,12 +131,13 @@ import { mapActions } from 'vuex'
 			async DeleteRow(row) {
 			if(confirm("Do you really want to delete?")){
 				console.log("Deleting", row.key);
+			
+				try {
+					let res = await this.deleteAction({action: row})					
+					} catch (e) {
+						console.log('modalHandleOk error', e)
+					} 
 			}
-			try {
-				let res = await this.deleteAction({action: row})					
-				} catch (e) {
-					console.log('modalHandleOk error', e)
-				} 
 			},
 			showModal(row) {
 				this.visible = true
