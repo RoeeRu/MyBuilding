@@ -19,14 +19,14 @@
 					</a-menu-item>
 					</a-menu>
 				</a-dropdown>
-				
+
 			<MainModal
 					:visible="visible"
 					:title="modelTitle"
 				 	@handleOk="modalHandleOk"
 					:handle-cancel="modalHandleCancel"
 				>
-				<MainForm ref="formFields" :formFields="DocumentInputs" :formState="formState"></MainForm>
+				<MainForm ref="formFields" :formFields="DocumentInputs"></MainForm>
 			</MainModal>
 			</template>
 
@@ -60,61 +60,50 @@ import { mapActions } from 'vuex'
 				visible: false,
 				modelTitle: "Add Document",
 				DocumentInputs: [
-					{ name: 'name', label: 'Upload File', type:'text'},
-	        		{ name: 'type', label: 'Type', placeholder:'Enter type', type:'selectBox', 'options': [{value: 'insurance', text: 'Insurance'}, {value: 'work_order', text: 'Work Order'}, {value: 'tax', text: 'Taxes'}, {value: 'other', text: 'Other'}]},
-	        		{ name: 'details', label: 'Details', placeholder:'Enter Details', type:'text'},
-      	],
-				formState: {'type': '', 'details': '', 'name': '', 'upload_date': this.formattedDate, 'location': 'to_be_updated'}
-			
+					{ name: 'name', label: 'Upload File', type:'text', rules: ['required']},
+      		{ name: 'type', label: 'Type', placeholder:'Enter type', type:'selectBox', 'options': [
+						 {value: 'insurance', text: 'Insurance'},
+					   {value: 'work_order', text: 'Work Order'},
+						 {value: 'tax', text: 'Taxes'},
+					   {value: 'other', text: 'Other'}],
+						 rules: ['required']
+					},
+      		{ name: 'details', label: 'Details', placeholder:'Enter Details', type:'text', rules: ['required']}
+      	]
 			}
 		},
-		computed: {
-			formattedDate() {
-			const today = new Date();
-			const year = today.getFullYear();
-			const month = String(today.getMonth() + 1).padStart(2, '0');
-			const day = String(today.getDate()).padStart(2, '0');
-			return `${month}/${day}/${year}`;
-			},
-		},
-		created() {
-	     this.formState.date = this.formattedDate;
-	  
-	  },
 		methods: {
 			async DeleteRow(row) {
 			if(confirm("Do you really want to delete?")){
 				console.log("deleting", row.key);
-			
+
 			try {
-				let res = await this.deleteDocument({document: row})					
+				let res = await this.deleteDocument({document: row})
 				} catch (e) {
 					console.log('modalHandleOk error', e)
-				} 
+				}
 			}
 			},
 			showModal(row) {
+				this.DocumentInputs.forEach((value, index) => {
+					this.DocumentInputs[index].value = row[this.DocumentInputs[index].name]
+				});
 				this.visible = true
-				this.formState.type = row.type
-				this.formState.details = row.details
-				this.formState.name = row.name
-				this.formState.key = row.key
-				this.formState.upload_date = row.upload_date
-				this.formState.location = row.location
 		  },
 			modalHandleCancel() {
 				this.visible = false
-				this.formState = {'type': '', 'details': '', 'name': '', 'upload_date': this.formattedDate, 'location': 'to_be_updated'}
 			},
 			async modalHandleOk(handleOnFinish) {
 				try {
-					//this.formState.date = this.formState.date.format('YYYY-MM-DD');
-					let res = await this.updateDocument({document: this.formState})
+					let isValid = this.$refs.formFields.validate()
+					if(!isValid){
+						return;
+					}
+					let res = await this.updateDocument({document: this.$refs.formFields.formData})
 					console.log('modalHandleOk', res)
 					if(res) {
 						this.$refs.formFields.onFinish(true);
 						this.visible = false;
-						this.formState = {'type': '', 'details': '', 'name': '', 'upload_date': this.formattedDate, 'location': 'to_be_updated'}
 					} else {
 						console.log('modalHandleOk false', res)
 						this.$refs.formFields.onFinish(false);

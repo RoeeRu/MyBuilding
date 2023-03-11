@@ -29,7 +29,7 @@
 				 	@handleOk="modalHandleOk"
 					:handle-cancel="modalHandleCancel"
 				>
-				<MainForm ref="formFields" :formFields="documentsInputs" :formState="formState"></MainForm>
+				<MainForm ref="formFields" :formFields="documentsInputs"></MainForm>
 			</MainModal>
 		</template>
 
@@ -55,13 +55,25 @@ import MainForm from '../Forms/MainForm.vue';
 				visible: false,
 				modelTitle: "Add Documents",
 				documentsInputs: [
-					{ name: 'file', label: 'File Name', type:'uploadFile'},
-					{ name: 'name', label: 'Upload File', type:'text'},
-	        		{ name: 'type', label: 'Type', placeholder:'Enter type', type:'selectBox', 'options': [{value: 'insurance', text: 'Insurance'}, {value: 'work_order', text: 'Work Order'}, {value: 'tax', text: 'Taxes'}, {value: 'other', text: 'Other'}]},
-	        		{ name: 'details', label: 'Details', placeholder:'Enter Details', type:'text'},
+					{ 	name: 'file',
+							label: 'File Name',
+						 	type:'uploadFile',
+						  rules: ['required'],
+						  actionPath: process.env.VUE_APP_SYSTEM_DOMAIN + '/documents/addFile'
+					},
+					{ name: 'name', label: 'Upload File', type:'text', rules: ['required']},
+      		{ name: 'type', label: 'Type', placeholder:'Enter type', type:'selectBox', 'options': [
+						{value: 'insurance', text: 'Insurance'},
+					  {value: 'work_order', text: 'Work Order'},
+					  {value: 'tax', text: 'Taxes'},
+						{value: 'other', text: 'Other'}],
+						rules: ['required']},
+      		{ name: 'details', label: 'Details', placeholder:'Enter Details', type:'text', rules: ['required']},
       	],
-				formState: {'file': '', 'type': '', 'details': '', 'name': '', 'upload_date': this.formattedDate, 'location': 'to_be_updated'}
 			}
+		},
+		mounted() {
+		  this.documentsInputs[0].userToken = this.accessToken
 		},
 		computed: {
 	    formattedDate() {
@@ -73,30 +85,31 @@ import MainForm from '../Forms/MainForm.vue';
 	    },
 			...mapState({
 				fileData: state => state.documents.UploadedFile,
+				accessToken: state => state.auth.user.accessToken
 			})
-		
+
 	  },
-		created() {
-	    	this.formState.upload_date = this.formattedDate;
-	  },
-		
+
 		methods: {
 		  showModal() {
 		    this.visible = true
 		  },
 			modalHandleCancel() {
 				this.visible = false
-				this.formState = {'type': '', 'details': '',  'name': '', 'upload_date': this.formattedDate, 'location': 'to_be_updated'}
 			},
 			async modalHandleOk(handleOnFinish) {
 				try {
 					console.log('modalHandleOk - uploading file',this.fileData )
+					let isValid = this.$refs.formFields.validate()
+					if(!isValid){
+						return;
+					}
+
 					await this.uploadFile({file: this.fileData})
-					let res =  await this.addDocument({document: this.formState})
+					let res =  await this.addDocument({document: this.$refs.formFields.formData})
 					if(res) {
 						this.$refs.formFields.onFinish(true);
 						this.visible = false;
-						this.formState = {'type': '', 'details': '',  'name': '', 'upload_date': this.formattedDate, 'location': 'to_be_updated' }
 					} else {
 						console.log('modalHandleOk',res )
 						this.$refs.formFields.onFinish(false);

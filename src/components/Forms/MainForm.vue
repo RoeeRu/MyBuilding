@@ -23,9 +23,11 @@
         <a-date-picker v-else-if="input.type == 'date'" v-model="localFormData[input.name]" format="MM/DD/YYYY" />
 
         <a-upload v-else-if="input.type == 'uploadFile'"
+            :action="uploadUrl"
+            :headers="uploadHeaders"
+            :custom-request="customRequest"
             :v-model="localFormData[input.name]"
             :show-upload-list="true"
-            @change=""
             :beforeUpload="beforeUpload"
            >
             <a-button>Click to Upload</a-button>
@@ -50,6 +52,8 @@
 import { mapActions } from 'vuex';
 import { required, numeric } from 'vuelidate/lib/validators';
 import { validationMixin } from 'vuelidate';
+import axios from 'axios';
+
 
 export default ({
   components: {},
@@ -70,7 +74,11 @@ export default ({
   this.formFields.forEach(field => {
     if(field.hasOwnProperty('value')) {
       this.$set(this.localFormData, field.name, field.value);
-    } else {
+    } else if (field.type === 'uploadFile') {
+      console.log("field", field);
+      this.uploadUrl = field.actionPath;
+      this.uploadHeaders.Authorization = 'Bearer ' + field.userToken
+    }else {
       this.$set(this.formData, field.name, '');
       this.$set(this.localFormData, field.name, '');
     }
@@ -80,6 +88,11 @@ export default ({
     return {
       formData: {},
       localFormData: {},
+      uploadUrl: '',
+      uploadHeaders: {
+        'Authorization': '',
+        'Content-Type': 'multipart/form-data'
+      },
       isSuccess: true,
       layout: {
         labelCol: {
@@ -131,9 +144,7 @@ export default ({
     validate() {
       this.$v.$touch();
       let validSuccess = !this.$v.$invalid;
-      console.log("validSuccess", validSuccess);
       if(validSuccess) {
-        console.log("this.localFormData", this.localFormData);
         this.formFields.forEach(field => {
           this.$set(this.formData, field.name, this.localFormData[field.name]);
           if(field.type === 'date' && !this.isEdit) {
@@ -143,23 +154,32 @@ export default ({
       }
       return validSuccess;
     },
-    //this one should save the file to the store so it can be uploaded from the card
-    async beforeUpload(file) {
-      await this.prepareFile(file)
-    },
 
-    //ended up not using this because it uploads the file before form is submitted
-    async handleChange(info) {
-      console.log('handleChange start',info)
-      if (info.file.status === 'done') {
-        console.log('handleChange done',info.file.response)
-        // await this.getFile("textinsteadoffile")
-        // this.formState.file = info.file.response.file
-        // this.formState.name = info.file.response.name
-      }
-      else {
-        console.log('handleChange not done',info.file.status, info.file.response, info.file)
-      }
+    customRequest(options) {
+      // Override the default AJAX request behavior
+      // Add the custom headers to the request
+      Object.assign(options.headers, this.uploadHeaders);
+
+      options.withCredentials = true;
+      options.url = this.uploadUrl
+      options.data = {
+        file: options.file
+      };
+      axios.request(options)
+        .then(response => {
+          // Handle the successful response
+          if(response.data.status) {
+            options.onSuccess(response.data, options.file)
+            this.formData.uploadedUrl = response.data.url
+            return;
+          }
+          options.onError('failed')
+        })
+        .catch(error => {
+          // Handle the error
+          console.log('Upload error:', error);
+          options.onError(error, options.file)
+        });
     },
     formattedDate(date) {
       const today = new Date(date);
