@@ -119,14 +119,16 @@ export default ({
     },
     validate() {
       this.$v.$touch();
-      return !this.$v.$invalid;
-      //
-      // if (!this.$v.$invalid) {
-      //   // Submit form
-      //   console.log('Form submitted!');
-      // } else {
-      //   console.log('Form 1212submitted!');
-      // }
+      let validSuccess = !this.$v.$invalid;
+      if(validSuccess) {
+        this.formFields.forEach(field => {
+          if(field.type === 'date') {
+            console.log("(this.formData[field.name]", this.formData[field.name].toDate());
+            this.formData[field.name] = this.formattedDate(this.formData[field.name].toDate())
+          }
+        });
+      }
+      return validSuccess;
     },
     //this one should save the file to the store so it can be uploaded from the card
     async beforeUpload(file) {
@@ -145,6 +147,13 @@ export default ({
       else {
         console.log('handleChange not done',info.file.status, info.file.response, info.file)
       }
+    },
+    formattedDate(date) {
+      const today = new Date(date);
+      const year = today.getFullYear();
+      const month = String(today.getMonth() + 1).padStart(2, '0');
+      const day = String(today.getDate()).padStart(2, '0');
+      return `${month}/${day}/${year}`;
     },
 			...mapActions('documents', ['prepareFile'])
 
