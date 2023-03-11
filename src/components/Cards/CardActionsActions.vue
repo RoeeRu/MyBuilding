@@ -2,10 +2,10 @@
 
 	<!-- Actions actions Card -->
 	<a-card :bordered="false" class="header-solid h-full" :bodyStyle="{paddingTop: 0,}">
-		
+
 		<template #title>
 			<a-row type="flex" align="middle">
-				
+
 				<a-col :span="24" :md="4" >
 					<a-button type="primary"
 						@click="showModal"
@@ -32,7 +32,7 @@
 				<MainForm ref="formFields" :formFields="actionInputs" :formState="formState"></MainForm>
 			</MainModal>
 		</template>
-	
+
 	</a-card>
 	<!-- Actions actions Card -->
 
@@ -53,11 +53,11 @@ import { mapActions } from 'vuex'
 				visible: false,
 				modelTitle: "Add New Action Item",
 				actionInputs: [
-	        		{ name: 'item', label: 'Item', placeholder:'Enter Details', type:'text'},
-	        		{ name: 'details', label: 'Details', placeholder:'Enter Details', type:'text'},
-					{ name: 'due_date', label: 'Due Date', type:'date'},
-					{ name: 'created_by_name', label: 'Owner (Name)', placeholder: 'Enter Name', type:'text'},
-					{ name: 'created_by_apt', label: 'Owner (Aparatment)', placeholder: 'Enter Appratment', type:'text'},
+      		{ name: 'item', label: 'Item', placeholder:'Enter Details', type:'text', rules: ['required']},
+      		{ name: 'details', label: 'Details', placeholder:'Enter Details', type:'text', rules: ['required']},
+					{ name: 'due_date', label: 'Due Date', type:'date', rules: ['required']},
+					{ name: 'created_by_name', label: 'Owner (Name)', placeholder: 'Enter Name', type:'text', rules: ['required']},
+					{ name: 'created_by_apt', label: 'Owner (Aparatment)', placeholder: 'Enter Appratment', type:'text', rules: ['required']},
       	],
 				formState: {'item': '', 'details': '', 'due_date': '', 'created_by_apt': '', 'created_by_name': '', 'status': 'open',}
 			}
@@ -73,7 +73,7 @@ import { mapActions } from 'vuex'
 		randomID() {
 			const r = (Math.random() + 1).toString(36).substring(7);
 			return r;
-		}, 
+		},
 	  },
 		created() {
 	    // this.formState.due_date = this.formattedDate;
@@ -88,8 +88,12 @@ import { mapActions } from 'vuex'
 			},
 			async modalHandleOk(handleOnFinish) {
 				try {
-					this.formState.due_date = this.formState.due_date.format('MM/DD/YYYY');
-					let res = await this.addAction({action: this.formState})
+					let isValid = this.$refs.formFields.validate()
+					if(!isValid){
+						return;
+					}
+					this.$refs.formFields.formData.due_date = this.$refs.formFields.formData.due_date.format('MM/DD/YYYY');
+					let res = await this.addAction({action: this.$refs.formFields.formData})
 					if(res) {
 						this.$refs.formFields.onFinish(true);
 						this.visible = false;

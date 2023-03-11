@@ -2,10 +2,10 @@
 
 	<!-- Maintenance actions Card -->
 	<a-card :bordered="false" class="header-solid h-full" :bodyStyle="{paddingTop: 0,}">
-		
+
 		<template #title>
 			<a-row type="flex" align="middle">
-				
+
 				<a-col :span="24" :md="4" >
 					<a-button type="primary"
 						@click="showModal"
@@ -29,10 +29,10 @@
 				 	@handleOk="modalHandleOk"
 					:handle-cancel="modalHandleCancel"
 				>
-				<MainForm ref="formFields" :formFields="MaintenanceInputs" :formState="formState"></MainForm>
+				<MainForm ref="formFields" :formFields="MaintenanceInputs"></MainForm>
 			</MainModal>
 		</template>
-	
+
 	</a-card>
 	<!-- Maintenance actions Card -->
 
@@ -52,12 +52,11 @@ import { mapActions } from 'vuex'
 				visible: false,
 				modelTitle: "Add Request",
 				MaintenanceInputs: [
-					{ name: 'issue', label: 'Issue', placeholder: 'Enter Date', type:'text'},
-	        		{ name: 'details', label: 'Details', placeholder:'Enter Details', type:'text'},
-					{ name: 'created_by_name', label: 'Owner (Name)', placeholder: 'Enter Name', type:'text'},
-					{ name: 'created_by_apt', label: 'Owner (Aparatment)', placeholder: 'Enter Appratment', type:'text'},
+					{ name: 'issue', label: 'Issue', placeholder: 'Enter Date', type:'text', rules: ['required']},
+      		{ name: 'details', label: 'Details', placeholder:'Enter Details', type:'text', rules: ['required']},
+					{ name: 'created_by_name', label: 'Owner (Name)', placeholder: 'Enter Name', type:'text', rules: ['required']},
+					{ name: 'created_by_apt', label: 'Owner (Aparatment)', placeholder: 'Enter Appratment', type:'text', rules: ['required']},
       	],
-				formState: {'issue': '', 'details': '', 'created_by_name': '', 'created_by_apt': '', 'status': 'open', 'date': this.formattedDate,}
 			}
 		},
 		computed: {
@@ -71,28 +70,26 @@ import { mapActions } from 'vuex'
 		randomID() {
 			const r = (Math.random() + 1).toString(36).substring(7);
 			return r;
-		}, 
 		},
-		created() {
-	     this.formState.date = this.formattedDate;
-	  
-	  },
+		},
 		methods: {
 		  showModal() {
 		    this.visible = true
 		  },
 			modalHandleCancel() {
 				this.visible = false
-				this.formState = {'issue': '', 'details': '', 'date': this.formattedDate, 'created_by_apt': '', 'created_by_name': ''}
 			},
 			async modalHandleOk(handleOnFinish) {
 				try {
+					let isValid = this.$refs.formFields.validate()
+					if(!isValid){
+						return;
+					}
 					//this.formState.date = this.formState.date.format('YYYY-MM-DD');
-					let res = await this.addMaintenance({maintenance: this.formState})
+					let res = await this.addMaintenance({maintenance: {...this.$refs.formFields.formData, ...{status: "open", date: this.formattedDate}}})
 					if(res) {
 						this.$refs.formFields.onFinish(true);
 						this.visible = false;
-						this.formState = {'issue': '', 'details': '', 'date': this.formattedDate, 'created_by_apt': '', 'created_by_name': '', }
 					} else {
 						console.log('modalHandleOk false', res)
 						this.$refs.formFields.onFinish(false);

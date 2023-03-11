@@ -53,12 +53,12 @@ import { mapActions } from 'vuex'
 				visible: false,
 				modelTitle: "Add Transaction",
 				transactionInputs: [
-					{ name: 'date', label: 'Transaction Date', type:'date'},
-					{ name: 'type', label: 'Transaction Type', type:'selectBox', 'options': [{value: '-1', text: 'Cost'}, {value: '1', text: 'Income'}]},
-	        		{ name: 'amount', label: 'Amount', placeholder:'Enter Amount', type:'currency'},
-	        		{ name: 'details', label: 'Details', placeholder:'Enter Details', type:'text'},
-					{ name: 'manual_name', label: 'Paid By (Name)', placeholder: 'Enter Name', type:'text'},
-					{ name: 'manual_apt', label: 'Paid By (Appratment)', placeholder: 'Enter Appratment', type:'text'},
+					{ name: 'date', label: 'Transaction Date', type:'date', rules: ['required']},
+					{ name: 'type', label: 'Transaction Type', type:'selectBox', 'options': [{value: '-1', text: 'Cost'}, {value: '1', text: 'Income'}], rules: ['required']},
+      		{ name: 'amount', label: 'Amount', placeholder:'Enter Amount', type:'currency', rules: ['required', 'numeric']},
+      		{ name: 'details', label: 'Details', placeholder:'Enter Details', type:'text', rules: ['required']},
+					{ name: 'manual_name', label: 'Paid By (Name)', placeholder: 'Enter Name', type:'text', rules: ['required']},
+					{ name: 'manual_apt', label: 'Paid By (Appratment)', placeholder: 'Enter Appratment', type:'text', rules: ['required']},
 					// { name: 'age', label: 'Select Age', type:'selectBox', 'options': [{value: 'minor', text: '11-22'}, {value: 'addult', text: '22-44'}]},
 					// { name: 'file', label: 'Upload File', type:'uploadFile'},
       	],
@@ -73,13 +73,10 @@ import { mapActions } from 'vuex'
 	      const day = String(today.getDate()).padStart(2, '0');
 	      return `${month}/${day}/${year}`;
 	    },
-		randomID() {
-			const r = (Math.random() + 1).toString(36).substring(7);
-			return r;
-		}, 
-	  },
-		created() {
-	    // this.formState.date = this.formattedDate;
+			randomID() {
+				const r = (Math.random() + 1).toString(36).substring(7);
+				return r;
+			},
 	  },
 		methods: {
 		  showModal() {
@@ -87,16 +84,18 @@ import { mapActions } from 'vuex'
 		  },
 			modalHandleCancel() {
 				this.visible = false
-				this.formState = {'type': '', 'amount': '',  'manual_name': '', 'manual_apt': '','details': '', 'date': null,}
 			},
 			async modalHandleOk(handleOnFinish) {
 				try {
-					this.formState.date = this.formState.date.format('MM/DD/YYYY');
-					let res = await this.addTransaction({transaction: this.formState})
+					let isValid = this.$refs.formFields.validate()
+					if(!isValid){
+						return;
+					}
+					// this.formState.date = this.$refs.formFields.formData.date.format('MM/DD/YYYY');
+					let res = await this.addTransaction({transaction: this.$refs.formFields.formData})
 					if(res) {
 						this.$refs.formFields.onFinish(true);
 						this.visible = false;
-						this.formState = {'type': '', 'amount': '',  'manual_name': '', 'manual_apt': '', 'details': '', 'date': null,}
 					} else {
 						console.log('modalHandleOk',res )
 						this.$refs.formFields.onFinish(false);

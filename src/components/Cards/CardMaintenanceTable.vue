@@ -5,7 +5,7 @@
 	<a-card :bordered="false" class="header-solid h-full" :bodyStyle="{padding: 0,}">
 		<a-table :columns="columns" :data-source="data" :pagination="false">
 
-			
+
 			<template slot="func" slot-scope="func">
 				<div class="transaction-info">
 					<h6 class="m-0">{{ func.job }}</h6>
@@ -25,9 +25,9 @@
 					{{ status ? "Open" : "Close" }}
 				</a-tag>
 			</template>
-			
 
-			
+
+
 
 			<template slot="actionsBtn" slot-scope="row">
 				<a-dropdown>
@@ -56,7 +56,7 @@
 						<a href="javascript:;">Close</a>
 					</a-menu-item>
 					</a-menu>
-					
+
 				</a-dropdown>
 			</a-menu>
 				</a-dropdown>
@@ -100,13 +100,13 @@ import { mapActions } from 'vuex'
 				visible: false,
 				modelTitle: "Add Request",
 				MaintenanceInputs: [
-					{ name: 'issue', label: 'Issue', placeholder: 'Enter Date', type:'text'},
-	        		{ name: 'details', label: 'Details', placeholder:'Enter Details', type:'text'},
-					{ name: 'created_by_name', label: 'Owner (Name)', placeholder: 'Enter Name', type:'text'},
-					{ name: 'created_by_apt', label: 'Owner (Aparatment)', placeholder: 'Enter Appratment', type:'text'},
+					// { name: 'issue', label: 'Issue', placeholder: 'Enter Date', type:'text', rules: ['required']},
+      		{ name: 'details', label: 'Details', placeholder:'Enter Details', type:'text', rules: ['required']},
+					{ name: 'created_by_name', label: 'Owner (Name)', placeholder: 'Enter Name', type:'text', rules: ['required']},
+					{ name: 'created_by_apt', label: 'Owner (Aparatment)', placeholder: 'Enter Appratment', type:'text', rules: ['required']},
       	],
 				formState: {'issue': '', 'details': '', 'created_by_name': '', 'created_by_apt': '', 'status': 'open', 'date': this.formattedDate,}
-			
+
 			}
 		},
 		computed: {
@@ -120,18 +120,18 @@ import { mapActions } from 'vuex'
 		},
 		created() {
 	     this.formState.date = this.formattedDate;
-	  
+
 	  },
 		methods: {
 			async DeleteRow(row) {
 			if(confirm("Do you really want to delete?")){
 				console.log("deleting", row.key);
-			
+
 				try {
-					let res = await this.deleteMaintenance({maintenance: row})					
+					let res = await this.deleteMaintenance({maintenance: row})
 					} catch (e) {
 						console.log('modalHandleOk error', e)
-					} 
+					}
 			}
 			},
 			showModal(row) {
@@ -150,19 +150,20 @@ import { mapActions } from 'vuex'
 			},
 			async modalHandleOk(handleOnFinish) {
 				try {
+					let isValid = this.$refs.formFields.validate()
+					if(!isValid){
+						return;
+					}
 					//this.formState.date = this.formState.date.format('YYYY-MM-DD');
-					let res = await this.updateMaintenance({maintenance: this.formState})
-					console.log('modalHandleOk', res)
+					let res = await this.updateMaintenance({maintenance: this.$refs.formFields.formData})
 					if(res) {
 						this.$refs.formFields.onFinish(true);
 						this.visible = false;
 						this.formState = {'issue': '', 'details': '', 'date': this.formattedDate, 'created_by_apt': '', 'created_by_name': '', }
 					} else {
-						console.log('modalHandleOk false', res)
 						this.$refs.formFields.onFinish(false);
 					}
 				} catch (e) {
-					console.log('modalHandleOk error', e)
 					this.$refs.formFields.onFinish(false);
 				} finally {
 					handleOnFinish()

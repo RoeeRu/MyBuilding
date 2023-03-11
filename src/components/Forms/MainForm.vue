@@ -1,25 +1,29 @@
 <template>
   <a-form
-    :model="formState"
-    :rules="formRules"
     v-bind="layout"
     ref="form"
     name="nest-messages"
-    :validate-messages="validateMessages"
     @finish="onFinish"
   >
 
     <a-form-item v-for="(input, index) in formFields" :key="index" :label="input.label" :prop="input.name"  :colon="false">
-        <a-input v-if="input.type == 'text'" v-model="formState[input.name]" :placeholder="input.placeholder"/>
-        <a-input v-else-if="input.type == 'currency'" prefix="$" v-model="formState[input.name]" :placeholder="input.placeholder"/>
-        <a-select v-else-if="input.type == 'selectBox'" v-model="formState[input.name]">
+        <a-input v-if="input.type == 'text'" v-model="formData[input.name]" :placeholder="input.placeholder"/>
+
+        <a-input  v-else-if="input.type == 'currency'"
+        prefix="$"
+        v-model="formData[input.name]"
+        @blur="$v.formData[input.name].$touch()"
+        :class="{ error: $v.formData[input.name].$error && $v.formData[input.name].$dirty }"
+        :placeholder="input.placeholder"/>
+
+        <a-select v-else-if="input.type == 'selectBox'" v-model="formData[input.name]">
           <a-select-option v-for="(option, index) in input.options" :key="index" :value="option.value">{{option.text}}</a-select-option>
         </a-select>
 
-        <a-date-picker v-else-if="input.type == 'date'" v-model="formState[input.name]" :format="'MM/DD/YYYY'" />
+        <a-date-picker v-else-if="input.type == 'date'" v-model="formData[input.name]" :format="'MM/DD/YYYY'" />
 
         <a-upload v-else-if="input.type == 'uploadFile'"
-            :v-model="formState[input.name]"
+            :v-model="formData[input.name]"
             :show-upload-list="true"
             @change=""
             :beforeUpload="beforeUpload"
@@ -27,7 +31,13 @@
             <a-button>Click to Upload</a-button>
         </a-upload>
 
+        <div v-if="$v.formData[input.name].$error && $v.formData[input.name].$dirty">
+          <div style="color:red;" v-if="$v.formData[input.name].hasOwnProperty('required') && !$v.formData[input.name].required">This field is required</div>
+          <div style="color:red;" v-if="$v.formData[input.name].hasOwnProperty('numeric') && !$v.formData[input.name].numeric">Only numbers allowed</div>
+        </div>
+
     </a-form-item>
+
 
     <p style="color:red;" v-if="!isSuccess">Error in submit form: Please try again</p>
 
@@ -38,12 +48,27 @@
 <script>
 
 import { mapActions } from 'vuex';
+import { required, numeric } from 'vuelidate/lib/validators';
+import { validationMixin } from 'vuelidate';
 
 export default ({
   components: {},
-  props: ['formFields', 'formState'],
+  props: {
+    formFields: {
+      type: Array,
+      required: true,
+    }
+  },
+  mixins: [validationMixin],
+  mounted() {
+  // Initialize formData with empty values for each field in formFields
+  this.formFields.forEach(field => {
+    this.$set(this.formData, field.name, '');
+  });
+},
   data() {
     return {
+      formData: {},
       isSuccess: true,
       layout: {
         labelCol: {
@@ -52,27 +77,37 @@ export default ({
         wrapperCol: {
           span: 13,
         }
-      },
-      formRules: {
-        name: [
-          { required: true, message: 'Name is required' },
-        ],
-      },
-      validateMessages: {
-        required: 'Please enter a value',
-        email: 'Please enter a valid email address',
-        number: 'Please enter a valid number'
-      },
-      // formState: {
-      //   user: {
-      //     name: '',
-      //     age: undefined,
-      //     email: '',
-      //     website: '',
-      //     introduction: '',
-      //   }
-      // }
+      }
     }
+  },
+  validations() {
+    const validations = {};
+
+    this.formFields.forEach((field) => {
+      const fieldValidations = {};
+
+      field.rules.forEach((rule) => {
+        switch (rule) {
+          case 'required':
+            fieldValidations[rule] = required;
+            break;
+          case 'email':
+            fieldValidations[rule] = email;
+            break;
+          case 'numeric':
+            fieldValidations[rule] = numeric;
+            break;
+          default:
+            break;
+        }
+      });
+
+      validations[field.name] = fieldValidations;
+    });
+
+    return {
+      formData: validations,
+    };
   },
   methods: {
     onFinish(isSuccess) {
@@ -82,26 +117,37 @@ export default ({
     resetForm() {
       // form.resetFields();
     },
+    validate() {
+      this.$v.$touch();
+      return !this.$v.$invalid;
+      //
+      // if (!this.$v.$invalid) {
+      //   // Submit form
+      //   console.log('Form submitted!');
+      // } else {
+      //   console.log('Form 1212submitted!');
+      // }
+    },
     //this one should save the file to the store so it can be uploaded from the card
     async beforeUpload(file) {
       await this.prepareFile(file)
-    }
-    ,
+    },
+
     //ended up not using this because it uploads the file before form is submitted
     async handleChange(info) {
       console.log('handleChange start',info)
       if (info.file.status === 'done') {
         console.log('handleChange done',info.file.response)
-        await this.getFile("textinsteadoffile")
-        this.formState.file = info.file.response.file
-        this.formState.name = info.file.response.name
+        // await this.getFile("textinsteadoffile")
+        // this.formState.file = info.file.response.file
+        // this.formState.name = info.file.response.name
       }
       else {
         console.log('handleChange not done',info.file.status, info.file.response, info.file)
       }
     },
 			...mapActions('documents', ['prepareFile'])
-    
+
   }
 })
 
