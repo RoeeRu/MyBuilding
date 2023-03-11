@@ -1,5 +1,5 @@
-<!-- 
-	This is the documents page, it uses the dashboard layout in: 
+<!--
+	This is the documents page, it uses the dashboard layout in:
 	"./layouts/Dashboard.vue" .
  -->
 
@@ -50,15 +50,15 @@
 			title: 'Document Name',
 			dataIndex: 'name',
 			class: 'font-bold',
-			
+
 		},
 		{
 			title: 'Type',
 			dataIndex: 'type',
 			class: 'font-semibold text-muted text-sm',
 		},
-		
-		
+
+
 		{
 			title: 'Details',
 			dataIndex: 'details',
@@ -66,11 +66,11 @@
 		},
 		{
 			title: 'Date Uploaded',
-			dataIndex: 'upload_date',
+			dataIndex: 'created_timestamp',
 			class: 'font-semibold text-muted text-sm',
 		},
-		
-		
+
+
 		{
 			title: '',
 			scopedSlots: { customRender: 'actionsBtn' },
@@ -84,7 +84,7 @@
 			name: 'insurance-2022-main.pdf',
 			type: "Insurance",
 			upload_date: '23/04/18',
-			
+
 			details: "Final version of our insurance doc from 2022",
 		},
 		{
@@ -92,13 +92,13 @@
 			name: 'insurance-2021-main.pdf',
 			type: "Other",
 			upload_date: '23/12/20',
-			
+
 			details: "Final version of our insurance doc from 2022",
 		},
-		
+
 	];
-	
-	
+
+
 
 	export default ({
 		components: {
@@ -113,7 +113,7 @@
 				// Associating "Documents" table columns with its corresponding property.
 				table1Columns: table1Columns,
 
-				
+
 			}
 		},
 		async mounted() {

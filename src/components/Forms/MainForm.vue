@@ -77,8 +77,10 @@ export default ({
     } else if (field.type === 'uploadFile') {
       console.log("field", field);
       this.uploadUrl = field.actionPath;
+      this.$set(this.formData, field.name, '');
       this.uploadHeaders.Authorization = 'Bearer ' + field.userToken
     }else {
+      console.log("field.type", field.type);
       this.$set(this.formData, field.name, '');
       this.$set(this.localFormData, field.name, '');
     }
@@ -170,7 +172,8 @@ export default ({
           // Handle the successful response
           if(response.data.status) {
             options.onSuccess(response.data, options.file)
-            this.formData.uploadedUrl = response.data.url
+            this.localFormData.location = response.data.url
+            this.formData.location = response.data.url
             return;
           }
           options.onError('failed')

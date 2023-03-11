@@ -55,7 +55,7 @@ import MainForm from '../Forms/MainForm.vue';
 				visible: false,
 				modelTitle: "Add Documents",
 				documentsInputs: [
-					{ 	name: 'file',
+					{ 	name: 'location',
 							label: 'File Name',
 						 	type:'uploadFile',
 						  rules: ['required'],
@@ -105,7 +105,6 @@ import MainForm from '../Forms/MainForm.vue';
 						return;
 					}
 
-					await this.uploadFile({file: this.fileData})
 					let res =  await this.addDocument({document: this.$refs.formFields.formData})
 					if(res) {
 						this.$refs.formFields.onFinish(true);

@@ -12,6 +12,9 @@
 					</a>
 					<a-menu slot="overlay">
 					<a-menu-item>
+						<a href="javascript:;" v-on:click="showFileModal(row)">Show File</a>
+					</a-menu-item>
+					<a-menu-item>
 						<a href="javascript:;" v-on:click="showModal(row)">Edit</a>
 					</a-menu-item>
 					<a-menu-item>
@@ -22,11 +25,21 @@
 
 			<MainModal
 					:visible="visible"
-					:title="modelTitle"
+					:title="modalTitle"
 				 	@handleOk="modalHandleOk"
 					:handle-cancel="modalHandleCancel"
 				>
 				<MainForm ref="formFields" :formFields="DocumentInputs"></MainForm>
+			</MainModal>
+
+			<MainModal
+					:visible="visibleFileModal"
+					:title="modelTitle"
+					@handleOk="fileModalHandleOk"
+					:handle-cancel="fileModalHandleCancel"
+					:hasSubmit= "false"
+				>
+				<iframe :src="pdfUrl" width="100%" height="600px"></iframe>
 			</MainModal>
 			</template>
 
@@ -58,7 +71,10 @@ import { mapActions } from 'vuex'
 		data() {
 			return {
 				visible: false,
-				modelTitle: "Add Document",
+				visibleFileModal: false,
+				fileModalTitle: "My Document",
+				modalTitle: "Add Document",
+				pdfUrl: '',
 				DocumentInputs: [
 					{ name: 'name', label: 'Upload File', type:'text', rules: ['required']},
       		{ name: 'type', label: 'Type', placeholder:'Enter type', type:'selectBox', 'options': [
@@ -90,6 +106,16 @@ import { mapActions } from 'vuex'
 				});
 				this.visible = true
 		  },
+			showFileModal(row) {
+				this.pdfUrl = row.location
+				this.visibleFileModal = true
+			},
+			fileModalHandleCancel() {
+				this.visibleFileModal = false
+			},
+			fileModalHandleOk() {
+				this.visibleFileModal = false
+			},
 			modalHandleCancel() {
 				this.visible = false
 			},

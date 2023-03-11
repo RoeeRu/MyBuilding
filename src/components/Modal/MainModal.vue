@@ -9,7 +9,7 @@
     >
       <template #footer>
         <a-button key="back" @click="handleCancel">Return</a-button>
-        <a-button key="submit" type="primary" :loading="loading" @click="handleOk">Submit</a-button>
+        <a-button v-if="hasSubmit" key="submit" type="primary" :loading="loading" @click="handleOk">Submit</a-button>
       </template>
       <slot></slot>
     </a-modal>
@@ -18,7 +18,25 @@
 <script>
 
 export default ({
-  props: ['visible', 'title', 'handleCancel'],
+  props: {
+    visible: {
+      type: Boolean,
+      required: true,
+    },
+    title: {
+      type: String,
+      required: false
+    },
+    handleCancel: {
+      type: Function,
+      required: true
+    },
+    hasSubmit: {
+      type: Boolean,
+      required: false,
+      default: true
+    }
+  },
   data() {
     return {
       loading: false
