@@ -63,8 +63,13 @@ export default ({
   mounted() {
   // Initialize formData with empty values for each field in formFields
   this.formFields.forEach(field => {
-    this.$set(this.formData, field.name, '');
-    this.$set(this.localFormData, field.name, '');
+    if(field.hasOwnProperty('value')) {
+      console.log("field", field.value);
+      this.$set(this.localFormData, field.name, field.value);
+    } else {
+      this.$set(this.formData, field.name, '');
+      this.$set(this.localFormData, field.name, '');
+    }
   });
 },
   data() {
@@ -126,7 +131,6 @@ export default ({
         this.formFields.forEach(field => {
           this.$set(this.formData, field.name, this.localFormData[field.name]);
           if(field.type === 'date') {
-            console.log("(this.formData[field.name]", this.formData[field.name].toDate());
             this.formData[field.name] = this.formattedDate(this.formData[field.name].toDate())
           }
         });

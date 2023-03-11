@@ -66,7 +66,7 @@
 				 	@handleOk="modalHandleOk"
 					:handle-cancel="modalHandleCancel"
 				>
-				<MainForm ref="formFields" :formFields="MaintenanceInputs" :formState="formState"></MainForm>
+				<MainForm ref="formFields" :formFields="MaintenanceInputs"></MainForm>
 			</MainModal>
 			</template>
 
@@ -105,8 +105,9 @@ import { mapActions } from 'vuex'
 					{ name: 'created_by_name', label: 'Owner (Name)', placeholder: 'Enter Name', type:'text', rules: ['required']},
 					{ name: 'created_by_apt', label: 'Owner (Aparatment)', placeholder: 'Enter Appratment', type:'text', rules: ['required']},
       	],
-				formState: {'issue': '', 'details': '', 'created_by_name': '', 'created_by_apt': '', 'status': 'open', 'date': this.formattedDate,}
-
+				rowDate: '',
+				rowStatus: '',
+				rowKey: ''
 			}
 		},
 		methods: {
@@ -122,14 +123,17 @@ import { mapActions } from 'vuex'
 			}
 			},
 			showModal(row) {
+				this.MaintenanceInputs.forEach((value, index) => {
+					if(this.MaintenanceInputs[index].name === 'created_by_name' || this.MaintenanceInputs[index].name === 'created_by_apt'){
+						this.MaintenanceInputs[index].value = row['created_by'][this.MaintenanceInputs[index].name]
+					} else {
+						this.MaintenanceInputs[index].value = row[this.MaintenanceInputs[index].name]
+					}
+				});
 				this.visible = true
-				this.formState.issue = row.issue
-				this.formState.details = row.details
-				this.formState.created_by_name = row.created_by.created_by_name
-				this.formState.created_by_apt = row.created_by.created_by_apt
-				this.formState.date = row.date
-				this.formState.status = row.status
-				this.formState.key = row.key
+			  this.rowDate = row.date
+				this.rowStatus = row.status
+				this.rowKey = row.key
 		  },
 			modalHandleCancel() {
 				this.visible = false
@@ -141,7 +145,8 @@ import { mapActions } from 'vuex'
 						return;
 					}
 					//this.formState.date = this.formState.date.format('YYYY-MM-DD');
-					let res = await this.updateMaintenance({maintenance: this.$refs.formFields.formData})
+					let res = await this.updateMaintenance({maintenance: {...this.$refs.formFields.formData,
+						 ...{date: this.rowDate, status: this.rowStatus, key: this.rowKey}}})
 					if(res) {
 						this.$refs.formFields.onFinish(true);
 						this.visible = false;

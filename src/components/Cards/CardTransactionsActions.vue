@@ -29,7 +29,7 @@
 				 	@handleOk="modalHandleOk"
 					:handle-cancel="modalHandleCancel"
 				>
-				<MainForm ref="formFields" :formFields="transactionInputs" :formState="formState"></MainForm>
+				<MainForm ref="formFields" :formFields="transactionInputs"></MainForm>
 			</MainModal>
 		</template>
 
@@ -62,7 +62,6 @@ import { mapActions } from 'vuex'
 					// { name: 'age', label: 'Select Age', type:'selectBox', 'options': [{value: 'minor', text: '11-22'}, {value: 'addult', text: '22-44'}]},
 					// { name: 'file', label: 'Upload File', type:'uploadFile'},
       	],
-		  formState: {'type': '', 'amount': '', 'manual_name': '', 'manual_apt': '', 'details': '', 'date': null,}
 			}
 		},
 		computed: {
