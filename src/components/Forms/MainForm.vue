@@ -57,6 +57,11 @@ export default ({
     formFields: {
       type: Array,
       required: true,
+    },
+    isEdit: {
+      type: Boolean,
+      required: false,
+      default: false
     }
   },
   mixins: [validationMixin],
@@ -64,7 +69,6 @@ export default ({
   // Initialize formData with empty values for each field in formFields
   this.formFields.forEach(field => {
     if(field.hasOwnProperty('value')) {
-      console.log("field", field.value);
       this.$set(this.localFormData, field.name, field.value);
     } else {
       this.$set(this.formData, field.name, '');
@@ -127,10 +131,12 @@ export default ({
     validate() {
       this.$v.$touch();
       let validSuccess = !this.$v.$invalid;
+      console.log("validSuccess", validSuccess);
       if(validSuccess) {
+        console.log("this.localFormData", this.localFormData);
         this.formFields.forEach(field => {
           this.$set(this.formData, field.name, this.localFormData[field.name]);
-          if(field.type === 'date') {
+          if(field.type === 'date' && !this.isEdit) {
             this.formData[field.name] = this.formattedDate(this.formData[field.name].toDate())
           }
         });

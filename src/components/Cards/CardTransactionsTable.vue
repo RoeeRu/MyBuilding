@@ -42,11 +42,11 @@
 							</span>
 				</div>
 			</template>
-			
 
-			
 
-			<template slot="actionsBtn" slot-scope="row">
+
+
+			<template v-if="row.source.type === 'Manual'" slot="actionsBtn" slot-scope="row">
 				<a-dropdown>
 					<a class="ant-dropdown-link" @click="e => e.preventDefault()">
 					Actions <a-icon type="down" />
@@ -66,7 +66,7 @@
 				 	@handleOk="modalHandleOk"
 					:handle-cancel="modalHandleCancel"
 				>
-				<MainForm ref="formFields" :formFields="transactionInputs" :formState="formState"></MainForm>
+				<MainForm ref="formFields" :formFields="transactionInputs" :isEdit="isEdit"></MainForm>
 			</MainModal>
 			</template>
 
@@ -100,65 +100,65 @@ import { mapActions } from 'vuex'
 				visible: false,
 				modelTitle: "Add Request",
 				transactionInputs: [
-					{ name: 'date', label: 'Transaction Date', type:'date'},
-					{ name: 'type', label: 'Transaction Type', type:'selectBox', 'options': [{value: '-1', text: 'Cost'}, {value: '1', text: 'Income'}]},
-	        		{ name: 'amount', label: 'Amount', placeholder:'Enter Amount', type:'currency'},
-	        		{ name: 'details', label: 'Details', placeholder:'Enter Details', type:'text'},
-					{ name: 'manual_name', label: 'Paid By (Name)', placeholder: 'Enter Name', type:'text'},
-					{ name: 'manual_apt', label: 'Paid By (Appratment)', placeholder: 'Enter Appratment', type:'text'},
+					{ name: 'date', label: 'Transaction Date', type:'date', rules: ['required']},
+					{ name: 'type', label: 'Transaction Type', type:'selectBox', 'options': [{value: '-1', text: 'Cost'}, {value: '1', text: 'Income'}], rules: ['required']},
+      		{ name: 'amount', label: 'Amount', placeholder:'Enter Amount', type:'currency', rules: ['required']},
+      		{ name: 'details', label: 'Details', placeholder:'Enter Details', type:'text', rules: ['required']},
+					{ name: 'manual_name', label: 'Paid By (Name)', placeholder: 'Enter Name', type:'text', rules: ['required']},
+					{ name: 'manual_apt', label: 'Paid By (Appratment)', placeholder: 'Enter Appratment', type:'text', rules: ['required']},
       	],
-				formState: {'type': '', 'amount': '', 'manual_name': '', 'manual_apt': '', 'details': '', 'date': this.formattedDate,}
-			
+				rowDate: '',
+				rowDet: '',
+				rowKey: '',
+				isEdit: false
 			}
 		},
-		computed: {
-			formattedDate() {
-			const today = new Date();
-			const year = today.getFullYear();
-			const month = String(today.getMonth() + 1).padStart(2, '0');
-			const day = String(today.getDate()).padStart(2, '0');
-			return `${month}/${day}/${year}`;
-			},
-		},
-		created() {
-	     this.formState.date = this.formattedDate;
-	  
-	  },
 		methods: {
 			async DeleteRow(row) {
 			if(confirm("Do you really want to delete?")){
 				console.log("deleting", row.key);
-			
+
 				try {
-					let res = await this.deleteTransaction({transaction: row})					
+					let res = await this.deleteTransaction({transaction: row})
 					} catch (e) {
 						console.log('modalHandleOk error', e)
-					} 
+					}
 			}
 			},
 			showModal(row) {
+				this.transactionInputs.forEach((value, index) => {
+					if(this.transactionInputs[index].name === 'manual_name' || this.transactionInputs[index].name === 'manual_apt'){
+						this.transactionInputs[index].value = row['source'][this.transactionInputs[index].name]
+					}else if (this.transactionInputs[index].name === 'amount' || this.transactionInputs[index].name === 'type') {
+						console.log("soruece",  row['source'][this.transactionInputs[index].name]);
+						this.transactionInputs[index].value = row['transaction_amount'][this.transactionInputs[index].name]
+					} else {
+						this.transactionInputs[index].value = row[this.transactionInputs[index].name]
+					}
+				});
+				this.isEdit = true
 				this.visible = true
-				this.formState.type = row.transaction_amount.type
-				this.formState.amount = row.transaction_amount.amount
-				this.formState.manual_name = row.source.manual_name
-				this.formState.manual_apt = row.source.manual_apt
-				this.formState.date = row.date
-				this.formState.details = row.details
-				this.formState.key = row.key
+				this.rowDate = row.date
+				this.rowDet = row.details
+				this.rowKey = row.key
 		  },
 			modalHandleCancel() {
 				this.visible = false
-				this.formState = {'type': '', 'amount': '', 'manual_name': '', 'manual_apt': '',  'details': '', 'date': this.formattedDate,}
 			},
 			async modalHandleOk(handleOnFinish) {
 				try {
-					//this.formState.date = this.formState.date.format('YYYY-MM-DD');
-					let res = await this.updateTransaction({transaction: this.formState})
+					let isValid = this.$refs.formFields.validate()
+					if(!isValid){
+						return;
+					}
+
+					let res = await this.updateTransaction({transaction: {...this.$refs.formFields.formData,
+						 ...{date: this.rowDate, status: this.rowDet, key: this.rowKey}}})
+
 					console.log('modalHandleOk', res)
 					if(res) {
 						this.$refs.formFields.onFinish(true);
 						this.visible = false;
-						this.formState = {'type': '', 'amount': '','manual_name': '', 'manual_apt': '',  'details': '', 'date': this.formattedDate,}
 					} else {
 						console.log('modalHandleOk false', res)
 						this.$refs.formFields.onFinish(false);
