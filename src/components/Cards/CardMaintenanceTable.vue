@@ -100,7 +100,7 @@ import { mapActions } from 'vuex'
 				visible: false,
 				modelTitle: "Add Request",
 				MaintenanceInputs: [
-					// { name: 'issue', label: 'Issue', placeholder: 'Enter Date', type:'text', rules: ['required']},
+					{ name: 'issue', label: 'Issue', placeholder: 'Enter Date', type:'text', rules: ['required']},
       		{ name: 'details', label: 'Details', placeholder:'Enter Details', type:'text', rules: ['required']},
 					{ name: 'created_by_name', label: 'Owner (Name)', placeholder: 'Enter Name', type:'text', rules: ['required']},
 					{ name: 'created_by_apt', label: 'Owner (Aparatment)', placeholder: 'Enter Appratment', type:'text', rules: ['required']},
@@ -109,19 +109,6 @@ import { mapActions } from 'vuex'
 
 			}
 		},
-		computed: {
-			formattedDate() {
-			const today = new Date();
-			const year = today.getFullYear();
-			const month = String(today.getMonth() + 1).padStart(2, '0');
-			const day = String(today.getDate()).padStart(2, '0');
-			return `${month}/${day}/${year}`;
-			},
-		},
-		created() {
-	     this.formState.date = this.formattedDate;
-
-	  },
 		methods: {
 			async DeleteRow(row) {
 			if(confirm("Do you really want to delete?")){
@@ -146,7 +133,6 @@ import { mapActions } from 'vuex'
 		  },
 			modalHandleCancel() {
 				this.visible = false
-				this.formState = {'issue': '', 'details': '', 'date': this.formattedDate, 'created_by_apt': '', 'created_by_name': ''}
 			},
 			async modalHandleOk(handleOnFinish) {
 				try {
@@ -159,7 +145,6 @@ import { mapActions } from 'vuex'
 					if(res) {
 						this.$refs.formFields.onFinish(true);
 						this.visible = false;
-						this.formState = {'issue': '', 'details': '', 'date': this.formattedDate, 'created_by_apt': '', 'created_by_name': '', }
 					} else {
 						this.$refs.formFields.onFinish(false);
 					}

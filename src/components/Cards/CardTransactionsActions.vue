@@ -66,13 +66,6 @@ import { mapActions } from 'vuex'
 			}
 		},
 		computed: {
-	    formattedDate() {
-	      const today = new Date();
-	      const year = today.getFullYear();
-	      const month = String(today.getMonth() + 1).padStart(2, '0');
-	      const day = String(today.getDate()).padStart(2, '0');
-	      return `${month}/${day}/${year}`;
-	    },
 			randomID() {
 				const r = (Math.random() + 1).toString(36).substring(7);
 				return r;
@@ -91,7 +84,6 @@ import { mapActions } from 'vuex'
 					if(!isValid){
 						return;
 					}
-					// this.formState.date = this.$refs.formFields.formData.date.format('MM/DD/YYYY');
 					let res = await this.addTransaction({transaction: this.$refs.formFields.formData})
 					if(res) {
 						this.$refs.formFields.onFinish(true);

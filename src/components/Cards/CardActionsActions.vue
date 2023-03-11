@@ -63,20 +63,10 @@ import { mapActions } from 'vuex'
 			}
 		},
 		computed: {
-	    formattedDate() {
-	      const today = new Date();
-	      const year = today.getFullYear();
-	      const month = String(today.getMonth() + 1).padStart(2, '0');
-	      const day = String(today.getDate()).padStart(2, '0');
-	      return `${month}/${day}/${year}`;
-	    },
-		randomID() {
-			const r = (Math.random() + 1).toString(36).substring(7);
-			return r;
-		},
-	  },
-		created() {
-	    // this.formState.due_date = this.formattedDate;
+			randomID() {
+				const r = (Math.random() + 1).toString(36).substring(7);
+				return r;
+			},
 	  },
 		methods: {
 		  showModal() {
@@ -84,7 +74,6 @@ import { mapActions } from 'vuex'
 		  },
 			modalHandleCancel() {
 				this.visible = false
-				this.formState = {'item': '', 'details': '', 'due_date': this.formattedDate, 'created_by_apt': '', 'created_by_name': '', }
 			},
 			async modalHandleOk(handleOnFinish) {
 				try {
@@ -92,12 +81,10 @@ import { mapActions } from 'vuex'
 					if(!isValid){
 						return;
 					}
-					this.$refs.formFields.formData.due_date = this.$refs.formFields.formData.due_date.format('MM/DD/YYYY');
 					let res = await this.addAction({action: this.$refs.formFields.formData})
 					if(res) {
 						this.$refs.formFields.onFinish(true);
 						this.visible = false;
-						this.formState = {'item': '', 'details': '', 'due_date': '', 'created_by_apt': '', 'created_by_name': '', }
 					} else {
 						console.log('modalHandleOk false', res)
 						this.$refs.formFields.onFinish(false);
