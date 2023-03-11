@@ -41,7 +41,8 @@
 <script>
 import MainModal from '../Modal/MainModal.vue';
 import MainForm from '../Forms/MainForm.vue';
-import { mapActions } from 'vuex';
+	import { mapActions } from 'vuex'
+	import { mapState } from 'vuex'
 
 
 
@@ -54,11 +55,12 @@ import { mapActions } from 'vuex';
 				visible: false,
 				modelTitle: "Add Documents",
 				documentsInputs: [
+					{ name: 'file', label: 'File Name', type:'uploadFile'},
 					{ name: 'name', label: 'Upload File', type:'text'},
 	        		{ name: 'type', label: 'Type', placeholder:'Enter type', type:'selectBox', 'options': [{value: 'insurance', text: 'Insurance'}, {value: 'work_order', text: 'Work Order'}, {value: 'tax', text: 'Taxes'}, {value: 'other', text: 'Other'}]},
 	        		{ name: 'details', label: 'Details', placeholder:'Enter Details', type:'text'},
       	],
-				formState: {'type': '', 'details': '', 'name': '', 'upload_date': this.formattedDate, 'location': 'to_be_updated'}
+				formState: {'file': '', 'type': '', 'details': '', 'name': '', 'upload_date': this.formattedDate, 'location': 'to_be_updated'}
 			}
 		},
 		computed: {
@@ -69,6 +71,9 @@ import { mapActions } from 'vuex';
 	      const day = String(today.getDate()).padStart(2, '0');
 	      return `${month}/${day}/${year}`;
 	    },
+			...mapState({
+				fileData: state => state.documents.UploadedFile,
+			})
 		
 	  },
 		created() {
@@ -85,8 +90,9 @@ import { mapActions } from 'vuex';
 			},
 			async modalHandleOk(handleOnFinish) {
 				try {
-					//this.formState.upload_date = this.formState.upload_date.format('MM/DD/YYYY');
-					let res = await this.addDocument({document: this.formState})
+					console.log('modalHandleOk - uploading file',this.fileData )
+					await this.uploadFile({file: this.fileData})
+					let res =  await this.addDocument({document: this.formState})
 					if(res) {
 						this.$refs.formFields.onFinish(true);
 						this.visible = false;
@@ -102,7 +108,7 @@ import { mapActions } from 'vuex';
 					handleOnFinish()
 				}
 		  },
-			...mapActions('documents', ['addDocument'])
+			...mapActions('documents', ['addDocument','uploadFile'])
 		},
 	})
 

@@ -21,6 +21,8 @@
         <a-upload v-else-if="input.type == 'uploadFile'"
             :v-model="formState[input.name]"
             :show-upload-list="true"
+            @change=""
+            :beforeUpload="beforeUpload"
            >
             <a-button>Click to Upload</a-button>
         </a-upload>
@@ -34,6 +36,8 @@
 
 
 <script>
+
+import { mapActions } from 'vuex';
 
 export default ({
   components: {},
@@ -78,6 +82,26 @@ export default ({
     resetForm() {
       // form.resetFields();
     },
+    //this one should save the file to the store so it can be uploaded from the card
+    async beforeUpload(file) {
+      await this.prepareFile(file)
+    }
+    ,
+    //ended up not using this because it uploads the file before form is submitted
+    async handleChange(info) {
+      console.log('handleChange start',info)
+      if (info.file.status === 'done') {
+        console.log('handleChange done',info.file.response)
+        await this.getFile("textinsteadoffile")
+        this.formState.file = info.file.response.file
+        this.formState.name = info.file.response.name
+      }
+      else {
+        console.log('handleChange not done',info.file.status, info.file.response, info.file)
+      }
+    },
+			...mapActions('documents', ['prepareFile'])
+    
   }
 })
 
