@@ -34,7 +34,7 @@
 
 			<MainModal
 					:visible="visibleFileModal"
-					:title="modelTitle"
+					:title="fileModalTitle"
 					@handleOk="fileModalHandleOk"
 					:handle-cancel="fileModalHandleCancel"
 					:hasSubmit= "false"
@@ -72,7 +72,7 @@ import { mapActions } from 'vuex'
 			return {
 				visible: false,
 				visibleFileModal: false,
-				fileModalTitle: "My Document",
+				fileModalTitle: "Document",
 				modalTitle: "Add Document",
 				pdfUrl: '',
 				DocumentInputs: [
