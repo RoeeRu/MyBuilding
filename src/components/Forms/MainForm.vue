@@ -7,23 +7,23 @@
   >
 
     <a-form-item v-for="(input, index) in formFields" :key="index" :label="input.label" :prop="input.name"  :colon="false">
-        <a-input v-if="input.type == 'text'" v-model="formData[input.name]" :placeholder="input.placeholder"/>
+        <a-input v-if="input.type == 'text'" v-model="localFormData[input.name]" :placeholder="input.placeholder"/>
 
         <a-input  v-else-if="input.type == 'currency'"
         prefix="$"
-        v-model="formData[input.name]"
-        @blur="$v.formData[input.name].$touch()"
-        :class="{ error: $v.formData[input.name].$error && $v.formData[input.name].$dirty }"
+        v-model="localFormData[input.name]"
+        @blur="$v.localFormData[input.name].$touch()"
+        :class="{ error: $v.localFormData[input.name].$error && $v.localFormData[input.name].$dirty }"
         :placeholder="input.placeholder"/>
 
-        <a-select v-else-if="input.type == 'selectBox'" v-model="formData[input.name]">
+        <a-select v-else-if="input.type == 'selectBox'" v-model="localFormData[input.name]">
           <a-select-option v-for="(option, index) in input.options" :key="index" :value="option.value">{{option.text}}</a-select-option>
         </a-select>
 
-        <a-date-picker v-else-if="input.type == 'date'" v-model="formData[input.name]" :format="'MM/DD/YYYY'" />
+        <a-date-picker v-else-if="input.type == 'date'" v-model="localFormData[input.name]" format="MM/DD/YYYY" />
 
         <a-upload v-else-if="input.type == 'uploadFile'"
-            :v-model="formData[input.name]"
+            :v-model="localFormData[input.name]"
             :show-upload-list="true"
             @change=""
             :beforeUpload="beforeUpload"
@@ -31,9 +31,9 @@
             <a-button>Click to Upload</a-button>
         </a-upload>
 
-        <div v-if="$v.formData[input.name].$error && $v.formData[input.name].$dirty">
-          <div style="color:red;" v-if="$v.formData[input.name].hasOwnProperty('required') && !$v.formData[input.name].required">This field is required</div>
-          <div style="color:red;" v-if="$v.formData[input.name].hasOwnProperty('numeric') && !$v.formData[input.name].numeric">Only numbers allowed</div>
+        <div v-if="$v.localFormData[input.name].$error && $v.localFormData[input.name].$dirty">
+          <div style="color:red;" v-if="$v.localFormData[input.name].hasOwnProperty('required') && !$v.localFormData[input.name].required">This field is required</div>
+          <div style="color:red;" v-if="$v.localFormData[input.name].hasOwnProperty('numeric') && !$v.localFormData[input.name].numeric">Only numbers allowed</div>
         </div>
 
     </a-form-item>
@@ -64,11 +64,13 @@ export default ({
   // Initialize formData with empty values for each field in formFields
   this.formFields.forEach(field => {
     this.$set(this.formData, field.name, '');
+    this.$set(this.localFormData, field.name, '');
   });
 },
   data() {
     return {
       formData: {},
+      localFormData: {},
       isSuccess: true,
       layout: {
         labelCol: {
@@ -106,7 +108,7 @@ export default ({
     });
 
     return {
-      formData: validations,
+      localFormData: validations,
     };
   },
   methods: {
@@ -122,6 +124,7 @@ export default ({
       let validSuccess = !this.$v.$invalid;
       if(validSuccess) {
         this.formFields.forEach(field => {
+          this.$set(this.formData, field.name, this.localFormData[field.name]);
           if(field.type === 'date') {
             console.log("(this.formData[field.name]", this.formData[field.name].toDate());
             this.formData[field.name] = this.formattedDate(this.formData[field.name].toDate())

@@ -85,7 +85,6 @@ import { mapActions } from 'vuex'
 					if(!isValid){
 						return;
 					}
-					//this.formState.date = this.formState.date.format('YYYY-MM-DD');
 					let res = await this.addMaintenance({maintenance: {...this.$refs.formFields.formData, ...{status: "open", date: this.formattedDate}}})
 					if(res) {
 						this.$refs.formFields.onFinish(true);
