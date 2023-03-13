@@ -2,6 +2,7 @@ import { FirebaseConfig } from '../firebaseConfig';
 import * as firebase from "firebase/app";
 import { onAuthStateChanged , getAuth,signInWithPopup, GoogleAuthProvider, createUserWithEmailAndPassword, signInWithEmailAndPassword  } from "firebase/auth";
 import { isUserLoggedIn, resgiterNewApi } from '@/Api/user.js';
+import {getPersonalInfo} from '@/Api/profile.js';
 
 
 export default {
@@ -38,6 +39,13 @@ export default {
               user.getIdToken().then(async (idToken) => {
                 let res = await isUserLoggedIn(idToken);
                 dispatch('setLoggedIn', res)
+                let userPersonalres = await getPersonalInfo(idToken);
+                if(!userPersonalres.status) {
+                  console.log("faield getting userPersonalres", res.data);
+                  return false;
+                };
+                user['building_id'] = userPersonalres.data.building_id;
+                user['role'] = userPersonalres.data.role;
                 commit('setUser', user);
                 console.log('user logged isLoggedIn? ' + res);
                 resolve(res);
