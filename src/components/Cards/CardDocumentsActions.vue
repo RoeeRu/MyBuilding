@@ -55,20 +55,17 @@ import MainForm from '../Forms/MainForm.vue';
 				visible: false,
 				modelTitle: "Add Documents",
 				documentsInputs: [
-					{ 	name: 'location',
-							label: 'File Name',
-						 	type:'uploadFile',
-						  rules: ['required'],
+					{ 	name: 'location', label: 'File Name', type:'uploadFile', rules: ['required'],
 						  actionPath: process.env.VUE_APP_SYSTEM_DOMAIN + '/documents/addFile'
 					},
 					{ name: 'name', label: 'Upload File', type:'text', rules: ['required']},
-      		{ name: 'type', label: 'Type', placeholder:'Enter type', type:'selectBox', 'options': [
+      				{ name: 'type', label: 'Type', placeholder:'Enter type', type:'selectBox', 'options': [
 						{value: 'insurance', text: 'Insurance'},
-					  {value: 'work_order', text: 'Work Order'},
-					  {value: 'tax', text: 'Taxes'},
+						{value: 'work_order', text: 'Work Order'},
+						{value: 'tax', text: 'Taxes'},
 						{value: 'other', text: 'Other'}],
 						rules: ['required']},
-      		{ name: 'details', label: 'Details', placeholder:'Enter Details', type:'text', rules: ['required']},
+      				{ name: 'details', label: 'Details', placeholder:'Enter Details', type:'text', rules: []},
       	],
 			}
 		},
@@ -120,7 +117,7 @@ import MainForm from '../Forms/MainForm.vue';
 					handleOnFinish()
 				}
 		  },
-			...mapActions('documents', ['addDocument','uploadFile'])
+			...mapActions('documents', ['addDocument',])
 		},
 	})
 

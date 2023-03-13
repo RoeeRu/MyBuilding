@@ -28,7 +28,6 @@
             :custom-request="customRequest"
             :v-model="localFormData[input.name]"
             :show-upload-list="true"
-            :beforeUpload="beforeUpload"
            >
             <a-button>Click to Upload</a-button>
         </a-upload>
@@ -49,7 +48,6 @@
 
 <script>
 
-import { mapActions } from 'vuex';
 import { required, numeric } from 'vuelidate/lib/validators';
 import { validationMixin } from 'vuelidate';
 import axios from 'axios';
@@ -74,13 +72,13 @@ export default ({
   this.formFields.forEach(field => {
     if(field.hasOwnProperty('value')) {
       this.$set(this.localFormData, field.name, field.value);
-    } else if (field.type === 'uploadFile') {
-      console.log("field", field);
+    } 
+    else if (field.type === 'uploadFile') {
       this.uploadUrl = field.actionPath;
       this.$set(this.formData, field.name, '');
       this.uploadHeaders.Authorization = 'Bearer ' + field.userToken
-    }else {
-      console.log("field.type", field.type);
+    }
+    else {
       this.$set(this.formData, field.name, '');
       this.$set(this.localFormData, field.name, '');
     }
@@ -191,7 +189,6 @@ export default ({
       const day = String(today.getDate()).padStart(2, '0');
       return `${month}/${day}/${year}`;
     },
-			...mapActions('documents', ['prepareFile'])
 
   }
 })

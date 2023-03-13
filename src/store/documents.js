@@ -55,19 +55,6 @@ export default {
       return true;
     },
 
-    async uploadFile({ state, rootState, commit }, filedata) {
-      const storage = getStorage();
-      console.log("ffiledata", filedata.file);
-      console.log("ffiledata file name", filedata.file.name);
-      const storageRef = ref(storage, 'images/' + filedata.file.name);
-      console.log("file uploaded", filedata.file);
-      console.log("storageRef", storageRef);
-
-      // 'file' comes from the Blob or File API
-      uploadBytes(storageRef, filedata).then((snapshot) => {
-        console.log('Uploaded a blob or file!');
-      });
-    },
 
     async prepareFile({ state, rootState, commit }, file) {
       commit('fileInfo', file);
