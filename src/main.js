@@ -10,6 +10,8 @@ import DashboardRTLLayout from './layouts/DashboardRTL.vue'
 import router from './router'
 import store from './store'
 import Vuex from 'vuex'
+import { inject } from '@vercel/analytics';
+
 
 // import './plugins/click-away'
 
@@ -23,6 +25,8 @@ Vue.config.productionTip = false
 Vue.component("layout-default", DefaultLayout);
 Vue.component("layout-dashboard", DashboardLayout);
 Vue.component("layout-dashboard-rtl", DashboardRTLLayout);
+inject();
+
 
 new Vue({
   router,
