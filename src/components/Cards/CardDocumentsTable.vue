@@ -3,8 +3,15 @@
 	<!-- Documents Table Card -->
 
 	<a-card :bordered="false" class="header-solid h-full" :bodyStyle="{padding: 0,}">
-		<a-table :columns="columns" :data-source="data" :pagination="false">
+		<a-table :columns="columns" :data-source="data" :pagination="true">
 
+			<template slot="name"  slot-scope="row">
+				<a
+					:href="row.location"
+					v-text="row.name"
+					@click.prevent="downloadItem(row)" />
+			</template>
+ 
 			<template slot="actionsBtn" slot-scope="row">
 				<a-dropdown>
 					<a class="ant-dropdown-link" @click="e => e.preventDefault()">
@@ -53,6 +60,7 @@
 import MainModal from '../Modal/MainModal.vue';
 import MainForm from '../Forms/MainForm.vue';
 import { mapActions } from 'vuex'
+import Axios from 'axios';
 
 	export default ({
 		components: {
@@ -89,6 +97,18 @@ import { mapActions } from 'vuex'
 			}
 		},
 		methods: {
+			downloadItem(row) {
+				console.log("downloading", row);
+				Axios.get(row.location, { responseType: 'blob' })
+				.then(response => {
+					const blob = new Blob([response.data], { type: 'application/pdf' })
+					const link = document.createElement('a')
+					link.href = URL.createObjectURL(blob)
+					link.download = row.name
+					link.click()
+					URL.revokeObjectURL(link.href)
+				}).catch(console.error)
+			},
 			async DeleteRow(row) {
 			if(confirm("Do you really want to delete?")){
 				console.log("deleting", row.key);
@@ -107,6 +127,7 @@ import { mapActions } from 'vuex'
 				this.visible = true
 		  },
 			showFileModal(row) {
+				console.log("showing", row);
 				this.pdfUrl = row.location
 				this.visibleFileModal = true
 			},

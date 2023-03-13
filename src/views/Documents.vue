@@ -48,8 +48,7 @@
 	const table1Columns = [
 		{
 			title: 'Document Name',
-			dataIndex: 'name',
-			class: 'font-bold',
+			scopedSlots: { customRender: 'name' },
 
 		},
 		{
@@ -78,25 +77,7 @@
 	];
 
 	// "Documents" table list of rows and their properties.
-	const table1Data = [
-		{
-			key: '1',
-			name: 'insurance-2022-main.pdf',
-			type: "Insurance",
-			upload_date: '23/04/18',
 
-			details: "Final version of our insurance doc from 2022",
-		},
-		{
-			key: '2',
-			name: 'insurance-2021-main.pdf',
-			type: "Other",
-			upload_date: '23/12/20',
-
-			details: "Final version of our insurance doc from 2022",
-		},
-
-	];
 
 
 
@@ -107,8 +88,6 @@
 },
 		data() {
 			return {
-				// Associating "Documents" table data with its corresponding property.
-				table1Data: table1Data,
 
 				// Associating "Documents" table columns with its corresponding property.
 				table1Columns: table1Columns,
