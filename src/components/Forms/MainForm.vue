@@ -77,6 +77,7 @@ export default ({
       this.uploadUrl = field.actionPath;
       this.$set(this.formData, field.name, '');
       this.uploadHeaders.Authorization = 'Bearer ' + field.userToken
+      this.uploadHeaders.BuildingID = field.BuildingID
     }
     else {
       this.$set(this.formData, field.name, '');

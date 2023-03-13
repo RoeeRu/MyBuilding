@@ -55,10 +55,10 @@ import MainForm from '../Forms/MainForm.vue';
 				visible: false,
 				modelTitle: "Add Documents",
 				documentsInputs: [
-					{ 	name: 'location', label: 'File Name', type:'uploadFile', rules: ['required'],
+					{ 	name: 'location', label: 'Choose File', type:'uploadFile', rules: ['required'],
 						  actionPath: process.env.VUE_APP_SYSTEM_DOMAIN + '/documents/addFile'
 					},
-					{ name: 'name', label: 'Upload File', type:'text', rules: ['required']},
+					{ name: 'name', label: 'Document Name', type:'text', placeholder:'Type Name', rules: ['required']},
       				{ name: 'type', label: 'Type', placeholder:'Enter type', type:'selectBox', 'options': [
 						{value: 'insurance', text: 'Insurance'},
 						{value: 'work_order', text: 'Work Order'},
@@ -70,7 +70,8 @@ import MainForm from '../Forms/MainForm.vue';
 			}
 		},
 		mounted() {
-		  this.documentsInputs[0].userToken = this.accessToken
+		  this.documentsInputs[0].userToken = this.accessToken;
+		  this.documentsInputs[0].BuildingID =  this.BuildingID;
 		},
 		computed: {
 	    formattedDate() {
@@ -82,7 +83,8 @@ import MainForm from '../Forms/MainForm.vue';
 	    },
 			...mapState({
 				fileData: state => state.documents.UploadedFile,
-				accessToken: state => state.auth.user.accessToken
+				accessToken: state => state.auth.user.accessToken,
+				BuildingID: state => state.auth.user.building_id
 			})
 
 	  },
@@ -96,13 +98,12 @@ import MainForm from '../Forms/MainForm.vue';
 			},
 			async modalHandleOk(handleOnFinish) {
 				try {
-					console.log('modalHandleOk - uploading file',this.fileData )
 					let isValid = this.$refs.formFields.validate()
 					if(!isValid){
 						return;
 					}
 
-					let res =  await this.addDocument({document: this.$refs.formFields.formData})
+					let res =  await this.addDocument({document: this.$refs.formFields.formData, BuildingID: this.BuildingID},)
 					if(res) {
 						this.$refs.formFields.onFinish(true);
 						this.visible = false;
