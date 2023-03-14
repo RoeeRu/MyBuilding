@@ -6,7 +6,7 @@
 			<a-row type="flex" align="middle">
 				<a-col :span="24" :md="12">
 					<h5 class="font-semibold m-0">Bank Info</h5>
-					
+
 					<h6 class="font-semibold m-0">{{ bankName }}</h6>
 					<p class="text-dark">{{ bankAccountNumber }}</p>
 
@@ -18,7 +18,7 @@
 				</a-col>
 			</a-row>
 		</template>
-		<!-- credit cards 
+		<!-- credit cards
 		<a-row :gutter="[24, 24]">
 			<a-col :span="24" :md="12">
 				<a-card class="payment-method-card">
@@ -115,11 +115,11 @@ import { mapState } from 'vuex'
 					};
 					document.body.appendChild(script);
 			},
-			...mapActions('profile', ['getPlaidLinkToken', 'exchangePublicToken', 'hasBankAccout', 'getAccountData'])
+			...mapActions('building', ['getPlaidLinkToken', 'exchangePublicToken', 'hasBankAccout', 'getAccountData'])
 	  },
 		computed: {
 			...mapState({
-				validBankAccout: state => state.profile.hasBankAccout
+				validBankAccout: state => state.building.hasBankAccout
 			})
 		},
 
