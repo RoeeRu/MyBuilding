@@ -7,7 +7,10 @@
 	<div>
 		<a-row  :gutter="24" type="flex">
 			<a-col  :span="24" class="mb-24">
-				<CardMaintenanceActions></CardMaintenanceActions>
+				<CardMaintenanceActions
+					:data="table1Data"
+					:columns="table1Columns">
+				</CardMaintenanceActions>
 
 			</a-col>
 

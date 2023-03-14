@@ -13,7 +13,12 @@
 						Add Transaction
 					</a-button>
 				</a-col>
-				<a-col :span="24" :md="8">
+				<a-col :span="24" :md="2">
+				
+					<a-button type="primary" icon="download"  
+						@click="download"/>
+				</a-col>
+				<a-col :span="24" :md="7">
 					<!-- Header Search Input -->
 					<a-input-search class="header-search"  placeholder="Search for transaction…" >
 						<svg slot="prefix" width="16" height="16" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -42,11 +47,22 @@
 import MainModal from '../Modal/MainModal.vue';
 import MainForm from '../Forms/MainForm.vue';
 import { mapActions } from 'vuex'
+import { jsontoexcel } from "vue-table-to-excel";
 
 
 	export default ({
 		components: {
 		  MainModal, MainForm
+		},
+		props: {
+			data: {
+				type: Array,
+				default: () => [],
+			},
+			columns: {
+				type: Array,
+				default: () => [],
+			},
 		},
 		data() {
 			return {
@@ -65,12 +81,31 @@ import { mapActions } from 'vuex'
 			}
 		},
 		computed: {
-			randomID() {
-				const r = (Math.random() + 1).toString(36).substring(7);
-				return r;
-			},
+	    formattedDate() {
+	      const today = new Date();
+	      const year = today.getFullYear();
+	      const month = String(today.getMonth() + 1).padStart(2, '0');
+	      const day = String(today.getDate()).padStart(2, '0');
+	      return `${month}/${day}/${year}`;
+	    },
 	  },
 		methods: {
+			download() {
+				// create array from data object, add created_by_name and created_by_apt and remove created_by
+				const dataDownload = this.data.map((item) => {
+					return {
+						date: item.date,
+						source : item.source.type + " - " + item.source.details,
+						// transaction_amount is an object with amount and type. We need to convert them to numbers and multiply them to get the final amount
+						amount: item.transaction_amount.amount * item.transaction_amount.type,
+						details: item.details,
+					};
+				});
+				//get title from columns object into new array
+				const head = this.columns.map((item) => item.title);
+				const fileName = "Transactions-" + this.formattedDate + '.csv';
+				jsontoexcel.getXlsx(dataDownload, head, fileName);
+				},
 		  showModal() {
 		    this.visible = true
 		  },

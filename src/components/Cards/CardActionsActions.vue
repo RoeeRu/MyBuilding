@@ -13,6 +13,11 @@
 						Add Action Item
 					</a-button>
 				</a-col>
+				<a-col :span="24" :md="2">
+				
+					<a-button type="primary" icon="download"  
+						@click="download"/>
+				</a-col>
 				<a-col :span="24" :md="8">
 					<!-- Header Search Input -->
 					<a-input-search class="header-search"  placeholder="Search for request..." >
@@ -42,11 +47,22 @@
 import MainModal from '../Modal/MainModal.vue';
 import MainForm from '../Forms/MainForm.vue';
 import { mapActions } from 'vuex'
+import { jsontoexcel } from "vue-table-to-excel";
 
 
 	export default ({
 		components: {
 		  MainModal, MainForm
+		},
+		props: {
+			data: {
+				type: Array,
+				default: () => [],
+			},
+			columns: {
+				type: Array,
+				default: () => [],
+			},
 		},
 		data() {
 			return {
@@ -63,12 +79,33 @@ import { mapActions } from 'vuex'
 			}
 		},
 		computed: {
-			randomID() {
-				const r = (Math.random() + 1).toString(36).substring(7);
-				return r;
-			},
-	  },
+	    formattedDate() {
+	      const today = new Date();
+	      const year = today.getFullYear();
+	      const month = String(today.getMonth() + 1).padStart(2, '0');
+	      const day = String(today.getDate()).padStart(2, '0');
+	      return `${month}/${day}/${year}`;
+	    },
+		},
 		methods: {
+			download() {
+				// create array from data object, add created_by_name and created_by_apt and remove created_by
+				const dataDownload = this.data.map((item) => {
+					return {
+						item : item.item,
+						created_by : item.created_by.created_by_name + " - " + item.created_by.created_by_apt,
+						status: item.status,
+						details: item.details,
+						date: item.due_date,
+					};
+				});
+				//get title from columns object into new array
+				const head = this.columns.map((item) => item.title);
+				const fileName = "Maintenance Issues-" + this.formattedDate + '.csv';
+				console.log("download", dataDownload, head, fileName);
+				jsontoexcel.getXlsx(dataDownload, head, fileName);
+				},
+
 		  showModal() {
 		    this.visible = true
 		  },
