@@ -83,14 +83,9 @@ import { jsontoexcel } from "vue-table-to-excel";
 	      const day = String(today.getDate()).padStart(2, '0');
 	      return `${month}/${day}/${year}`;
 	    },
-		randomID() {
-			const r = (Math.random() + 1).toString(36).substring(7);
-			return r;
-		},
 		},
 		methods: {
 			download() {
-				console.log("download", this.json );
 				// create array from data object, add created_by_name and created_by_apt and remove created_by
 				const dataDownload = this.data.map((item) => {
 					return {
@@ -103,7 +98,7 @@ import { jsontoexcel } from "vue-table-to-excel";
 				});
 				//get title from columns object into new array
 				const head = this.columns.map((item) => item.title);
-				const fileName = "Maintenance Issues" + this.formattedDate + '.csv';
+				const fileName = "Maintenance Issues-" + this.formattedDate + '.csv';
 				console.log("download", dataDownload, head, fileName);
 				jsontoexcel.getXlsx(dataDownload, head, fileName);
 				},

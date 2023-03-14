@@ -70,7 +70,7 @@
 				 	@handleOk="modalHandleOk"
 					:handle-cancel="modalHandleCancel"
 				>
-				<MainForm ref="formFields" :formFields="actionInputs" :formState="formState"></MainForm>
+				<MainForm ref="formFields" :formFields="actionInputs"></MainForm>
 			</MainModal>
 			</template>
 
@@ -103,16 +103,16 @@ import { mapActions } from 'vuex'
 		data() {
 			return {
 				visible: false,
-				modelTitle: "Add New Action Item",
+				modelTitle: "Edit Action Item",
 				actionInputs: [
-	        		{ name: 'item', label: 'Item', placeholder:'Enter Details', type:'text'},
-	        		{ name: 'details', label: 'Details', placeholder:'Enter Details', type:'text'},
-					{ name: 'due_date', label: 'Due Date', type:'date'},
-					{ name: 'created_by_name', label: 'Owner (Name)', placeholder: 'Enter Name', type:'text'},
-					{ name: 'created_by_apt', label: 'Owner (Aparatment)', placeholder: 'Enter Appratment', type:'text'},
+	        		{ name: 'item', label: 'Item', placeholder:'Enter Details', type:'text', rules: ['required']},
+	        		{ name: 'details', label: 'Details', placeholder:'Enter Details', type:'text', rules: ['required']},
+					{ name: 'due_date', label: 'Due Date', type:'date', rules: ['required']},
+					{ name: 'created_by_name', label: 'Owner (Name)', placeholder: 'Enter Name', type:'text', rules: ['required']},
+					{ name: 'created_by_apt', label: 'Owner (Aparatment)', placeholder: 'Enter Appratment', type:'text', rules: ['required']},
       	],
-				formState: {'item': '', 'details': '', 'due_date': null, 'created_by_apt': '', 'created_by_name': '', 'status': 'open',}
-			}
+				rowStatus: '',
+				rowKey: ''			}
 		},
 		computed: {
 			formattedDate() {
@@ -124,7 +124,7 @@ import { mapActions } from 'vuex'
 			},
 		},
 		created() {
-	     this.formState.date = this.formattedDate;
+	     //this.formState.date = this.formattedDate;
 	  
 	  },
 		methods: {
@@ -140,34 +140,44 @@ import { mapActions } from 'vuex'
 			}
 			},
 			showModal(row) {
+				this.actionInputs.forEach((name, index) => {
+					if(this.actionInputs[index].name === 'created_by_name' || this.actionInputs[index].name === 'created_by_apt'){
+						this.actionInputs[index].value = row['created_by'][this.actionInputs[index].name]
+					} else {
+						try {
+							this.actionInputs[index].value = row[this.actionInputs[index].name]
+						} catch (e) {
+							console.log('modalHandleOk error', e)
+							this.actionInputs[index].value = null
+						}
+					}
+				});
 				this.visible = true
-				this.formState.item = row.item
-				this.formState.details = row.details
-				this.formState.created_by_name = row.created_by.created_by_name
-				this.formState.created_by_apt = row.created_by.created_by_apt
-				this.formState.due_date = row.due_date
-				this.formState.status = row.status
-				this.formState.key = row.key
+				this.rowStatus = row.status
+				this.rowKey = row.key
+			  	this.rowDueDate = row.due_date
 		  },
 			modalHandleCancel() {
 				this.visible = false
-				this.formState = {'item': '', 'details': '', 'due_date': this.formattedDate, 'created_by_apt': '', 'created_by_name': ''}
 			},
 			async modalHandleOk(handleOnFinish) {
 				try {
+					let isValid = this.$refs.formFields.validate()
+					console.log('isValid', isValid)
+					if(!isValid){
+						return;
+					}
 					//this.formState.date = this.formState.date.format('YYYY-MM-DD');
-					let res = await this.updateAction({action: this.formState})
-					console.log('modalHandleOk', res)
-					if(res) {
+					let res = await this.updateAction({action: {...this.$refs.formFields.formData,
+						 ...{status: this.rowStatus, key: this.rowKey, due_date: this.rowDueDate}}})
+					console.log('res', res)
+						 if(res) {
 						this.$refs.formFields.onFinish(true);
 						this.visible = false;
-						this.formState = {'item': '', 'details': '', 'due_date': this.formattedDate, 'created_by_apt': '', 'created_by_name': '', }
 					} else {
-						console.log('modalHandleOk false', res)
 						this.$refs.formFields.onFinish(false);
 					}
 				} catch (e) {
-					console.log('modalHandleOk error', e)
 					this.$refs.formFields.onFinish(false);
 				} finally {
 					handleOnFinish()

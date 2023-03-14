@@ -111,7 +111,7 @@ export default ({
 
     this.formFields.forEach((field) => {
       const fieldValidations = {};
-
+      try {
       field.rules.forEach((rule) => {
         switch (rule) {
           case 'required':
@@ -127,6 +127,9 @@ export default ({
             break;
         }
       });
+    } catch (e) {
+        console.log('validation error',e);
+      }
 
       validations[field.name] = fieldValidations;
     });

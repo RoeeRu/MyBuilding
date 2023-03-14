@@ -41,7 +41,7 @@
 					<a-menu-item>
 						<a href="javascript:;" v-on:click="DeleteRow(row)">Delete</a>
 					</a-menu-item>
-					<a-dropdown>
+					<a-dropdown> 
 					<a class="ant-dropdown-link" @click="e => e.preventDefault()">
 					Change Status: <a-icon type="down" />
 					</a>
@@ -98,10 +98,10 @@ import { mapActions } from 'vuex'
 		data() {
 			return {
 				visible: false,
-				modelTitle: "Add Request",
+				modelTitle: "Edit Request",
 				MaintenanceInputs: [
 					{ name: 'issue', label: 'Issue', placeholder: 'Enter Date', type:'text', rules: ['required']},
-      		{ name: 'details', label: 'Details', placeholder:'Enter Details', type:'text', rules: ['required']},
+      				{ name: 'details', label: 'Details', placeholder:'Enter Details', type:'text', rules: ['required']},
 					{ name: 'created_by_name', label: 'Owner (Name)', placeholder: 'Enter Name', type:'text', rules: ['required']},
 					{ name: 'created_by_apt', label: 'Owner (Aparatment)', placeholder: 'Enter Appratment', type:'text', rules: ['required']},
       	],
@@ -123,11 +123,17 @@ import { mapActions } from 'vuex'
 			}
 			},
 			showModal(row) {
-				this.MaintenanceInputs.forEach((value, index) => {
+				this.MaintenanceInputs.forEach((name, index) => {
+					console.log( name)
 					if(this.MaintenanceInputs[index].name === 'created_by_name' || this.MaintenanceInputs[index].name === 'created_by_apt'){
 						this.MaintenanceInputs[index].value = row['created_by'][this.MaintenanceInputs[index].name]
 					} else {
-						this.MaintenanceInputs[index].value = row[this.MaintenanceInputs[index].name]
+						try {
+							this.MaintenanceInputs[index].value = row[this.MaintenanceInputs[index].name]
+						} catch (e) {
+							console.log('modalHandleOk error', e)
+							this.MaintenanceInputs[index].value = null
+						}
 					}
 				});
 				this.visible = true
