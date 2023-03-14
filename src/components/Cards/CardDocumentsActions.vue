@@ -49,7 +49,7 @@ import MainForm from '../Forms/MainForm.vue';
 	export default ({
 		components: {
 		  MainModal, MainForm
-		},
+		}, 
 		data() {
 			return {
 				visible: false,
@@ -58,7 +58,7 @@ import MainForm from '../Forms/MainForm.vue';
 					{ 	name: 'location', label: 'Choose File', type:'uploadFile', rules: ['required'],
 						  actionPath: process.env.VUE_APP_SYSTEM_DOMAIN + '/documents/addFile'
 					},
-					{ name: 'name', label: 'Document Name', type:'text', placeholder:'Type Name', rules: ['required']},
+				//	{ name: 'name', label: 'Document Name', type:'text', placeholder:'Type Name', rules: ['required']},
       				{ name: 'type', label: 'Type', placeholder:'Enter type', type:'selectBox', 'options': [
 						{value: 'insurance', text: 'Insurance'},
 						{value: 'work_order', text: 'Work Order'},
@@ -67,6 +67,7 @@ import MainForm from '../Forms/MainForm.vue';
 						rules: ['required']},
       				{ name: 'details', label: 'Details', placeholder:'Enter Details', type:'text', rules: []},
       	],
+		  formState: {'name':''}
 			}
 		},
 		mounted() {

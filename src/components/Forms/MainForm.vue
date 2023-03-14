@@ -76,6 +76,7 @@ export default ({
     else if (field.type === 'uploadFile') {
       this.uploadUrl = field.actionPath;
       this.$set(this.formData, field.name, '');
+      this.$set(this.localFormData, field.name, '');
       this.uploadHeaders.Authorization = 'Bearer ' + field.userToken
       this.uploadHeaders.BuildingID = field.BuildingID
     }
@@ -173,6 +174,8 @@ export default ({
             options.onSuccess(response.data, options.file)
             this.localFormData.location = response.data.url
             this.formData.location = response.data.url
+            this.localFormData.name = response.data.name
+            this.formData.name = response.data.name
             return;
           }
           options.onError('failed')
