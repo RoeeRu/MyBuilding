@@ -21,9 +21,11 @@
 					<a-menu-item>
 						<a href="javascript:;" v-on:click="showFileModal(row)">Show File</a>
 					</a-menu-item>
+					<!--
 					<a-menu-item>
 						<a href="javascript:;" v-on:click="showModal(row)">Edit</a>
 					</a-menu-item>
+					-->
 					<a-menu-item>
 						<a href="javascript:;" v-on:click="DeleteRow(row)">Delete</a>
 					</a-menu-item>
@@ -61,6 +63,7 @@ import MainModal from '../Modal/MainModal.vue';
 import MainForm from '../Forms/MainForm.vue';
 import { mapActions } from 'vuex'
 import Axios from 'axios';
+Axios.defaults.withCredentials = false;
 
 	export default ({
 		components: {
@@ -84,16 +87,15 @@ import Axios from 'axios';
 				modalTitle: "Add Document",
 				pdfUrl: '',
 				DocumentInputs: [
-					{ name: 'name', label: 'Upload File', type:'text', rules: ['required']},
-      		{ name: 'type', label: 'Type', placeholder:'Enter type', type:'selectBox', 'options': [
-						 {value: 'insurance', text: 'Insurance'},
-					   {value: 'work_order', text: 'Work Order'},
-						 {value: 'tax', text: 'Taxes'},
-					   {value: 'other', text: 'Other'}],
-						 rules: ['required']
+					{ name: 'type', label: 'Type', placeholder:'Enter type', type:'selectBox', 'options': [
+						{value: 'insurance', text: 'Insurance'},
+						{value: 'work_order', text: 'Work Order'},
+						{value: 'tax', text: 'Taxes'},
+						{value: 'other', text: 'Other'}],
+						rules: ['required']
 					},
-      		{ name: 'details', label: 'Details', placeholder:'Enter Details', type:'text', rules: ['required']}
-      	]
+					{ name: 'details', label: 'Details', placeholder:'Enter Details', type:'text', rules: ['required']}
+      			]
 			}
 		},
 		methods: {
@@ -101,7 +103,7 @@ import Axios from 'axios';
 				console.log("downloading", row);
 				Axios.get(row.location, { responseType: 'blob' })
 				.then(response => {
-					const blob = new Blob([response.data], { type: 'application/pdf' })
+					const blob = new Blob([response.data])
 					const link = document.createElement('a')
 					link.href = URL.createObjectURL(blob)
 					link.download = row.name
