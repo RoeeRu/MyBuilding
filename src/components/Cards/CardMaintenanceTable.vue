@@ -21,10 +21,13 @@
 			</template>
 
 			<template slot="status" slot-scope="status">
-				<a-tag class="tag-status" :class="status ? 'ant-tag-primary' : 'ant-tag-muted'">
-					{{ status ? "Open" : "Close" }}
+				<a-tag class="tag-status" :class="[status=='Open' ? 'ant-tag-primary' : '', status=='Closed' ? 'ant-tag-muted' : ''
+			, status=='In Progress' ? 'ant-tag-success' : '']">
+					{{ status }}
 				</a-tag>
 			</template>
+
+			
 
 
 
@@ -123,8 +126,8 @@ import { mapActions } from 'vuex'
 			}
 			},
 			showModal(row) {
-				this.MaintenanceInputs.forEach((name, index) => {
-					console.log( name)
+				this.MaintenanceInputs.forEach((value, index) => {
+					console.log(index)
 					if(this.MaintenanceInputs[index].name === 'created_by_name' || this.MaintenanceInputs[index].name === 'created_by_apt'){
 						this.MaintenanceInputs[index].value = row['created_by'][this.MaintenanceInputs[index].name]
 					} else {
