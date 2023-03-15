@@ -50,13 +50,13 @@
 					</a>
 					<a-menu slot="overlay">
 					<a-menu-item>
-						<a href="javascript:;">Open</a>
+						<a href="javascript:;" v-on:click="updateStatus(row, newStats='Open')">Open</a>
 					</a-menu-item>
 					<a-menu-item>
-						<a href="javascript:;">In Progress</a>
+						<a href="javascript:;" v-on:click="updateStatus(row, newStats='In Progress')">In Progress</a>
 					</a-menu-item>
 					<a-menu-item>
-						<a href="javascript:;">Close</a>
+						<a href="javascript:;" v-on:click="updateStatus(row, newStats='Closed')">Closed</a>
 					</a-menu-item>
 					</a-menu>
 
@@ -143,7 +143,7 @@ import { mapActions } from 'vuex'
 			  this.rowDate = row.date
 				this.rowStatus = row.status
 				this.rowKey = row.key
-		  },
+		  	},
 			modalHandleCancel() {
 				this.visible = false
 			},
@@ -167,7 +167,14 @@ import { mapActions } from 'vuex'
 				} finally {
 					handleOnFinish()
 				}
-		  },
+		  	},
+			async updateStatus(row, newStats) {
+				try {
+					let res = await this.updateMaintenance({maintenance: {status: newStats, key: row.key}})
+				} catch (e) {
+					console.log('updateStatus error', e)
+				} 
+			},
 		  ...mapActions('maintenance', ['updateMaintenance', 'deleteMaintenance'])
 		},
 	})

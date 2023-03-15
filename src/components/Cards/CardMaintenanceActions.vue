@@ -69,7 +69,7 @@ import { jsontoexcel } from "vue-table-to-excel";
 				modelTitle: "Add Request",
 				MaintenanceInputs: [
 					{ name: 'issue', label: 'Issue', placeholder: 'Enter Date', type:'text', rules: ['required']},
-      		{ name: 'details', label: 'Details', placeholder:'Enter Details', type:'text', rules: ['required']},
+      		{ name: 'details', label: 'Details', placeholder:'Enter Details', type:'text', rules: []},
 					{ name: 'created_by_name', label: 'Owner (Name)', placeholder: 'Enter Name', type:'text', rules: ['required']},
 					{ name: 'created_by_apt', label: 'Owner (Aparatment)', placeholder: 'Enter Appratment', type:'text', rules: ['required']},
       	],
@@ -115,7 +115,7 @@ import { jsontoexcel } from "vue-table-to-excel";
 					if(!isValid){
 						return;
 					}
-					let res = await this.addMaintenance({maintenance: {...this.$refs.formFields.formData, ...{status: "open", date: this.formattedDate}}})
+					let res = await this.addMaintenance({maintenance: {...this.$refs.formFields.formData, ...{status: "Open", date: this.formattedDate}}})
 					if(res) {
 						this.$refs.formFields.onFinish(true);
 						this.visible = false;

@@ -75,7 +75,7 @@ import { jsontoexcel } from "vue-table-to-excel";
 					{ name: 'created_by_name', label: 'Owner (Name)', placeholder: 'Enter Name', type:'text', rules: ['required']},
 					{ name: 'created_by_apt', label: 'Owner (Aparatment)', placeholder: 'Enter Appratment', type:'text', rules: ['required']},
       	],
-				formState: {'item': '', 'details': '', 'due_date': '', 'created_by_apt': '', 'created_by_name': '', 'status': 'open',}
+				formState: {'item': '', 'details': '', 'due_date': '', 'created_by_apt': '', 'created_by_name': '', 'status': 'Open',}
 			}
 		},
 		computed: {
