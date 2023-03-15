@@ -7,19 +7,18 @@
 // Sign In Page
 .sign-in-gateways {
   text-align: inherit;
+  margin-bottom: 20px;
+
 
   .ant-btn {
-    margin-right: 10px;
-    margin-left: 10px;
-    height: 60px;
-    width: 70px;
+	font-size: 15px;
     box-shadow: none;
 
     @media( min-width: $md ) {
-      width: 100px;
-    }
+		width: 100%;    }
     img {
-      width: 20px;
+      width: 30px;
+	  margin-left: 10px;
     }
   }
 }

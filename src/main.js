@@ -7,6 +7,7 @@ import App from './App.vue'
 import DefaultLayout from './layouts/Default.vue'
 import DashboardLayout from './layouts/Dashboard.vue'
 import DashboardRTLLayout from './layouts/DashboardRTL.vue'
+import Sign from './layouts/Sign.vue'
 import router from './router'
 import store from './store'
 import Vuex from 'vuex'
@@ -25,6 +26,7 @@ Vue.config.productionTip = false
 Vue.component("layout-default", DefaultLayout);
 Vue.component("layout-dashboard", DashboardLayout);
 Vue.component("layout-dashboard-rtl", DashboardRTLLayout);
+Vue.component("layout-sign", Sign);
 inject();
 
 

@@ -1,41 +1,35 @@
 <!--
-	This is the sign up page, it uses the dashboard layout in:
-	"./layouts/Default.vue" .
+	This is the sign in page, it uses the dashboard layout in:
+	"./layouts/Sign.vue" .
  -->
 
 <template>
-	<div>
+	<div class="sign-in">
 
-		<!-- Sign Up Image And Headings -->
-		<div class="sign-up-header" style="background-image: url('images/bg-signup.jpg')">
-			<div class="content">
-				<h1 class="mb-5">Sign Up</h1>
-				<p class="text-lg">Use these awesome forms to login or create new account in your project for free.</p>
-			</div>
-		</div>
-		<!-- / Sign Up Image And Headings -->
+		<a-row type="flex" :gutter="[24,24]" justify="space-around" align="middle">
 
-		<!-- Sign Up Form -->
-		<a-card :bordered="false" class="card-signup header-solid h-full" :bodyStyle="{paddingTop: 0}">
-			<template #title>
-				<h5 class="font-semibold text-center">Register With</h5>
-			</template>
-			<div class="sign-up-gateways">
-    			<!-- <a-button @click="handleSignUp('facebook')">
-					<img src="images/logos/logos-facebook.svg" alt="">
-				</a-button> -->
-    			<a-button @click="handleProviderSignUp('gmail')">
-					<img src="images/logos/Google__G__Logo.svg.png" alt="">
-				</a-button>
-			</div>
-			<p class="text-center my-25 font-semibold text-muted">Or</p>
-			<a-form
+			<!-- Sign In Form Column -->
+			<a-col :span="24" :md="12" :lg="{span: 12, offset: 0}" :xl="{span: 8, offset: 2}" class="col-form">
+				<h2 class="mb-15">Sign Up To Domos</h2>
+				
+				<h5 class="font-regular text-muted">Use your Google account to create an account</h5>
+				<div class="sign-in-gateways">
+	    			<a-button  @click="handleSignUp('gmail')" >
+						 
+					<span class="text">Continue with Google</span>
+						<img src="images/logos/Google__G__Logo.svg.png" alt="Continue with Google">
+					</a-button>
+				</div>
+				<h5 class="font-regular text-muted">Or enter your email and password to sign up</h5>
+
+				<!-- Sign In Form -->
+				<a-form
 				id="components-form-demo-normal-login"
 				:form="form"
 				class="login-form"
 				@submit="handleSubmit"
 			>
-				<a-form-item class="mb-10">
+			<a-form-item class="mb-10" label="Full Name" :colon="false">
 					<a-input
 						ref="name"
 						v-decorator="[
@@ -46,7 +40,7 @@
 					>
 					</a-input>
 				</a-form-item>
-				<a-form-item class="mb-10">
+				<a-form-item class="mb-10" label="Email" :colon="false">
 					<a-input
 						ref="email"
 						v-decorator="[
@@ -57,7 +51,7 @@
 					>
 					</a-input>
 				</a-form-item>
-				<a-form-item class="mb-5">
+				<a-form-item class="mb-10" label="Choose Password" :colon="false">
 					<a-input
 						ref="password"
 						v-decorator="[
@@ -88,23 +82,39 @@
 					</a-button>
 				</a-form-item>
 			</a-form>
-			<p class="font-semibold text-muted text-center">Already have an account? <router-link to="/sign-in" class="font-bold text-dark">Sign In</router-link></p>
-		</a-card>
-		<!-- / Sign Up Form -->
+				<!-- / Sign In Form -->
+
+				<p class="font-semibold text-muted">Already have an account? <router-link to="/sign-in" class="font-bold text-dark">Sign In</router-link></p>
+
+				
+			</a-col>
+			<!-- / Sign In Form Column -->
+
+
+			<!-- Sign In Image Column -->
+			<a-col :span="24" :md="12" :lg="12" :xl="6" class="col-img">
+				<img src="images/puppies.png" alt="">
+
+			</a-col>
+			<!-- Sign In Image Column -->
+
+		</a-row>
 
 	</div>
 </template>
 
 <script>
-	import store from '@/store'
 
 	export default ({
 		data() {
 			return {
-				auth: 1
+				// Binded model property for "Sign In Form" switch button for "Remember Me" .
+				rememberMe: true,
+				regFailed: false
 			}
 		},
 		beforeCreate() {
+			// Creates the form and adds to it component's "form" property.
 			this.form = this.$form.createForm(this, { name: 'normal_login' });
 		},
 		methods: {
@@ -113,26 +123,33 @@
 				e.preventDefault();
 				this.form.validateFields((err, values) => {
 					if ( !err ) {
-						console.log('Received values of form: ', values) ;
+
 					}
 				});
-				let isSignedIn = await this.$store.dispatch('registrationHandler', {regType: 'selfRegistration', email:this.$refs.email.value, password: this.$refs.password.value})
-				console.log("isSignedIn", isSignedIn);
-				if(isSignedIn) {
+				let isSignedIn = await this.$store.dispatch('loginHandler', {regType: 'selfRegistration', email:this.$refs.email.value, password: this.$refs.password.value})
+				if (isSignedIn) {
 					this.$router.push({ name: 'Dashboard' });
+				} else {
+					this.regFailed = true;
 				}
+
 			},
-			async handleProviderSignUp(type) {
-				let isSignedIn = await this.$store.dispatch('registrationHandler', {regType: type, email:this.$refs.email.value, password: this.$refs.password.value})
-				if(isSignedIn) {
+
+			async handleSignUp(type) {
+				let isSignedIn = await this.$store.dispatch('loginHandler', {regType: type})
+				if (isSignedIn) {
 					this.$router.push({ name: 'Dashboard' });
+				} else {
+					this.regFailed = true;
 				}
 			}
-
 		},
 	})
 
 </script>
 
 <style lang="scss">
+	body {
+		background-color: #ffffff;
+	}
 </style>
