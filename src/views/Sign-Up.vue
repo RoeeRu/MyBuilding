@@ -85,6 +85,7 @@
 				<!-- / Sign In Form -->
 
 				<p class="font-semibold text-muted">Already have an account? <router-link to="/sign-in" class="font-bold text-dark">Sign In</router-link></p>
+				<p class="font-semibold text-muted">Need Support? <a href="mailto:support@joindomos.com?subject=Sign Up Support" target="_blank">Email Us</a></p>
 
 				
 			</a-col>

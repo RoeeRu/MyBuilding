@@ -80,11 +80,6 @@
 		data() {
 
 			return {
-				chart_data_static:{
-					chart_labels: ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
-					income_data: [500, 500, 500, 500, 500, 500, 600, 600, 600, 600, 600, 600],
-					expenses_data: [450, 330,700, 1300, 400, 500, 330, 700, 1300, 400, 500, 330],
-			}
 			}
 		},
 		async mounted() {

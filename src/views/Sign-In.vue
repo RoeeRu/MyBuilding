@@ -60,7 +60,7 @@
 				</a-form>
 				<!-- / Sign In Form -->
 
-				<p class="font-semibold text-muted">Don't have an account? <router-link to="/sign-up" class="font-bold text-dark">Sign Up</router-link></p>
+				<p class="font-semibold text-muted">Don't have an account? Need Support? <a href="mailto:support@joindomos.com?subject=Sign In Support" target="_blank">Email Us</a></p>
 
 				
 			</a-col>
