@@ -110,7 +110,7 @@ import { mapActions } from 'vuex'
 	        		{ name: 'details', label: 'Details', placeholder:'Enter Details', type:'text', rules: ['required']},
 					{ name: 'due_date', label: 'Due Date', type:'date', rules: ['required']},
 					{ name: 'created_by_name', label: 'Owner (Name)', placeholder: 'Enter Name', type:'text', rules: ['required']},
-					{ name: 'created_by_apt', label: 'Owner (Aparatment)', placeholder: 'Enter Appratment', type:'text', rules: ['required']},
+					{ name: 'created_by_apt', label: 'Owner (Aparatment)', placeholder: 'Enter Appratment', type:'text', rules: []},
       	],
 				rowStatus: '',
 				rowKey: ''			}

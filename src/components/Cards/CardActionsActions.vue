@@ -73,9 +73,8 @@ import { jsontoexcel } from "vue-table-to-excel";
       		{ name: 'details', label: 'Details', placeholder:'Enter Details', type:'text', rules: ['required']},
 					{ name: 'due_date', label: 'Due Date', type:'date', rules: ['required']},
 					{ name: 'created_by_name', label: 'Owner (Name)', placeholder: 'Enter Name', type:'text', rules: ['required']},
-					{ name: 'created_by_apt', label: 'Owner (Aparatment)', placeholder: 'Enter Appratment', type:'text', rules: ['required']},
+					{ name: 'created_by_apt', label: 'Owner (Aparatment)', placeholder: 'Enter Appratment', type:'text', rules: []},
       	],
-				formState: {'item': '', 'details': '', 'due_date': '', 'created_by_apt': '', 'created_by_name': '', 'status': 'Open',}
 			}
 		},
 		computed: {
@@ -85,7 +84,7 @@ import { jsontoexcel } from "vue-table-to-excel";
 	      const month = String(today.getMonth() + 1).padStart(2, '0');
 	      const day = String(today.getDate()).padStart(2, '0');
 	      return `${month}/${day}/${year}`;
-	    },
+	    }, 
 		},
 		methods: {
 			download() {
@@ -118,7 +117,7 @@ import { jsontoexcel } from "vue-table-to-excel";
 					if(!isValid){
 						return;
 					}
-					let res = await this.addAction({action: this.$refs.formFields.formData})
+					let res = await this.addAction({action: {...this.$refs.formFields.formData, ...{status: "Open", date: this.formattedDate}}})
 					if(res) {
 						this.$refs.formFields.onFinish(true);
 						this.visible = false;
