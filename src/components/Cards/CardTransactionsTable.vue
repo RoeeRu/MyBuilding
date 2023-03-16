@@ -153,7 +153,7 @@ import { mapActions } from 'vuex'
 					}
 
 					let res = await this.updateTransaction({transaction: {...this.$refs.formFields.formData,
-						 ...{date: this.rowDate, status: this.rowDet, key: this.rowKey}}})
+						 ...{date: this.rowDate, key: this.rowKey}}})
 
 					console.log('modalHandleOk', res)
 					if(res) {

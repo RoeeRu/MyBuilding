@@ -17,9 +17,9 @@
 				<a-button slot="actions" type="link" @click="sendEmail(item.email)">
 					Email
 				</a-button>
-				<a-button slot="actions" type="link" @click="sendInvite(item.email, item.name)">
+				<!-- <a-button slot="actions" type="link" @click="sendInvite(item.email, item.name)">
 					Invite
-				</a-button>
+				</a-button>-->
 				<a-list-item-meta
 					:title="item.name"
 					:description="item.apartment"
