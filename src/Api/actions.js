@@ -13,6 +13,7 @@ export function getActions(idToken) {
      console.error(e.message); // "oh, no!"
      return e.message;
   });
+  
 }
 
 export function addNewAction(idToken, newActionPayload) {
