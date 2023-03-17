@@ -34,7 +34,7 @@
 				 	@handleOk="modalHandleOk"
 					:handle-cancel="modalHandleCancel"
 				>
-				<MainForm ref="formFields" :formFields="actionInputs" :formState="formState"></MainForm>
+				<MainForm ref="formFields" :formFields="actionInputs" ></MainForm>
 			</MainModal>
 		</template>
 
@@ -117,7 +117,7 @@ import { jsontoexcel } from "vue-table-to-excel";
 					if(!isValid){
 						return;
 					}
-					let res = await this.addAction({action: {...this.$refs.formFields.formData, ...{status: "Open", date: this.formattedDate}}})
+					let res = await this.addAction({action: {...this.$refs.formFields.formData, ...{status: "Open"}}})
 					if(res) {
 						this.$refs.formFields.onFinish(true);
 						this.visible = false;

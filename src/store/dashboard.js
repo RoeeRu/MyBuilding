@@ -50,8 +50,8 @@ export default {
             if(actionsRes.status) {
                 actionsNum = actionsRes.data.length;
             }
-            let actionsToPrint = Math.min(actionsNum, Math.max(2, 4-maintenanceNum));
-            let maintenanceToPrint = Math.min(maintenanceNum, Math.max(2, 4-actionsToPrint));
+            let actionsToPrint = Math.min(actionsNum, Math.max(3, 4-maintenanceNum));
+            let maintenanceToPrint = Math.min(maintenanceNum, Math.max(1, 4-actionsToPrint));
             let result = [];
             let counter = 1;
             let project = {}
