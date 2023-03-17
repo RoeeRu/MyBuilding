@@ -4,7 +4,14 @@
  -->
 
 <template>
-	<div>
+	<loading
+				 v-if="loading"
+				 :active="loading"
+				 :can-cancel="true"
+				 :on-cancel="onCancel"
+				 :is-full-page="fullPage"/>
+
+	<div v-else>
 		<!-- Counter Widgets -->
 		<a-row :gutter="24">
 			<CardDashboardWidgets
@@ -16,9 +23,9 @@
 		<!-- First row -->
 		<a-row :gutter="24" type="flex" align="stretch">
 			<a-col :span="24" :lg="16" class="mb-24">
-
 				<!-- Sales Overview Card -->
 				<CardFinanceChart
+				v-if="Object.keys(chartData).length !== 0"
 				:chart_data="chartData"></CardFinanceChart>
 				<!-- / Sales Overview Card -->
 			</a-col>
@@ -26,7 +33,7 @@
 			<a-col :span="24" :lg="8" class="mb-24">
 
 				<!-- Orders History Timeline Card -->
-				<CardTransactionHistory 
+				<CardTransactionHistory
 					:data="transactionsData"></CardTransactionHistory>
 				<!-- / Orders History Timeline Card -->
 
@@ -52,41 +59,56 @@
 <script>
 
 
-	// Line chart for "Sales Overview" card.
-	import CardFinanceChart from '../components/Cards/CardFinanceChart' ;
+		// Line chart for "Sales Overview" card.
+		import CardFinanceChart from '../components/Cards/CardFinanceChart' ;
 
-	// Orders History Timeline Card
-	import CardTransactionHistory from '../components/Cards/CardTransactionHistory.vue';
+		// Orders History Timeline Card
+		import CardTransactionHistory from '../components/Cards/CardTransactionHistory.vue';
 
-	// ProjectsDashboard card
-	import CardProjectsDashboard from '../components/Cards/CardProjectsDashboard.vue';
-	
-	import CardDashboardWidgets from '../components/Cards/CardDashboardWidgets.vue';
-	
+		// ProjectsDashboard card
+		import CardProjectsDashboard from '../components/Cards/CardProjectsDashboard.vue';
 
-	import { mapActions } from 'vuex'
-	import { mapState } from 'vuex'
-
-	
+		import CardDashboardWidgets from '../components/Cards/CardDashboardWidgets.vue';
 
 
-	export default ({
-		components: {
-    CardFinanceChart,
-    CardTransactionHistory,
-	CardProjectsDashboard,
-	CardDashboardWidgets,
-},
+		import { mapActions } from 'vuex'
+		import { mapState } from 'vuex'
+
+		import Loading from 'vue-loading-overlay';
+    import 'vue-loading-overlay/dist/vue-loading.css';
+
+
+
+		export default ({
+			components: {
+	    CardFinanceChart,
+	    CardTransactionHistory,
+			CardProjectsDashboard,
+			CardDashboardWidgets,
+			Loading
+		},
+
 		data() {
-
 			return {
+				loading: true,
+        fullPage: true
 			}
 		},
-		async mounted() {
-			await this.getTransactions();
-			await this.getWidgets();
-			await this.getProjects();
-			await this.getChart();
+
+		mounted() {
+			Promise.all([this.getWidgets(), this.getChart()])
+			.then(() => {
+				this.loading = false
+			})
+
+			this.getTransactions().catch(error => {
+          console.log('getTransactions failed');
+      });
+
+			this.getProjects().catch(error => {
+          console.log('getProjects failed');
+      });
+
 		},
 		computed: {
 			...mapState({
@@ -102,7 +124,9 @@
 				getWidgets: 'dashboard/getWidgets',
 				getProjects: 'dashboard/getProjects',
 				getChart: 'dashboard/getChart',
-
+				onCancel() {
+						console.log('User cancelled the loader.')
+				}
 			}),
 		},
 	})

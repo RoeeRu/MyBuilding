@@ -23,6 +23,7 @@
     "plaid": "^12.4.0",
     "vue": "^2.7.14",
     "vue-github-buttons": "^3.1.0",
+    "vue-loading-overlay": "3.0",
     "vue-plaid-link": "^0.6.1",
     "vue-router": "3.5.2",
     "vue-table-to-excel": "^1.0.6",
