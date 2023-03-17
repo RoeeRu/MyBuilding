@@ -170,7 +170,6 @@ export default ({
     submitTrackEvent() {
       //submit track event to Segment
       try {
-        console.log('sending segment',this.title, this.isSuccess);
         window.analytics.track('Form Submit', {
           "Form_type": "Create Ticket",
         "form_name": this.title,
@@ -179,7 +178,7 @@ export default ({
         "form_fields": this.formData,
           });
       } catch (e) {
-        console.log('segment error',e);
+          console.log('segment error',e);
       }
       
     },

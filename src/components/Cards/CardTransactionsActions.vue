@@ -30,11 +30,11 @@
 			</a-row>
 			<MainModal
 					:visible="visible"
-					:title="modelTitle"
+					:title="modalTitle"
 				 	@handleOk="modalHandleOk"
 					:handle-cancel="modalHandleCancel"
 				>
-				<MainForm ref="formFields" :formFields="transactionInputs" :title="modelTitle"></MainForm>
+				<MainForm ref="formFields" :formFields="transactionInputs" :title="modalTitle"></MainForm>
 			</MainModal>
 		</template>
 
@@ -67,7 +67,7 @@ import { jsontoexcel } from "vue-table-to-excel";
 		data() {
 			return {
 				visible: false,
-				modelTitle: "Add Transaction",
+				modalTitle: "Add Transaction",
 				transactionInputs: [
 					{ name: 'date', label: 'Transaction Date', type:'date', rules: ['required']},
 					{ name: 'type', label: 'Transaction Type', type:'selectBox', 'options': [{value: '-1', text: 'Cost'}, {value: '1', text: 'Income'}], rules: ['required']},

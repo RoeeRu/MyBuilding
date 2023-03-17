@@ -62,11 +62,11 @@
 				</a-dropdown>
 			<MainModal
 					:visible="visible"
-					:title="modelTitle"
+					:title="modalTitle"
 				 	@handleOk="modalHandleOk"
 					:handle-cancel="modalHandleCancel"
 				>
-				<MainForm ref="formFields" :formFields="transactionInputs" :isEdit="isEdit" :title="modelTitle"></MainForm>
+				<MainForm ref="formFields" :formFields="transactionInputs" :isEdit="isEdit" :title="modalTitle"></MainForm>
 			</MainModal>
 			</template>
 
@@ -98,7 +98,7 @@ import { mapActions } from 'vuex'
 		data() {
 			return {
 				visible: false,
-				modelTitle: "Add Request",
+				modalTitle: "Edit Request",
 				transactionInputs: [
 					{ name: 'date', label: 'Transaction Date', type:'date', rules: ['required']},
 					{ name: 'type', label: 'Transaction Type', type:'selectBox', 'options': [{value: '-1', text: 'Cost'}, {value: '1', text: 'Income'}], rules: ['required']},

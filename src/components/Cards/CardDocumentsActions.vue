@@ -25,11 +25,11 @@
 			</a-row>
 			<MainModal
 					:visible="visible"
-					:title="modelTitle"
+					:title="modalTitle"
 				 	@handleOk="modalHandleOk"
 					:handle-cancel="modalHandleCancel"
 				>
-				<MainForm ref="formFields" :formFields="documentsInputs" :title="modelTitle"></MainForm>
+				<MainForm ref="formFields" :formFields="documentsInputs" :title="modalTitle"></MainForm>
 			</MainModal>
 		</template>
 
@@ -53,7 +53,7 @@ import MainForm from '../Forms/MainForm.vue';
 		data() {
 			return {
 				visible: false,
-				modelTitle: "Add Documents",
+				modalTitle: "Add Documents",
 				documentsInputs: [
 					{ 	name: 'location', label: 'Choose File', type:'uploadFile', rules: ['required'],
 						  actionPath: process.env.VUE_APP_SYSTEM_DOMAIN + '/documents/addFile'
