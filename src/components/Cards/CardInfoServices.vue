@@ -70,11 +70,26 @@
 		},
 		methods: {
 			sendEmail(email_body, address, name) {
-				console.log('send invite')
 				var formattedBody = email_body+"\n"+name+"\n"+address;
 				var formattedSubject = "Join Your Building Page @ Domos";
 				window.open("mailto:hello@joindomos.com?subject="+encodeURIComponent(formattedSubject)+"&body="+encodeURIComponent(formattedBody), '_blank').focus();
+				this.submitTrackEvent();
+			},
+
+			submitTrackEvent() {
+			//submit track event to Segment
+			try {
+				console.log('segment event', this.details.title);
+				window.analytics.track('Button Clicked', {
+				"page": "Service Request",
+				"page_name": this.details.title,
+				"click_value": "1",
+				});
+			} catch (e) {
+				console.log('segment error',e);
 			}
+			
+			},
 		}
 	})
 

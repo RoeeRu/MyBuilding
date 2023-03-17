@@ -171,7 +171,7 @@ export default ({
       //submit track event to Segment
       try {
         window.analytics.track('Form Submit', {
-          "Form_type": "Create Ticket",
+          "form_type": "Create Ticket",
         "form_name": this.title,
         "form_value": "1",
         "form_status": this.isSuccess ? "Success" : "Error",
