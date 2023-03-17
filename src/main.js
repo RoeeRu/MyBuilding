@@ -12,6 +12,9 @@ import router from './router'
 import store from './store'
 import Vuex from 'vuex'
 import { inject } from '@vercel/analytics';
+import Vue2Filters from 'vue2-filters'
+
+
 
 
 // import './plugins/click-away'
@@ -19,6 +22,8 @@ import { inject } from '@vercel/analytics';
 import './scss/app.scss';
 
 Vue.use(Antd);
+Vue.use(Vue2Filters)
+
 
 Vue.config.productionTip = false
 
@@ -28,6 +33,7 @@ Vue.component("layout-dashboard", DashboardLayout);
 Vue.component("layout-dashboard-rtl", DashboardRTLLayout);
 Vue.component("layout-sign", Sign);
 inject();
+
 
 
 new Vue({
