@@ -39,7 +39,7 @@ export default {
             let maintenanceRes = await getMaintenance(rootState.auth.user.accessToken);
             let actionsRes = await getActions(rootState.auth.user.accessToken);
             if(!maintenanceRes.status && !actionsRes.status) {
-                console.log("faield", res.data);
+                console.log("no actions, no maintennace", res.data);
                 return false;
             }
             let maintenanceNum = 0;
@@ -54,29 +54,36 @@ export default {
             let maintenanceToPrint = Math.min(maintenanceNum, Math.max(2, 4-actionsToPrint));
             let result = [];
             let counter = 1;
-            for (let i = 0; i < actionsToPrint; i++) {
-                let project = {
-                    id: counter++,
-                    title: actionsRes.data[i]['item'],
-                    content: actionsRes.data[i]['details'],
-                    cover: "images/home-decor-3.jpeg",
-                    button: "View Action Items",
-                    link: "/actions",
-                    
+            let project = {}
+            let i = 0;
+            while ( result.length < actionsToPrint && i < actionsNum  ) {
+                if(actionsRes.data[i]['status'] != 'Closed') {
+                    project = {
+                        id: counter++,
+                        title: actionsRes.data[i]['item'],
+                        content: actionsRes.data[i]['details'],
+                        button: "View Action Items",
+                        link: "/actions",
+                    }
+                    result.push(project);
                 }
-                result.push(project);
+                i++;
+                
             }
-            for (let i = 0; i < maintenanceToPrint; i++) {
-                let project = {
-                    id: counter++,
-                    title: maintenanceRes.data[i]['issue'],
-                    content: maintenanceRes.data[i]['details'],
-                    cover: "images/home-decor-3.jpeg",
-                    button: "View Maintenance Requests",
-                    link: "/maintenance",
-                    
+            i = 0;
+            while ( result.length < actionsToPrint+maintenanceToPrint && i < maintenanceNum  ) {
+                if(maintenanceRes.data[i]['status'] != 'Closed') {
+                    project = {
+                        id: counter++,
+                        title: maintenanceRes.data[i]['issue'],
+                        content: maintenanceRes.data[i]['details'],
+                        button: "View Maintenance Requests",
+                        link: "/maintenance",
+                    }
+                    result.push(project);
                 }
-                result.push(project);
+                i++;
+                
             }
             
             commit('projectsInfo', result);
