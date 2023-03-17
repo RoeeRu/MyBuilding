@@ -71,7 +71,7 @@
 				 	@handleOk="modalHandleOk"
 					:handle-cancel="modalHandleCancel"
 				>
-				<MainForm ref="formFields" :formFields="actionInputs"></MainForm>
+				<MainForm ref="formFields" :formFields="actionInputs"  :title="modelTitle"></MainForm>
 			</MainModal>
 			</template>
 

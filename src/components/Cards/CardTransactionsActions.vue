@@ -34,7 +34,7 @@
 				 	@handleOk="modalHandleOk"
 					:handle-cancel="modalHandleCancel"
 				>
-				<MainForm ref="formFields" :formFields="transactionInputs"></MainForm>
+				<MainForm ref="formFields" :formFields="transactionInputs" :title="modelTitle"></MainForm>
 			</MainModal>
 		</template>
 

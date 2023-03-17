@@ -4,6 +4,7 @@
     ref="form"
     name="nest-messages"
     @finish="onFinish"
+    :title="title"
   >
 
     <a-form-item v-for="(input, index) in formFields" :key="index" :label="input.label" :prop="input.name"  :colon="false">
@@ -56,6 +57,11 @@ import axios from 'axios';
 export default ({
   components: {},
   props: {
+    title: {
+      type: String,
+      required: false,
+      default: 'form name'
+    },
     formFields: {
       type: Array,
       required: true,
@@ -142,6 +148,7 @@ export default ({
     onFinish(isSuccess) {
       //handle validation
       this.isSuccess = isSuccess
+      this.submitTrackEvent();
     },
     resetForm() {
       // form.resetFields();
@@ -158,6 +165,23 @@ export default ({
         });
       }
       return validSuccess;
+    },
+
+    submitTrackEvent() {
+      //submit track event to Segment
+      try {
+        console.log('sending segment',this.title, this.isSuccess);
+        window.analytics.track('Form Submit', {
+          "Form_type": "Create Ticket",
+        "form_name": this.title,
+        "form_value": "1",
+        "form_status": this.isSuccess ? "Success" : "Error",
+        "form_fields": this.formData,
+          });
+      } catch (e) {
+        console.log('segment error',e);
+      }
+      
     },
 
     customRequest(options) {

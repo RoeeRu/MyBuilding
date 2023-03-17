@@ -29,7 +29,7 @@
 				 	@handleOk="modalHandleOk"
 					:handle-cancel="modalHandleCancel"
 				>
-				<MainForm ref="formFields" :formFields="documentsInputs"></MainForm>
+				<MainForm ref="formFields" :formFields="documentsInputs" :title="modelTitle"></MainForm>
 			</MainModal>
 		</template>
 

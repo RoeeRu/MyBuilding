@@ -66,7 +66,7 @@
 				 	@handleOk="modalHandleOk"
 					:handle-cancel="modalHandleCancel"
 				>
-				<MainForm ref="formFields" :formFields="transactionInputs" :isEdit="isEdit"></MainForm>
+				<MainForm ref="formFields" :formFields="transactionInputs" :isEdit="isEdit" :title="modelTitle"></MainForm>
 			</MainModal>
 			</template>
 
