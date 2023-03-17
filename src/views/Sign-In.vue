@@ -93,6 +93,10 @@
 			// Creates the form and adds to it component's "form" property.
 			this.form = this.$form.createForm(this, { name: 'normal_login' });
 		},
+		mounted() {
+			
+			window.analytics.page('Sign In')
+		},
 		methods: {
 			// Handles input validation after submission.
 			async handleSubmit(e) {

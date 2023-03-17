@@ -139,6 +139,7 @@
 		},
 
 		async mounted() {
+			window.analytics.page('Services');
 			await this.getBuildingInformation();
 			await this.getUserData();
 		},

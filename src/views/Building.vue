@@ -86,6 +86,7 @@
 		async mounted() {
 			await this.getBuildingInformation();
 			await this.getMembersInformation();
+			window.analytics.page('Building')
 		},
 		methods: {
 		  handleAccountData(accountData) {
