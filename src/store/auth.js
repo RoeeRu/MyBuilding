@@ -48,6 +48,15 @@ export default {
                 user['role'] = userPersonalres.data.role;
                 commit('setUser', user);
                 console.log('user logged isLoggedIn? ' + res);
+                if (res) {
+                  console.log(user);
+                  analytics.identify("userId", {
+                    "id": user['email'],
+                    "company_id": user['building_id'],
+                    "email": user['email'],
+                    "name": user['displayName'],
+                  });
+                }
                 resolve(res);
               }).catch((error) => {
                 dispatch('setLoggedIn', false)
