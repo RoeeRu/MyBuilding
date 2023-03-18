@@ -95,6 +95,8 @@
 		},
 
 		mounted() {
+			
+			window.analytics.page('Dashboard');
 			Promise.all([this.getWidgets(), this.getChart()])
 			.then(() => {
 				this.loading = false

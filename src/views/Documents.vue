@@ -96,6 +96,7 @@
 			}
 		},
 		async mounted() {
+			window.analytics.page('Documents');
 			await this.getDocuments();
 		},
 		computed: {

@@ -38,7 +38,7 @@
 				 	@handleOk="modalHandleOk"
 					:handle-cancel="modalHandleCancel"
 				>
-				<MainForm ref="formFields" :formFields="DocumentInputs"></MainForm>
+				<MainForm ref="formFields" :formFields="DocumentInputs" :title="modalTitle"></MainForm>
 			</MainModal>
 
 			<MainModal
@@ -84,7 +84,7 @@ Axios.defaults.withCredentials = false;
 				visible: false,
 				visibleFileModal: false,
 				fileModalTitle: "Document",
-				modalTitle: "Add Document",
+				modalTitle: "Edit Document",
 				pdfUrl: '',
 				DocumentInputs: [
 					{ name: 'type', label: 'Type', placeholder:'Enter type', type:'selectBox', 'options': [

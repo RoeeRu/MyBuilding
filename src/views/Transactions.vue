@@ -88,6 +88,7 @@
 			}
 		},
 		async mounted() {
+			window.analytics.page('Transactions');
 			await this.getTransactions();
 		},
 		computed: {

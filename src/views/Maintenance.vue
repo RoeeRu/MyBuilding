@@ -108,7 +108,7 @@
 			}),
 		},
 		async mounted() {
-			console.log('Maintenance mounted'),
+			window.analytics.page('Maintenance');
 			await this.getMaintenance();
 		},
 	})

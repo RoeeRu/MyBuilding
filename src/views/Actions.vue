@@ -115,6 +115,7 @@
 		},
 		mounted() {
 			this.getActions();
+			window.analytics.page('Actions')
 		},
 	})
 
