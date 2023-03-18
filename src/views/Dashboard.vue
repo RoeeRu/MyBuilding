@@ -58,7 +58,6 @@
 
 <script>
 
-
 		// Line chart for "Sales Overview" card.
 		import CardFinanceChart from '../components/Cards/CardFinanceChart' ;
 
