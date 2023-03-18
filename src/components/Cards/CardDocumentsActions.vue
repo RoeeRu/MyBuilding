@@ -13,7 +13,7 @@
 						Add Document
 					</a-button>
 				</a-col>
-				<a-col :span="24" :md="8">
+				<a-col :span="24" :md="8" class="add-item-col">
 					<!-- Header Search Input -->
 					<a-input-search class="header-search"  placeholder="Search for document…" >
 						<svg slot="prefix" width="16" height="16" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -49,7 +49,7 @@ import MainForm from '../Forms/MainForm.vue';
 	export default ({
 		components: {
 		  MainModal, MainForm
-		}, 
+		},
 		data() {
 			return {
 				visible: false,
@@ -124,3 +124,11 @@ import MainForm from '../Forms/MainForm.vue';
 	})
 
 </script>
+
+<style media="screen">
+	@media screen and (max-width: 767px) {
+		.add-item-col {
+			padding-top: 20px; /* add desired padding value */
+		}
+	}
+</style>

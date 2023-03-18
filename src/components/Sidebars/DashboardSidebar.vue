@@ -1,5 +1,5 @@
 <template>
-	
+
 	<!-- Main Sidebar -->
 	<a-layout-sider
 		collapsible
@@ -19,7 +19,7 @@
 			<hr>
 
 			<!-- Sidebar Navigation Menu -->
-			<a-menu theme="light" mode="inline">
+			<a-menu theme="light" mode="inline" @click="handleMenuClick">
 				<a-menu-item>
 					<router-link to="/dashboard">
 						<span class="icon">
@@ -94,8 +94,8 @@
 						<span class="label">Services</span>
 					</router-link>
 				</a-menu-item>
-				
-				
+
+
 				<a-menu-item class="menu-item-header">
 					Account Pages
 				</a-menu-item>
@@ -214,13 +214,13 @@
 				type: Boolean,
 				default: false,
 			},
-			
+
 			// Main sidebar color.
 			sidebarColor: {
 				type: String,
 				default: "primary",
 			},
-			
+
 			// Main sidebar theme : light, white, dark.
 			sidebarTheme: {
 				type: String,
@@ -232,6 +232,14 @@
 				// sidebarCollapsedModel: this.sidebarCollapsed,
 			}
 		},
+		methods: {
+		  handleMenuClick() {
+				if (window.matchMedia('(max-width: 567px)').matches) {
+        	this.$emit('toggleSidebar', true);
+      	}
+
+		  }
+		}
 	})
 
 </script>
