@@ -24,10 +24,10 @@ export default {
         }
     },
     actions: {
-        
+
         async getWidgets({ state, rootState, commit }) {
             let res = await getWidgetsData(rootState.auth.user.accessToken);
-            
+
             if(!res.status) {
                 console.log("faield", res);
                 return false;
@@ -68,7 +68,7 @@ export default {
                     result.push(project);
                 }
                 i++;
-                
+
             }
             i = 0;
             while ( result.length < actionsToPrint+maintenanceToPrint && i < maintenanceNum  ) {
@@ -83,9 +83,9 @@ export default {
                     result.push(project);
                 }
                 i++;
-                
+
             }
-            
+
             commit('projectsInfo', result);
         },
 
@@ -93,6 +93,7 @@ export default {
             let res = await getChartData(rootState.auth.user.accessToken);
             if(!res.status) {
                 console.log("faield", res);
+                commit('chartInfo', {data:[]});
                 return false;
             }
             commit('chartInfo', res.data);
