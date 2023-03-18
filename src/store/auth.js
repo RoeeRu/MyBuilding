@@ -35,21 +35,20 @@ export default {
         const auth = await getAuth();
         await onAuthStateChanged(auth, async (user) => {
             if (user) {
+              const expirationTime = user.stsTokenManager.expirationTime;
+              // Check if the current time is after the expiration time plus one hour
+              const nowDate = new Date().getTime();
+              const expTime = expirationTime + (60 * 60 * 1000);
+              const isExpired = nowDate > expTime;
+              if(isExpired) {
+                dispatch('signOut')
+                console.log('user signedOut');
+                resolve(false);
+              }
               const uid = user.uid;
               user.getIdToken().then(async (idToken) => {
                 let res = await isUserLoggedIn(idToken);
-                dispatch('setLoggedIn', res)
-                let userPersonalres = await getPersonalInfo(idToken);
-                if(!userPersonalres.status) {
-                  console.log("faield getting userPersonalres", res.data);
-                  return false;
-                };
-                user['building_id'] = userPersonalres.data.building_id;
-                user['role'] = userPersonalres.data.role;
-                commit('setUser', user);
-                console.log('user logged isLoggedIn? ' + res);
                 if (res) {
-                  console.log(user);
                   analytics.identify("userId", {
                     "id": user['email'],
                     "company_id": user['building_id'],
@@ -57,19 +56,35 @@ export default {
                     "name": user['displayName'],
                   });
                 }
-                resolve(res);
+
+                dispatch('setLoggedIn', res)
+                const personalInfo = await dispatch('handlePersonalInfo', {user, idToken})
+
+                resolve(res && personalInfo);
               }).catch((error) => {
-                dispatch('setLoggedIn', false)
+                dispatch('signOut')
                 console.log('store user not logged: ' + error.message);
                 resolve(false);
               });
             } else {
-              dispatch('setLoggedIn', false);
+              dispatch('signOut')
               console.log('user not logged');
               resolve(false);
             }
         });
       });
+    },
+
+    async handlePersonalInfo({state, commit, dispatch}, data) {
+      let userPersonalres = await getPersonalInfo(data.idToken);
+      if(!userPersonalres.status) {
+        return false
+        console.log("faield getting userPersonalres", res.data);
+      };
+      data.user['building_id'] = userPersonalres.data.building_id;
+      data.user['role'] = userPersonalres.data.role;
+      commit('setUser', data.user);
+      return true
     },
 
     async registrationHandler({state, commit, dispatch}, data) {
@@ -126,6 +141,7 @@ export default {
         dispatch('setLoggedIn', false)
         return true;
       }, function(error) {
+        dispatch('setLoggedIn', false);
         return false;
         console.error('Sign Out Error', error);
       });

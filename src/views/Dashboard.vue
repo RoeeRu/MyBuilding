@@ -90,12 +90,12 @@
 		data() {
 			return {
 				loading: true,
-        fullPage: true
+        fullPage: false
 			}
 		},
 
 		mounted() {
-			
+
 			window.analytics.page('Dashboard');
 			Promise.all([this.getWidgets(), this.getChart()])
 			.then(() => {
