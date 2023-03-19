@@ -22,7 +22,7 @@
 				</a-button>-->
 				<a-list-item-meta
 					:title="item.name"
-					:description="item.apartment"
+					:description="'Apartment: ' + item.apartment"
 				>
 					<a-avatar
 					slot="avatar"
