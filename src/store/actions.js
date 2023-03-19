@@ -5,13 +5,17 @@ export default {
   namespaced: true,
   state () {
     return {
-      actions: []
+      actions: [],
+      originalActions: []
     }
   },
   mutations: {
     actionsInfo (state, actions) {
       state.actions = actions
     },
+    originalActionsInfo (state, originalActions) {
+      state.originalActions = originalActions
+    }
   },
   actions: {
     async getActions({ state, rootState, commit }) {
@@ -21,6 +25,7 @@ export default {
         return false;
       }
       commit('actionsInfo', res.data);
+      commit('originalActionsInfo', res.data);
     },
     async addAction({ state, rootState, commit }, actionPayload) {
       let res = await addNewAction(rootState.auth.user.accessToken, actionPayload);
@@ -50,6 +55,26 @@ export default {
       }
       commit('actionsInfo', res.data);
       return true;
+    },
+
+    filterActionData({ state, rootState, commit }, search) {
+      if (search.searchValue === '') {
+          commit('actionsInfo', state.originalActions);
+      } else {
+        const filteredActions =  state.originalActions.filter(row => {
+          // Check if any property of the row contains the search value
+          return Object.values(row).some(value => {
+                if (typeof value === 'object') {
+                    // Check if the object contains the search value
+                    const stringifiedValue = JSON.stringify(value)
+                    return stringifiedValue.includes(search.searchValue)
+                } else {
+                    return String(value).toLowerCase().includes(search.searchValue.toLowerCase())
+                }
+          })
+        })
+        commit('actionsInfo', filteredActions);
+      }
     }
 
   }

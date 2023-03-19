@@ -5,12 +5,16 @@ export default {
   namespaced: true,
   state () {
     return {
-      maintenance: []
+      maintenance: [],
+      originalMaintenance: []
     }
   },
   mutations: {
     maintenanceInfo (state, maintenance) {
       state.maintenance = maintenance
+    },
+    originalMaintenanceInfo (state, originalMaintenance) {
+      state.originalMaintenance = originalMaintenance
     },
   },
   actions: {
@@ -21,8 +25,9 @@ export default {
         return false;
       }
       commit('maintenanceInfo', res.data);
+      commit('originalMaintenanceInfo', res.data);
     },
-    
+
     async addMaintenance({ state, rootState, commit }, maintenancePayload) {
       let res = await addNewMaintenance(rootState.auth.user.accessToken, maintenancePayload);
       if(!res.status) {
@@ -50,8 +55,26 @@ export default {
       }
       commit('maintenanceInfo', res.data);
       return true;
+    },
+    filterMaintenanceData({ state, rootState, commit }, search) {
+      if (search.searchValue === '') {
+          commit('maintenanceInfo', state.originalMaintenance);
+      } else {
+        const filteredMaintenance =  state.originalMaintenance.filter(row => {
+          // Check if any property of the row contains the search value
+          return Object.values(row).some(value => {
+                if (typeof value === 'object') {
+                    // Check if the object contains the search value
+                    const stringifiedValue = JSON.stringify(value)
+                    return stringifiedValue.includes(search.searchValue)
+                } else {
+                    return String(value).toLowerCase().includes(search.searchValue.toLowerCase())
+                }
+          })
+        })
+        commit('maintenanceInfo', filteredMaintenance);
+      }
     }
-
 
   }
 }

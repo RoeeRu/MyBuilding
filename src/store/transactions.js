@@ -5,12 +5,16 @@ export default {
   state () {
     return {
       transactions: [],
+      originalTransactionsInfo: [],
       limit :15,
     }
   },
   mutations: {
     transactionsInfo (state, transactions) {
       state.transactions = transactions
+    },
+    originalTransactionsInfo (state, originalTransactions) {
+      state.originalTransactionsInfo = originalTransactions
     },
   },
   actions: {
@@ -21,6 +25,7 @@ export default {
         return false;
       }
       commit('transactionsInfo', res.data);
+      commit('originalTransactionsInfo', res.data);
     },
     async addTransaction({ state, rootState, commit }, transactionPayload) {
       let res = await addNewTransaction(rootState.auth.user.accessToken, transactionPayload);
@@ -48,8 +53,26 @@ export default {
       }
       commit('transactionsInfo', res.data);
       return true;
+    },
+
+    filterTransactionData({ state, rootState, commit }, search) {
+      if (search.searchValue === '') {
+          commit('transactionsInfo', state.originalTransactionsInfo);
+      } else {
+        const filteredTransactionsInfo =  state.originalTransactionsInfo.filter(row => {
+          // Check if any property of the row contains the search value
+          return Object.values(row).some(value => {
+                if (typeof value === 'object') {
+                    // Check if the object contains the search value
+                    const stringifiedValue = JSON.stringify(value)
+                    return stringifiedValue.includes(search.searchValue)
+                } else {
+                    return String(value).toLowerCase().includes(search.searchValue.toLowerCase())
+                }
+          })
+        })
+        commit('transactionsInfo', filteredTransactionsInfo);
+      }
     }
-
-
   }
 }

@@ -6,12 +6,16 @@ export default {
   state () {
     return {
       documents: [],
+      originalDocuments: [],
       UploadedFile: null
     }
   },
   mutations: {
     documentsInfo (state, documents) {
       state.documents = documents
+    },
+    originalDocumentsInfo (state, originalDocuments) {
+      state.originalDocuments = originalDocuments
     },
     fileInfo (state, UploadedFile) {
       state.UploadedFile = UploadedFile
@@ -25,6 +29,7 @@ export default {
         return false;
       }
       commit('documentsInfo', res.data);
+      commit('originalDocumentsInfo', res.data);
     },
 
     async addDocument({ state, rootState, commit }, documentPayload) {
@@ -60,6 +65,24 @@ export default {
       commit('fileInfo', file);
     },
 
-    
+    filterDocumentsData({ state, rootState, commit }, search){
+      if (search.searchValue === '') {
+          commit('documentsInfo', state.originalDocuments);
+      } else {
+        const filteredDocuments =  state.originalDocuments.filter(row => {
+          // Check if any property of the row contains the search value
+          return Object.values(row).some(value => {
+                if (typeof value === 'object') {
+                    // Check if the object contains the search value
+                    const stringifiedValue = JSON.stringify(value)
+                    return stringifiedValue.includes(search.searchValue)
+                } else {
+                    return String(value).toLowerCase().includes(search.searchValue.toLowerCase())
+                }
+          })
+        })
+        commit('documentsInfo', filteredDocuments);
+      }
+    }
   }
 }
