@@ -79,11 +79,11 @@
 			submitTrackEvent() {
 			//submit track event to Segment
 			try {
-				console.log('segment event', this.details.title);
-				window.analytics.track('Button Clicked', {
+				window.analytics.track('Service Request', {
 				"page": "Service Request",
-				"page_name": this.details.title,
+				"service_name": this.details.title,
 				"click_value": "1",
+				"request_source": "Email",
 				});
 			} catch (e) {
 				console.log('segment error',e);
