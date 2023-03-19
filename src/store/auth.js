@@ -1,8 +1,9 @@
 import { FirebaseConfig } from '../firebaseConfig';
 import * as firebase from "firebase/app";
 import { onAuthStateChanged , getAuth,signInWithPopup, GoogleAuthProvider, createUserWithEmailAndPassword, signInWithEmailAndPassword  } from "firebase/auth";
-import { isUserLoggedIn, resgiterNewApi } from '@/Api/user.js';
+import {handleSignIn,  isUserLoggedIn, resgiterNewApi } from '@/Api/user.js';
 import {getPersonalInfo} from '@/Api/profile.js';
+import jwt_decode from 'jwt-decode';
 
 
 export default {
@@ -35,18 +36,36 @@ export default {
         const auth = await getAuth();
         await onAuthStateChanged(auth, async (user) => {
             if (user) {
-              const expirationTime = user.stsTokenManager.expirationTime;
-              // Check if the current time is after the expiration time plus one hour
-              const nowDate = new Date().getTime();
-              const expTime = expirationTime + (60 * 60 * 1000);
-              const isExpired = nowDate > expTime;
-              if(isExpired) {
-                dispatch('signOut')
-                console.log('user signedOut');
-                resolve(false);
-              }
+              let isNotExpired = false;
               const uid = user.uid;
               user.getIdToken().then(async (idToken) => {
+                const decodedToken = jwt_decode(idToken);
+                const metadata = decodedToken || {};
+                // Get the expiration date from the metadata
+                const expirationDateStr = metadata.expiration_date;
+                if (expirationDateStr != undefined) {
+                  const dateObject = new Date(Date.parse(expirationDateStr));
+                  const expirationDateTimestamp = Math.floor(Date.UTC(
+                    dateObject.getFullYear(),
+                    dateObject.getMonth(),
+                    dateObject.getDate(),
+                    dateObject.getHours(),
+                    dateObject.getMinutes(),
+                    dateObject.getSeconds(),
+                    dateObject.getMilliseconds()
+                  ));
+
+                  const currentUtcTime = new Date().getTime();
+
+                  isNotExpired = expirationDateTimestamp > currentUtcTime;
+                }
+
+                if(!isNotExpired) {
+                  dispatch('signOut')
+                  console.log('user signedOut');
+                  resolve(false);
+                }
+
                 let res = await isUserLoggedIn(idToken);
                 if (res) {
                   analytics.identify("userId", {
@@ -118,11 +137,11 @@ export default {
 
       if(data.regType === 'selfRegistration') {
         return signInWithEmailAndPassword(auth, data.email, data.password)
-          .then((userCredential) => {
+          .then(async (userCredential) => {
             // Signed in
             const user = userCredential.user;
             commit('setUser', user);
-            return true;
+            return await handleSignIn(user.accessToken);
           })
           .catch((error) => {
             const errorCode = error.code;
@@ -130,7 +149,7 @@ export default {
             return false;
           });
       } else {
-        return await dispatch('signInWithPopup')
+         return await dispatch('signInWithPopup')
       }
     },
 
@@ -150,16 +169,16 @@ export default {
     async signInWithPopup({state, commit}) {
       let provider = new GoogleAuthProvider();
       const auth = getAuth();
-
       return await signInWithPopup(auth, provider)
-        .then((result) => {
+        .then(async (result) => {
+
           // This gives you a Google Access Token. You can use it to access the Google API.
           const credential = GoogleAuthProvider.credentialFromResult(result);
           const token = credential.accessToken;
           // The signed-in user info.
           const user = result.user;
           commit('setUser', user);
-          return true;
+          return await handleSignIn(user.accessToken);
 
         }).catch((error) => {
           // Handle Errors here.

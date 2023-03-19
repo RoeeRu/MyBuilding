@@ -17,3 +17,19 @@ export function isUserLoggedIn(token) {
       return response.data.status;
    });
 }
+
+
+
+export function handleSignIn(idToken) {
+  return axios.get(process.env.VUE_APP_SYSTEM_DOMAIN + '/registration/login', {
+    headers: {
+      Authorization: `Bearer ${idToken}`,
+    }
+  }).then(response => {
+      console.log(response.data);
+      return response.data.status;
+   }).catch((e) => {
+     console.error(e.message);
+     return e.message;
+  });
+}

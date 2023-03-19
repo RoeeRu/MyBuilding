@@ -11,11 +11,11 @@
 			<!-- Sign In Form Column -->
 			<a-col :span="24" :md="12" :lg="{span: 12, offset: 0}" :xl="{span: 8, offset: 2}" class="col-form">
 				<h2 class="mb-15">Sign In To Domos</h2>
-				
+
 				<h5 class="font-regular text-muted">Use your Google account to sign-in</h5>
 				<div class="sign-in-gateways">
 	    			<a-button  @click="handleSignUp('gmail')" >
-						 
+
 					<span class="text">Continue with Google</span>
 						<img src="images/logos/Google__G__Logo.svg.png" alt="Continue with Google">
 					</a-button>
@@ -50,7 +50,7 @@
     					<a-switch v-model="rememberMe" /> Remember Me
 					</a-form-item>
 					<a-form-item class="mb-10">
-							<h7 v-if="regFailed" style="color:red;">Wrong Credentials</h7>
+							<h7 v-if="regFailed" style="color:red;">Wrong Credentials </h7>
 					</a-form-item>
 					<a-form-item>
 						<a-button type="primary" block html-type="submit" class="login-form-button">
@@ -62,7 +62,7 @@
 
 				<p class="font-semibold text-muted">Don't have an account? Need Support? <a href="mailto:support@joindomos.com?subject=Sign In Support" target="_blank">Email Us</a></p>
 
-				
+
 			</a-col>
 			<!-- / Sign In Form Column -->
 
@@ -94,7 +94,7 @@
 			this.form = this.$form.createForm(this, { name: 'normal_login' });
 		},
 		mounted() {
-			
+
 			window.analytics.page('Sign In')
 		},
 		methods: {
