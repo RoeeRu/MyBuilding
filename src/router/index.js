@@ -28,18 +28,6 @@ let routes = [
 		component: () => import(/* webpackChunkName: "dashboard" */ '../views/Dashboard.vue')
 	},
 	{
-		path: '/layout',
-		name: 'Layout',
-		layout: "dashboard",
-		component: () => import('../views/Layout.vue'),
-	},
-	{
-		path: '/tables',
-		name: 'Tables',
-		layout: "dashboard",
-		component: () => import('../views/Tables.vue'),
-	},
-	{
 		path: '/actions',
 		name: 'Actions',
 		layout: "dashboard",
@@ -76,34 +64,10 @@ let routes = [
 		component: () => import('../views/Services.vue'),
 	},
 	{
-		path: '/dashboard-template',
-		name: 'Dashboard Template',
-		layout: "dashboard",
-		component: () => import('../views/DashboardTemplate.vue'),
-	},
-	{
 		path: '/billing',
 		name: 'Billing',
 		layout: "dashboard",
 		component: () => import('../views/Billing.vue'),
-	},
-	{
-		path: '/rtl',
-		name: 'RTL',
-		layout: "dashboard-rtl",
-		meta: {
-			layoutClass: 'dashboard-rtl',
-		},
-		component: () => import('../views/RTL.vue'),
-	},
-	{
-		path: '/Profile',
-		name: 'Profile',
-		layout: "dashboard",
-		meta: {
-			layoutClass: 'layout-profile',
-		},
-		component: () => import('../views/Profile.vue'),
 	},
 	{
 		path: '/sign-in',
