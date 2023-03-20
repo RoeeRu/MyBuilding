@@ -14,7 +14,7 @@
 		</div>
 		<div class="header-col header-nav">
 
-			<!-- Navigation Menu For Large Screens -->
+			<!-- Navigation Menu For Large Screens 
 			<a-menu mode="horizontal" class="menu-large">
 				<a-menu-item>
 					<router-link to="/dashboard" class="nav-link" @click="e => e.preventDefault()">
@@ -62,7 +62,7 @@
 					</router-link>
 				</a-menu-item>
 			</a-menu>
-			<!-- / Navigation Menu For Large Screens -->
+			/ Navigation Menu For Large Screens -->
 
 			<!-- Collapsible Navigation Menu For Small Screens -->
 			<div class="menu-small">
@@ -71,7 +71,7 @@
 				<a-collapse v-model="collapseNav" accordion>
 					<a-collapse-panel key="1">
 
-						<!-- Navigation Menu For Small Screens -->
+						<!-- Navigation Menu For Small Screens 
 						<a-menu mode="vertical">
 							<a-menu-item>
 								<router-link to="/dashboard" class="nav-link" @click="e => e.preventDefault()">
@@ -119,7 +119,7 @@
 								</router-link>
 							</a-menu-item>
 						</a-menu>
-						<!-- / Navigation Menu For Small Screens -->
+						 / Navigation Menu For Small Screens -->
 
 					</a-collapse-panel>
 				</a-collapse>

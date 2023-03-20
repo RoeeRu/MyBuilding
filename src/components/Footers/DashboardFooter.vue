@@ -21,16 +21,16 @@
 				<!-- Footer Navigation Menu -->
 				<a-menu mode="horizontal">
 					<a-menu-item>
-					<a href="https://joindomos.com/">Domos</a>
+					<a href="https://joindomos.com/" target="_blank">Domos</a>
 					</a-menu-item>
 					<a-menu-item>
-					<a href="https://joindomos.com/">About Us</a>
+					<a href="https://joindomos.com/" target="_blank">About Us</a>
 					</a-menu-item>
 					<a-menu-item>
-					<a href="https://joindomos.com/blog"> Blog</a>
+					<a href="https://joindomos.com/resources" target="_blank"> Blog</a>
 						</a-menu-item>
 					<a-menu-item>
-					<a href="https://app.joindomos.com/#/terms">Terms of Service</a>	
+					<a href="https://app.joindomos.com/#/terms" target="_blank">Terms of Service</a>	
 					</a-menu-item>
 				</a-menu>
 				<!-- / Footer Navigation Menu -->

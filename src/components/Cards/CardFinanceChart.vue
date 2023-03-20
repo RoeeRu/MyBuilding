@@ -6,7 +6,7 @@
 		</template>
 		<template #extra>
 			<a-badge color="primary" class="badge-dot-primary" text="Income" />
-			<a-badge color="primary" class="badge-dot-danger" borderColor="FF0000" text="Costs" />
+			<a-badge color="primary" class="badge-dot-danger" borderColor="FF0000" text="Expenses" />
 		</template>
 		<chart-line  :height="310" :data="lineChartData"></chart-line>
 	</a-card>
@@ -34,7 +34,7 @@
 				lineChartData: {
 					labels: this.chart_data.chart_labels,
 					datasets: [{
-						label: "Expenses",
+						label: "Income",
 						tension: 0.4,
 						borderWidth: 0,
 						pointRadius: 2,
