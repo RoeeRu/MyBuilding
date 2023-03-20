@@ -20,10 +20,18 @@
 
 				<!-- Footer Navigation Menu -->
 				<a-menu mode="horizontal">
-					<a-menu-item>Domos</a-menu-item>
-					<a-menu-item>About Us</a-menu-item>
-					<a-menu-item>Blog</a-menu-item>
-					<a-menu-item>License</a-menu-item>
+					<a-menu-item>
+					<a href="https://joindomos.com/">Domos</a>
+					</a-menu-item>
+					<a-menu-item>
+					<a href="https://joindomos.com/">About Us</a>
+					</a-menu-item>
+					<a-menu-item>
+					<a href="https://joindomos.com/blog"> Blog</a>
+						</a-menu-item>
+					<a-menu-item>
+					<a href="https://app.joindomos.com/#/terms">Terms of Service</a>	
+					</a-menu-item>
 				</a-menu>
 				<!-- / Footer Navigation Menu -->
 

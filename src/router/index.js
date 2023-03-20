@@ -84,6 +84,15 @@ let routes = [
 		},
 		component: () => import('../views/Sign-Up.vue'),
 	},
+	{
+		path: '/terms',
+		name: 'Terms',
+		layout: "dashboard",
+		meta: {
+			layoutClass: 'layout-sign-up',
+		},
+		component: () => import('../views/Terms.vue'),
+	},
 ]
 
 // Adding layout property from each route to the meta
