@@ -8,7 +8,7 @@
     :destroyOnClose="true"
     >
       <template #footer>
-        <a-button key="back" @click="handleCancel">Return</a-button>
+        <a-button key="back" @click="handleCancel">Cancel</a-button>
         <a-button v-if="hasSubmit" key="submit" type="primary" :loading="loading" @click="handleOk">Submit</a-button>
       </template>
       <slot></slot>
