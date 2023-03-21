@@ -10,8 +10,8 @@
 
 			<!-- Sign In Form Column -->
 			<a-col :span="24" :md="12" :lg="{span: 12, offset: 0}" :xl="{span: 8, offset: 0}" class="col-form">
-				<h2 class="mb-15">Sign In To Domos</h2>
-
+				<div class="brand"><img src="images/logo-domos.png" alt="domos" align="middle"></div>
+				
 				<h5 class="font-regular text-muted">Use your Google account to sign-in</h5>
 				<div class="sign-in-gateways">
 	    			<a-button  @click="handleSignUp('gmail')" >
