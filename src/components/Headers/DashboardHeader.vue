@@ -10,7 +10,7 @@
 				
 
 				<!-- Header Control Column -->
-				<a-col :span="24" :md="18" class="header-control">
+				<a-col :span="24" :md="23" class="header-control">
 
 					<!-- Header Control Buttons 
 					<a-dropdown :trigger="['click']" overlayClassName="header-notifications-dropdown" :getPopupContainer="() => wrapper">
@@ -55,8 +55,6 @@
 						<a-menu-item>
 							<a href="javascript:;" v-on:click="signOut()">Sign Out</a>
 						</a-menu-item>
-						<a-menu-item key="2">2nd menu item</a-menu-item>
-						<a-menu-item key="3">3rd item</a-menu-item>
 						</a-menu>
 						<a-button style="margin-left: 8px">
 							<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
