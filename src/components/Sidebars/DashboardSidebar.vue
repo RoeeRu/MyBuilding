@@ -110,9 +110,7 @@
 			</div>
 			<!-- / Sidebar Footer -->
 
-			<a-button type="primary" href="https:/joindomos.com" block target="_blank">
-				Visit joindomos.com
-			</a-button>
+			
 
 	</a-layout-sider>
 	<!-- / Main Sidebar -->
