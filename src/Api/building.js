@@ -1,9 +1,8 @@
-import axios from 'axios';
-axios.defaults.withCredentials = true;
+import axios from './index.js'
 
 
 export function getPlaidLinkToken(idToken) {
-    return axios.get(process.env.VUE_APP_SYSTEM_DOMAIN + '/building/plaidLinkToken', {
+    return axios.get('/building/plaidLinkToken', {
       headers: {
         Authorization: `Bearer ${idToken}`
       }
@@ -17,7 +16,7 @@ export function getPlaidLinkToken(idToken) {
 
 
 export function exchangePublicToken(publicToken, idToken) {
-    return axios.post(process.env.VUE_APP_SYSTEM_DOMAIN + '/building/getNewAccountData', {publicToken}, {
+    return axios.post('/building/getNewAccountData', {publicToken}, {
       headers: {
         Authorization: `Bearer ${idToken}`
       }
@@ -30,7 +29,7 @@ export function exchangePublicToken(publicToken, idToken) {
 }
 
 export function hasBankAccout(idToken) {
-    return axios.get(process.env.VUE_APP_SYSTEM_DOMAIN + '/building/hasBankAccout', {
+    return axios.get('/building/hasBankAccout', {
       headers: {
         Authorization: `Bearer ${idToken}`
       }
@@ -44,7 +43,7 @@ export function hasBankAccout(idToken) {
 
 
 export function getAccountData(idToken) {
-    return axios.get(process.env.VUE_APP_SYSTEM_DOMAIN + '/building/getAccountData', {
+    return axios.get('/building/getAccountData', {
       headers: {
         Authorization: `Bearer ${idToken}`
       }
@@ -57,7 +56,7 @@ export function getAccountData(idToken) {
 }
 
 export function getBuildingInfo(idToken) {
-    return axios.get(process.env.VUE_APP_SYSTEM_DOMAIN + '/building/getBuildingInfo', {
+    return axios.get('/building/getBuildingInfo', {
       headers: {
         Authorization: `Bearer ${idToken}`
       }
@@ -70,7 +69,7 @@ export function getBuildingInfo(idToken) {
 }
 
 export function getBuildingMembers(idToken) {
-  return axios.get(process.env.VUE_APP_SYSTEM_DOMAIN + '/building/getBuildingMembers', {
+  return axios.get('/building/getBuildingMembers', {
     headers: {
       Authorization: `Bearer ${idToken}`
     }

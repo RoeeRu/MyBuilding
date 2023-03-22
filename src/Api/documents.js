@@ -1,9 +1,9 @@
-import axios from 'axios';
-axios.defaults.withCredentials = true;
+import axios from './index.js'
 
- 
+
 export function getDocuments(idToken) {
-  return axios.get(process.env.VUE_APP_SYSTEM_DOMAIN + '/documents/getDocuments', {
+  console.log("axios", axios);
+  return axios.get('/documents/getDocuments', {
     headers: {
       Authorization: `Bearer ${idToken}`
     }
@@ -16,7 +16,7 @@ export function getDocuments(idToken) {
 }
 
 export function addNewDocument(idToken, newDocumentPayload) {
-  return axios.post(process.env.VUE_APP_SYSTEM_DOMAIN + '/documents/addDocument', newDocumentPayload, {
+  return axios.post('/documents/addDocument', newDocumentPayload, {
     headers: {
       Authorization: `Bearer ${idToken}`
     }
@@ -28,8 +28,8 @@ export function addNewDocument(idToken, newDocumentPayload) {
   });
 }
 
-export function deleteDocument(idToken, DocumentPayload) { 
-  return axios.post(process.env.VUE_APP_SYSTEM_DOMAIN + '/documents/deleteDocument',DocumentPayload, {
+export function deleteDocument(idToken, DocumentPayload) {
+  return axios.post('/documents/deleteDocument',DocumentPayload, {
     headers: {
       Authorization: `Bearer ${idToken}`
     }
@@ -42,7 +42,7 @@ export function deleteDocument(idToken, DocumentPayload) {
 }
 
 export function updateDocument(idToken, DocumentPayload) {
-  return axios.post(process.env.VUE_APP_SYSTEM_DOMAIN + '/documents/updateDocument', DocumentPayload, {
+  return axios.post('/documents/updateDocument', DocumentPayload, {
     headers: {
       Authorization: `Bearer ${idToken}`
     }

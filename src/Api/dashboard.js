@@ -1,9 +1,8 @@
-import axios from 'axios';
-axios.defaults.withCredentials = true;
+import axios from './index.js'
 
 
 export function getWidgetsData(idToken) {
-  return axios.get(process.env.VUE_APP_SYSTEM_DOMAIN + '/dashboard/getWidgetsData', {
+  return axios.get('/dashboard/getWidgetsData', {
     headers: {
       Authorization: `Bearer ${idToken}`
     }
@@ -17,7 +16,7 @@ export function getWidgetsData(idToken) {
 
 
 export function getChartData(idToken) {
-  return axios.get(process.env.VUE_APP_SYSTEM_DOMAIN + '/dashboard/getChartData', {
+  return axios.get('/dashboard/getChartData', {
     headers: {
       Authorization: `Bearer ${idToken}`
     }
@@ -28,6 +27,3 @@ export function getChartData(idToken) {
      return e.message;
   });
 }
-
-
-

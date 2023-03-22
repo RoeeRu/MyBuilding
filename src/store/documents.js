@@ -75,7 +75,7 @@ export default {
                 if (typeof value === 'object') {
                     // Check if the object contains the search value
                     const stringifiedValue = JSON.stringify(value)
-                    return stringifiedValue.includes(search.searchValue)
+                    return stringifiedValue.toLowerCase().includes(search.searchValue.toLowerCase())
                 } else {
                     return String(value).toLowerCase().includes(search.searchValue.toLowerCase())
                 }

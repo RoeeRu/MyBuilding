@@ -1,12 +1,11 @@
-import axios from 'axios';
-axios.defaults.withCredentials = true;
+import axios from './index.js'
 
 
 export function getTransactions(idToken, limit) {
-  return axios.get(process.env.VUE_APP_SYSTEM_DOMAIN + '/transactions/getTransactions', {
+  return axios.get('/transactions/getTransactions', {
     headers: {
       Authorization: `Bearer ${idToken}`,
-      
+
     },
     params: {Limit: limit}
   }).then(response => {
@@ -20,7 +19,7 @@ export function getTransactions(idToken, limit) {
 
 export function addNewTransaction(idToken, newTransactionPayload) {
   console.log("newTransactionPayload", newTransactionPayload);
-  return axios.post(process.env.VUE_APP_SYSTEM_DOMAIN + '/transactions/addTransaction', newTransactionPayload, {
+  return axios.post('/transactions/addTransaction', newTransactionPayload, {
     headers: {
       Authorization: `Bearer ${idToken}`
     }
@@ -34,7 +33,7 @@ export function addNewTransaction(idToken, newTransactionPayload) {
 }
 
 export function deleteTransaction(idToken, TransactionPayload) {
-  return axios.post(process.env.VUE_APP_SYSTEM_DOMAIN + '/transactions/deleteTransaction',TransactionPayload, {
+  return axios.post('/transactions/deleteTransaction',TransactionPayload, {
     headers: {
       Authorization: `Bearer ${idToken}`
     }
@@ -47,7 +46,7 @@ export function deleteTransaction(idToken, TransactionPayload) {
 }
 
 export function updateTransaction(idToken, TransactionPayload) {
-  return axios.post(process.env.VUE_APP_SYSTEM_DOMAIN + '/transactions/updateTransaction', TransactionPayload, {
+  return axios.post('/transactions/updateTransaction', TransactionPayload, {
     headers: {
       Authorization: `Bearer ${idToken}`
     }

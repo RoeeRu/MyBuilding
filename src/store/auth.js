@@ -4,6 +4,7 @@ import { onAuthStateChanged , getAuth,signInWithPopup, GoogleAuthProvider, creat
 import {handleSignIn,  isUserLoggedIn, resgiterNewApi } from '@/Api/user.js';
 import {getPersonalInfo} from '@/Api/profile.js';
 import jwt_decode from 'jwt-decode';
+import router from './../router/index.js'
 
 
 export default {
@@ -20,89 +21,54 @@ export default {
     SET_LOGGED_IN(state, value) {
       state.loggedIn = value
     }
+
+
   },
   actions: {
     setLoggedIn({ commit }, value) {
       commit('SET_LOGGED_IN', value)
     },
+
     async isLoggedIn({ state, commit, dispatch }) {
+      if(state.loggedIn) {
+        console.log("state.loggedIn", state.loggedIn);
+        return true;
+      }
+      FirebaseConfig.setup();
+      const auth = getAuth();
       return new Promise(async (resolve, reject) => {
-        if(state.loggedIn) {
+        const unsubscribe = auth.onAuthStateChanged(async (user) => {
+          if(!user){
+            dispatch('signOut')
+            resolve(false);
+            return;
+          }
+          unsubscribe();
+          console.log("user", user);
+          commit('setUser', user);
+          const isLogged = await isUserLoggedIn(user.accessToken)
+          if(!isLogged){
+            dispatch('signOut')
+            resolve(false);
+            return false;
+          }
+          dispatch('setLoggedIn', true)
           resolve(true);
-          return;
-        }
-        await FirebaseConfig.setup();
-
-        const auth = await getAuth();
-        await onAuthStateChanged(auth, async (user) => {
-            if (user) {
-              let isNotExpired = false;
-              const uid = user.uid;
-              user.getIdToken().then(async (idToken) => {
-                const decodedToken = jwt_decode(idToken);
-                const metadata = decodedToken || {};
-                // Get the expiration date from the metadata
-                const expirationDateStr = metadata.expiration_date;
-                if (expirationDateStr != undefined) {
-                  const dateObject = new Date(Date.parse(expirationDateStr));
-                  const expirationDateTimestamp = Math.floor(Date.UTC(
-                    dateObject.getFullYear(),
-                    dateObject.getMonth(),
-                    dateObject.getDate(),
-                    dateObject.getHours(),
-                    dateObject.getMinutes(),
-                    dateObject.getSeconds(),
-                    dateObject.getMilliseconds()
-                  ));
-
-                  const currentUtcTime = new Date().getTime();
-
-                  isNotExpired = expirationDateTimestamp > currentUtcTime;
-                }
-
-                if(!isNotExpired) {
-                  dispatch('signOut')
-                  console.log('user signedOut');
-                  resolve(false);
-                }
-
-                let res = await isUserLoggedIn(idToken);
-                if (res) {
-                  analytics.identify("userId", {
-                    "id": user['email'],
-                    "company_id": user['building_id'],
-                    "email": user['email'],
-                    "name": user['displayName'],
-                  });
-                }
-
-                dispatch('setLoggedIn', res)
-                const personalInfo = await dispatch('handlePersonalInfo', {user, idToken})
-
-                resolve(res && personalInfo);
-              }).catch((error) => {
-                dispatch('signOut')
-                console.log('store user not logged: ' + error.message);
-                resolve(false);
-              });
-            } else {
-              dispatch('signOut')
-              console.log('user not logged');
-              resolve(false);
-            }
-        });
+          return isLogged;
+        }, reject);
       });
     },
 
-    async handlePersonalInfo({state, commit, dispatch}, data) {
-      let userPersonalres = await getPersonalInfo(data.idToken);
+
+    async handlePersonalInfo({state, commit, dispatch}) {
+      let user = state.user;
+      let userPersonalres = await getPersonalInfo(user.accessToken);
       if(!userPersonalres.status) {
         return false
-        console.log("faield getting userPersonalres", res.data);
       };
-      data.user['building_id'] = userPersonalres.data.building_id;
-      data.user['role'] = userPersonalres.data.role;
-      commit('setUser', data.user);
+      user['building_id'] = userPersonalres.data.building_id;
+      user['role'] = userPersonalres.data.role;
+      commit('setUser', user);
       return true
     },
 
@@ -117,7 +83,12 @@ export default {
             commit('setUser', user);
 
             let isSignedIn = await resgiterNewApi(user);
+            if(isSignedIn) {
+              isSignedIn = await handleSignIn(state.user.accessToken);
+            }
+
             dispatch('setLoggedIn', isSignedIn)
+            await dispatch('handlePersonalInfo')
             return isSignedIn;
           })
           .catch((error) => {
@@ -128,20 +99,29 @@ export default {
             return false;
           });
       } else {
-        return await dispatch('signInWithPopup')
+        let isSignedIn = await dispatch('signInWithPopup')
+        if(isSignedIn) {
+          isSignedIn = await handleSignIn(state.user.accessToken);
+          await dispatch('handlePersonalInfo')
+        }
+
+        dispatch('setLoggedIn', isSignedIn)
+        return isSignedIn;
       }
     },
     async loginHandler({state, commit, dispatch}, data) {
       FirebaseConfig.setup();
       const auth = getAuth();
-
+      let isSignedIn;
       if(data.regType === 'selfRegistration') {
         return signInWithEmailAndPassword(auth, data.email, data.password)
           .then(async (userCredential) => {
             // Signed in
             const user = userCredential.user;
             commit('setUser', user);
-            return await handleSignIn(user.accessToken);
+            dispatch('setLoggedIn', true)
+            dispatch('logAnalytics')
+            return true;
           })
           .catch((error) => {
             const errorCode = error.code;
@@ -149,22 +129,19 @@ export default {
             return false;
           });
       } else {
-         return await dispatch('signInWithPopup')
+         let isSignedIn = await dispatch('signInWithPopup')
+         if(isSignedIn) {
+           isSignedIn = await handleSignIn(state.user.accessToken);
+           await dispatch('handlePersonalInfo')
+         }
+
+         dispatch('setLoggedIn', isSignedIn)
+         dispatch('logAnalytics')
+         return isSignedIn;
       }
     },
 
-    async signOut({state, commit, dispatch}) {
-      const auth = getAuth();
-      return auth.signOut().then(function() {
-        commit('setUser', null);
-        dispatch('setLoggedIn', false)
-        return true;
-      }, function(error) {
-        dispatch('setLoggedIn', false);
-        return false;
-        console.error('Sign Out Error', error);
-      });
-    },
+
 
     async signInWithPopup({state, commit}) {
       let provider = new GoogleAuthProvider();
@@ -178,7 +155,7 @@ export default {
           // The signed-in user info.
           const user = result.user;
           commit('setUser', user);
-          return await handleSignIn(user.accessToken);
+          return true;
 
         }).catch((error) => {
           // Handle Errors here.
@@ -188,9 +165,32 @@ export default {
           // The AuthCredential type that was used.
           const credential = GoogleAuthProvider.credentialFromError(error);
           console.log("errorMessage", errorMessage);
-          return errorMessage;
+          return false;
         });
     },
+
+    async signOut({state, commit, dispatch}) {
+      FirebaseConfig.setup();
+      const auth = await getAuth();
+      return auth.signOut().then(function() {
+        commit('setUser', null);
+        dispatch('setLoggedIn', false)
+        return true;
+      }, function(error) {
+        dispatch('setLoggedIn', false);
+        return false;
+        console.error('Sign Out Error', error);
+      });
+    },
+
+    logAnalytics({state}) {
+      analytics.identify("userId", {
+        "id": state.user['email'],
+        "company_id": state.user['building_id'],
+        "email": state.user['email'],
+        "name": state.user['displayName'],
+      });
+    }
 
   }
 }

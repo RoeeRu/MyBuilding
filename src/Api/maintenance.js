@@ -1,9 +1,8 @@
-import axios from 'axios';
-axios.defaults.withCredentials = true;
+import axios from './index.js'
 
- 
+
 export function getMaintenance(idToken) {
-  return axios.get(process.env.VUE_APP_SYSTEM_DOMAIN + '/maintenance/getMaintenance', {
+  return axios.get('/maintenance/getMaintenance', {
     headers: {
       Authorization: `Bearer ${idToken}`
     }
@@ -16,7 +15,7 @@ export function getMaintenance(idToken) {
 }
 
 export function addNewMaintenance(idToken, newMaintenancePayload) {
-  return axios.post(process.env.VUE_APP_SYSTEM_DOMAIN + '/maintenance/addMaintenance', newMaintenancePayload, {
+  return axios.post('/maintenance/addMaintenance', newMaintenancePayload, {
     headers: {
       Authorization: `Bearer ${idToken}`
     }
@@ -29,7 +28,7 @@ export function addNewMaintenance(idToken, newMaintenancePayload) {
 }
 
 export function deleteMaintenance(idToken, MaintenancePayload) {
-  return axios.post(process.env.VUE_APP_SYSTEM_DOMAIN + '/maintenance/deleteMaintenance',MaintenancePayload, {
+  return axios.post('/maintenance/deleteMaintenance',MaintenancePayload, {
     headers: {
       Authorization: `Bearer ${idToken}`
     }
@@ -42,7 +41,7 @@ export function deleteMaintenance(idToken, MaintenancePayload) {
 }
 
 export function updateMaintenance(idToken, MaintenancePayload) {
-  return axios.post(process.env.VUE_APP_SYSTEM_DOMAIN + '/maintenance/updateMaintenance', MaintenancePayload, {
+  return axios.post('/maintenance/updateMaintenance', MaintenancePayload, {
     headers: {
       Authorization: `Bearer ${idToken}`
     }

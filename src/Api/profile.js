@@ -1,8 +1,7 @@
-import axios from 'axios';
-axios.defaults.withCredentials = true;
+import axios from './index.js'
 
 export function getPersonalInfo(idToken) {
-    return axios.get(process.env.VUE_APP_SYSTEM_DOMAIN + '/profile/getPersonalInfo', {
+    return axios.get('/profile/getPersonalInfo', {
       headers: {
         Authorization: `Bearer ${idToken}`
       }
