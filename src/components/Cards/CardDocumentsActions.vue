@@ -55,7 +55,6 @@ import debounce from 'lodash/debounce'
 				modalTitle: "Add Documents",
 				documentsInputs: [
 					{ 	name: 'location', label: 'Choose File', type:'uploadFile', rules: ['required'],
-						  actionPath: process.env.VUE_APP_SYSTEM_DOMAIN + '/documents/addFile'
 					},
 				//	{ name: 'name', label: 'Document Name', type:'text', placeholder:'Type Name', rules: ['required']},
       				{ name: 'type', label: 'Type', placeholder:'Enter type', type:'selectBox', 'options': [
