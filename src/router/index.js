@@ -58,6 +58,12 @@ let routes = [
 		component: () => import('../views/Maintenance.vue'),
 	},
 	{
+		path: '/deliveries',
+		name: 'Deliveries',
+		layout: "dashboard",
+		component: () => import('../views/Deliveries.vue'),
+	},
+	{
 		path: '/services',
 		name: 'Services',
 		layout: "dashboard",
