@@ -44,7 +44,6 @@ export default {
             return;
           }
           unsubscribe();
-          console.log("user", user);
           commit('setUser', user);
           const isLogged = await isUserLoggedIn(user.accessToken)
           if(!isLogged){
@@ -52,6 +51,7 @@ export default {
             resolve(false);
             return false;
           }
+          await dispatch('handlePersonalInfo')
           dispatch('setLoggedIn', true)
           resolve(true);
           return isLogged;
