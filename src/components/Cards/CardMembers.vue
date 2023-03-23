@@ -4,9 +4,15 @@
 	<!-- Members Card - use data from members-->
 	
 	<a-card :bordered="false" class="header-solid h-full" :bodyStyle="{paddingTop: 0, paddingBottom: '16px' }">
-		<template #title>
-			<h6 class="font-semibold m-0">Members</h6>
-		</template>
+		<a-row type="flex" justify="space-between" align="middle" class="mb-4">
+			<a-col>
+				<h6 class="font-semibold m-0">Members</h6>
+			</a-col>
+			<a-col>
+				<a-button type="link">Add Member</a-button>
+				<a-button type="link" @click="sendEmail('')">Email All</a-button>
+			</a-col>
+		</a-row>
 		<a-list
 			class="members-list"
 			item-layout="horizontal"
