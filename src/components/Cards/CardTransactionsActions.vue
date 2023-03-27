@@ -69,7 +69,7 @@ import debounce from 'lodash/debounce'
 				modalTitle: "Add Transaction",
 				transactionInputs: [
 					{ name: 'date', label: 'Transaction Date', type:'date', rules: ['required']},
-					{ name: 'type', label: 'Transaction Type', type:'selectBox', 'options': [{value: '-1', text: 'Cost'}, {value: '1', text: 'Income'}], rules: ['required']},
+					{ name: 'type', label: 'Transaction Type', type:'selectBox', 'options': [{value: '-1', text: 'Expense'}, {value: '1', text: 'Income'}], rules: ['required']},
 					{ name: 'amount', label: 'Amount', placeholder:'Enter Amount', type:'currency', rules: ['required', 'numeric']},
 					{ name: 'details', label: 'Details', placeholder:'Enter Details', type:'text', rules: ['required']},
 					{ name: 'manual_name', label: 'Paid By (Name)', placeholder: 'Enter Name', type:'text', rules: ['required']},
