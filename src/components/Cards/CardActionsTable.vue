@@ -104,7 +104,7 @@ import { mapActions } from 'vuex'
 		data() {
 			return {
 				visible: false,
-				modalTitle: "Edit Action Item",
+				modalTitle: "Edit Task",
 				actionInputs: [
 	        		{ name: 'item', label: 'Item', placeholder:'Enter Details', type:'text', rules: ['required']},
 	        		{ name: 'details', label: 'Details', placeholder:'Enter Details', type:'text', rules: ['required']},
