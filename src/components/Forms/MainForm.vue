@@ -77,7 +77,8 @@ export default ({
   this.formFields.forEach(field => {
     if(field.hasOwnProperty('value')) {
       this.$set(this.localFormData, field.name, field.value);
-    } 
+      this.$set(this.formData, field.name, field.value);
+    }
     else if (field.type === 'uploadFile') {
       this.$set(this.formData, field.name, '');
       this.$set(this.localFormData, field.name, '');
@@ -173,7 +174,7 @@ export default ({
       } catch (e) {
           console.log('segment error',e);
       }
-      
+
     },
 
     

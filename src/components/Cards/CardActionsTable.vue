@@ -1,6 +1,6 @@
 <template>
 
-	<!-- 
+	<!--
 		Actions Table Card
 		In this card we have a table with actions data.
 		It gets the data from the store in:
@@ -30,9 +30,9 @@
 					{{ status }}
 				</a-tag>
 			</template>
-			
 
-			
+
+
 
 			<template slot="actionsBtn" slot-scope="row">
 				<a-dropdown>
@@ -61,7 +61,7 @@
 						<a href="javascript:;" v-on:click="updateStatus(row, newStats='Closed')">Closed</a>
 					</a-menu-item>
 					</a-menu>
-					
+
 				</a-dropdown>
 			</a-menu>
 				</a-dropdown>
@@ -86,6 +86,7 @@
 import MainModal from '../Modal/MainModal.vue';
 import MainForm from '../Forms/MainForm.vue';
 import { mapActions } from 'vuex'
+import moment from 'moment';
 
 	export default ({
 		components: {
@@ -126,36 +127,42 @@ import { mapActions } from 'vuex'
 		},
 		created() {
 	     //this.formState.date = this.formattedDate;
-	  
+
 	  },
 		methods: {
 			async DeleteRow(row) {
 			if(confirm("Do you really want to delete?")){
 				console.log("Deleting", row.key);
-			
+
 				try {
-					let res = await this.deleteAction({action: row})					
+					let res = await this.deleteAction({action: row})
 					} catch (e) {
 						console.log('modalHandleOk error', e)
-					} 
+					}
 			}
 			},
 			showModal(row) {
 				this.actionInputs.forEach((name, index) => {
-					if(this.actionInputs[index].name === 'created_by_name' || this.actionInputs[index].name === 'created_by_apt'){
-						this.actionInputs[index].value = row['created_by'][this.actionInputs[index].name]
-					} else {
 						try {
-							this.actionInputs[index].value = row[this.actionInputs[index].name]
-						} catch (e) {
-							console.log('modalHandleOk error', e)
-							this.actionInputs[index].value = null
+								if (this.actionInputs[index].name === 'created_by_name' || this.actionInputs[index].name === 'created_by_apt'){
+										this.actionInputs[index].value = row['created_by'][this.actionInputs[index].name]
+								} else if (this.actionInputs[index].name === 'due_date') {
+									const rowDate = row[this.actionInputs[index].name];
+									const momentRowDate = moment(rowDate, 'MM/DD/YYYY');
+									const date = momentRowDate.isValid() ? momentRowDate : null;
+									this.actionInputs[index].value = date
+								} else {
+									this.actionInputs[index].value = row[this.actionInputs[index].name]
+								}
+							} catch(e) {
+								console.log('modalHandleOk error', e)
+								this.actionInputs[index].value = null
+							}
 						}
-					}
-				});
-				this.visible = true
-				this.rowStatus = row.status
-				this.rowKey = row.key
+					);
+					this.visible = true
+					this.rowStatus = row.status
+					this.rowKey = row.key
 			  	this.rowDueDate = row.due_date
 		  },
 			modalHandleCancel() {
@@ -189,7 +196,7 @@ import { mapActions } from 'vuex'
 					let res = await this.updateAction({action: {status: newStats, key: row.key}})
 				} catch (e) {
 					console.log('updateStatus error', e)
-				} 
+				}
 			},
 		  ...mapActions('actions', ['updateAction', 'deleteAction'])
 		},
