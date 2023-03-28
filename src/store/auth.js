@@ -184,7 +184,7 @@ export default {
     },
 
     logAnalytics({state}) {
-      analytics.identify("userId", {
+      analytics.identify(state.user['email'], {
         "id": state.user['email'],
         "company_id": state.user['building_id'],
         "email": state.user['email'],
