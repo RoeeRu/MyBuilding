@@ -110,7 +110,7 @@
 							<path d="M14 9C13.4477 9 13 9.44771 13 10V16C13 16.5523 13.4477 17 14 17H16C16.5523 17 17 16.5523 17 16V10C17 9.44771 16.5523 9 16 9H14Z" fill="#111827"/>
 						</svg>
 					</span>
-					<h6>Need Help?</h6>
+					<h6>Got Feedback?</h6>
 					<p></p>
 					<a-button type="primary" href="mailto:support@joindomos.com" block target="_blank">
 						Email Us Now
