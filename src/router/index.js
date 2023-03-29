@@ -28,8 +28,8 @@ let routes = [
 		component: () => import(/* webpackChunkName: "dashboard" */ '../views/Dashboard.vue')
 	},
 	{
-		path: '/actions',
-		name: 'Actions',
+		path: '/projects',
+		name: 'Projects',
 		layout: "dashboard",
 		component: () => import('../views/Actions.vue'),
 	},

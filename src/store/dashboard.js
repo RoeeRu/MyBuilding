@@ -62,8 +62,8 @@ export default {
                         id: counter++,
                         title: actionsRes.data[i]['item'],
                         content: actionsRes.data[i]['details'],
-                        button: "View Tasks",
-                        link: "/actions",
+                        button: "View Projects",
+                        link: "/projects",
                     }
                     result.push(project);
                 }

@@ -94,7 +94,7 @@
                     email_body: "Hello Domos team, \n \nWe would like to use your on-demand super/handyman services. Here are some details about our needs:\n\nRequired scope of work: \n\nOne time / recurring\n\nPreferred dates / days:\nPreferred hours of visit: \n\n\nThank you, ",
                     action: "Get a quote",
                     image_url: "images/super.jpeg",
-                    description: "Schedule a one time visit from a Super to help you with your building maintenenace tasks."
+                    description: "Schedule a one time visit from a Super to help you with your building work orders."
                 },
                 vendorsCard: {
                     above_title: "On-site",

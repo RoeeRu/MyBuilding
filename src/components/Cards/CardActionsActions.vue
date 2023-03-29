@@ -10,7 +10,7 @@
 					<a-button type="primary"
 						@click="showModal"
 					>
-						Add Task
+						Add Project
 					</a-button>
 				</a-col>
 				<a-col :span="24" :md="2" :xs="12">
@@ -67,9 +67,9 @@ import debounce from 'lodash/debounce'
 		data() {
 			return {
 				visible: false,
-				modalTitle: "Add New Task",
+				modalTitle: "Add New Project",
 				actionInputs: [
-      		{ name: 'item', label: 'Item', placeholder:'Enter Title', type:'text', rules: ['required']},
+      		{ name: 'item', label: 'Project', placeholder:'Enter Title', type:'text', rules: ['required']},
       		{ name: 'details', label: 'Details', placeholder:'Enter Details', type:'text', rules: ['required']},
 					{ name: 'due_date', label: 'Due Date', type:'date', rules: ['required']},
 					{ name: 'created_by_name', label: 'Owner (Name)', placeholder: 'Enter Name', type:'text', rules: ['required']},

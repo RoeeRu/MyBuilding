@@ -3,7 +3,7 @@
 <a-card :bordered="false" class="header-solid h-full mb-24" :bodyStyle="{paddingTop: '2px'}">
 					<template #title>
 						<h4 class="font-semibold">Open Action Items</h4>
-						<p class="text-xs text-gray-500">Tasks and maintenance requests that are still open</p>
+						<p class="text-xs text-gray-500">Projects and maintenance requests that are still open</p>
 					</template>
 					<a-row type="flex" :gutter="[48,24]" align="top">
 

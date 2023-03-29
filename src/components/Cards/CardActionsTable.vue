@@ -105,9 +105,9 @@ import moment from 'moment';
 		data() {
 			return {
 				visible: false,
-				modalTitle: "Edit Task",
+				modalTitle: "Edit Project",
 				actionInputs: [
-	        		{ name: 'item', label: 'Item', placeholder:'Enter Details', type:'text', rules: ['required']},
+	        		{ name: 'item', label: 'Project', placeholder:'Enter Title', type:'text', rules: ['required']},
 	        		{ name: 'details', label: 'Details', placeholder:'Enter Details', type:'text', rules: ['required']},
 					{ name: 'due_date', label: 'Due Date', type:'date', rules: ['required']},
 					{ name: 'created_by_name', label: 'Owner (Name)', placeholder: 'Enter Name', type:'text', rules: ['required']},

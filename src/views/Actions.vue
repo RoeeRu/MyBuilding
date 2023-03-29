@@ -51,7 +51,7 @@
 	// "Actions" table list of columns and their properties.
 	const table1Columns = [
 		{
-			title: 'Item',
+			title: 'Project',
 			dataIndex: 'item',
 			scopedSlots: { customRender: 'item' },
 		},
