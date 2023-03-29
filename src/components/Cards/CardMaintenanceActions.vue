@@ -68,6 +68,7 @@ import debounce from 'lodash/debounce'
 				modalTitle: "Add Request",
 				MaintenanceInputs: [
 					{ name: 'issue', label: 'Issue', placeholder: 'Enter Title', type:'text', rules: ['required']},
+					{ name: 'area', label: 'Area', type:'selectBox', 'options': [{value: 'Common Area', text: 'Common Area'}, {value: 'In-Unit', text: 'In-Unit'}], rules: ['required']},
       		{ name: 'details', label: 'Details', placeholder:'Enter Details', type:'text', rules: []},
 					{ name: 'created_by_name', label: 'Owner (Name)', placeholder: 'Enter Name', type:'text', rules: ['required']},
 					{ name: 'created_by_apt', label: 'Owner (Apartment)', placeholder: 'Enter Appratment', type:'text', rules: ['required']},
@@ -92,13 +93,14 @@ import debounce from 'lodash/debounce'
 						date: item.date,
 						created_by : item.created_by.created_by_name + " - " + item.created_by.created_by_apt,
 						issue : item.issue,
+						area : item.area,
 						status: item.status,
 						details: item.details,
 					};
 				});
 				//get title from columns object into new array
 				const head = this.columns.map((item) => item.title);
-				const fileName = "Maintenance Issues-" + this.formattedDate + '.csv';
+				const fileName = "Work Orders -" + this.formattedDate + '.csv';
 				console.log("download", dataDownload, head, fileName);
 				jsontoexcel.getXlsx(dataDownload, head, fileName);
 				},

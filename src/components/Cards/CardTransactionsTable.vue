@@ -130,7 +130,6 @@ import { mapActions } from 'vuex'
 					if(this.transactionInputs[index].name === 'manual_name' || this.transactionInputs[index].name === 'manual_apt'){
 						this.transactionInputs[index].value = row['source'][this.transactionInputs[index].name]
 					}else if (this.transactionInputs[index].name === 'amount' || this.transactionInputs[index].name === 'type') {
-						console.log("soruece",  row['source'][this.transactionInputs[index].name]);
 						this.transactionInputs[index].value = row['transaction_amount'][this.transactionInputs[index].name]
 					} else {
 						this.transactionInputs[index].value = row[this.transactionInputs[index].name]

@@ -104,7 +104,8 @@ import { mapActions } from 'vuex'
 				modalTitle: "Edit Request",
 				MaintenanceInputs: [
 					{ name: 'issue', label: 'Issue', placeholder: 'Enter Date', type:'text', rules: ['required']},
-      				{ name: 'details', label: 'Details', placeholder:'Enter Details', type:'text', rules: ['required']},
+					{ name: 'area', label: 'Area', type:'selectBox', 'options': [{value: 'Common Area', text: 'Common Area'}, {value: 'In-Unit', text: 'In-Unit'}], rules: ['required']},
+					{ name: 'details', label: 'Details', placeholder:'Enter Details', type:'text', rules: ['required']},
 					{ name: 'created_by_name', label: 'Owner (Name)', placeholder: 'Enter Name', type:'text', rules: ['required']},
 					{ name: 'created_by_apt', label: 'Owner (Apartment)', placeholder: 'Enter Appratment', type:'text', rules: ['required']},
       	],

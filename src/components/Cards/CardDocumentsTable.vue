@@ -88,9 +88,14 @@ Axios.defaults.withCredentials = false;
 				pdfUrl: '',
 				DocumentInputs: [
 					{ name: 'type', label: 'Type', placeholder:'Enter type', type:'selectBox', 'options': [
-						{value: 'Insurance', text: 'Insurance'},
+						{value: 'insurance', text: 'Insurance'},
 						{value: 'Work Order', text: 'Work Order'},
 						{value: 'Taxes', text: 'Taxes'},
+						{value: 'Assessment', text: 'Assessment'},
+						{value: 'Bylaws', text: 'Bylaws'},
+						{value: 'Financials', text: 'Financials'},
+						{value: 'Board notes', text: 'Board notes'},
+						{value: 'Offering Plan', text: 'Offering Plan'},
 						{value: 'Other', text: 'Other'}],
 						rules: ['required']
 					},

@@ -63,6 +63,11 @@
 			class: 'font-semibold text-muted text-sm',
 		},
 		{
+			title: 'Area',
+			dataIndex: 'area',
+			class: 'font-semibold text-muted text-sm',
+		},
+		{
 			title: 'Status',
 			dataIndex: 'status',
 			scopedSlots: { customRender: 'status' },
