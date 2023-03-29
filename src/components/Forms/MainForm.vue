@@ -21,6 +21,19 @@
           <a-select-option v-for="(option, index) in input.options" :key="index" :value="option.value">{{option.text}}</a-select-option>
         </a-select>
 
+        <a-select v-else-if="input.type == 'searchSelect'"
+         v-model="localFormData[input.name]"
+          showSearch
+          placeholder="Select a person"
+          optionFilterProp="children"
+          style="width: 200px"
+          :filterOption="filterOption"
+        >
+          <a-select-option value="jack">Jack</a-select-option>
+          <a-select-option value="lucy">Lucy</a-select-option>
+          <a-select-option value="tom">Tom</a-select-option>
+        </a-select>
+
         <a-date-picker v-else-if="input.type == 'date'" v-model="localFormData[input.name]" format="MM/DD/YYYY" />
 
         <a-upload v-else-if="input.type == 'uploadFile'"
@@ -139,6 +152,9 @@ export default ({
     };
   },
   methods: {
+    filterOption(input, option) {
+      return option.componentOptions.children[0].text.toLowerCase().indexOf(input.toLowerCase()) >= 0
+    },
     onFinish(isSuccess) {
       //handle validation
       this.isSuccess = isSuccess

@@ -45,6 +45,7 @@
 import MainModal from '../Modal/MainModal.vue';
 import MainForm from '../Forms/MainForm.vue';
 import { mapActions } from 'vuex'
+	import { mapState } from 'vuex'
 import { jsontoexcel } from "vue-table-to-excel";
 import debounce from 'lodash/debounce'
 
@@ -74,11 +75,15 @@ import debounce from 'lodash/debounce'
 					{ name: 'due_date', label: 'Due Date', type:'date', rules: ['required']},
 					{ name: 'created_by_name', label: 'Owner (Name)', placeholder: 'Enter Name', type:'text', rules: ['required']},
 					{ name: 'created_by_apt', label: 'Owner (Apartment)', placeholder: 'Enter Appratment', type:'text', rules: []},
+      		{ name: 'owner', label: 'Owner', type:'searchSelect', Selectlist: this.membersInfo, rules: ['required']},
       	],
 				searchValue: ''
 			}
 		},
 		computed: {
+			...mapState({
+				membersInfo: state => state.building.membersInfo,
+			}),
 	    formattedDate() {
 	      const today = new Date();
 	      const year = today.getFullYear();
@@ -86,6 +91,10 @@ import debounce from 'lodash/debounce'
 	      const day = String(today.getDate()).padStart(2, '0');
 	      return `${month}/${day}/${year}`;
 	    },
+		},
+
+		async mounted() {
+			await this.getMembersInformation();
 		},
 		methods: {
 			download() {
@@ -108,6 +117,7 @@ import debounce from 'lodash/debounce'
 
 		  showModal() {
 		    this.visible = true
+		  	
 		  },
 			modalHandleCancel() {
 				this.visible = false
@@ -139,7 +149,12 @@ import debounce from 'lodash/debounce'
 				}, 500)
       	debouncedSearch()
 			},
-			...mapActions('actions', ['addAction', 'filterActionData'])
+			...mapActions(
+				'actions', ['addAction', 'filterActionData']),
+				
+			...mapActions({
+				getMembersInformation: 'building/getMembersInformation'
+			})
 		}
 	})
 
