@@ -101,7 +101,7 @@ import debounce from 'lodash/debounce'
 				});
 				//get title from columns object into new array
 				const head = this.columns.map((item) => item.title);
-				const fileName = "Maintenance Issues-" + this.formattedDate + '.csv';
+				const fileName = "Projects -" + this.formattedDate + '.csv';
 				console.log("download", dataDownload, head, fileName);
 				jsontoexcel.getXlsx(dataDownload, head, fileName);
 				},

@@ -77,8 +77,8 @@ export default {
                         id: counter++,
                         title: maintenanceRes.data[i]['issue'],
                         content: maintenanceRes.data[i]['details'],
-                        button: "View Maintenance Requests",
-                        link: "/maintenance",
+                        button: "View Work Orders",
+                        link: "/work-orders",
                     }
                     result.push(project);
                 }

@@ -2,8 +2,8 @@
 
 <a-card :bordered="false" class="header-solid h-full mb-24" :bodyStyle="{paddingTop: '2px'}">
 					<template #title>
-						<h4 class="font-semibold">Open Action Items</h4>
-						<p class="text-xs text-gray-500">Projects and maintenance requests that are still open</p>
+						<h4 class="font-semibold">Open Tickets</h4>
+						<p class="text-xs text-gray-500">Projects and work orders that are still open</p>
 					</template>
 					<a-row type="flex" :gutter="[48,24]" align="top">
 
@@ -19,11 +19,11 @@
 								</p>
 							<a-row type="flex" :gutter="12" class="card-footer" align="middle">
 								<a-col :span="12" >
-									<div v-if="project.link === '/actions'" class="team">
-										<a-button @click="$router.push('/actions')" size="small"> {{ project.button }}</a-button>
+									<div v-if="project.link === '/projects'" class="team">
+										<a-button @click="$router.push('/projects')" size="small"> {{ project.button }}</a-button>
 									</div>
-									<div v-else-if="project.link === '/maintenance'" class="team">
-										<a-button @click="$router.push('/maintenance')" size="small"> {{ project.button }}</a-button>
+									<div v-else-if="project.link === '/work-orders'" class="team">
+										<a-button @click="$router.push('/work-orders')" size="small"> {{ project.button }}</a-button>
 									</div>
 								</a-col>
 

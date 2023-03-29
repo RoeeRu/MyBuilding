@@ -52,8 +52,8 @@ let routes = [
 		component: () => import('../views/Documents.vue'),
 	},
 	{
-		path: '/maintenance',
-		name: 'Maintenance',
+		path: '/work-orders',
+		name: 'Work Orders',
 		layout: "dashboard",
 		component: () => import('../views/Maintenance.vue'),
 	},

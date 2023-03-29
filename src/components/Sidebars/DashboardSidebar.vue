@@ -33,6 +33,14 @@
 					</router-link>
 				</a-menu-item>
 				<a-menu-item>
+					<router-link to="/work-orders">
+						<span class="icon">
+							<svg viewBox="0 0 512 512" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" fill="#000000"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <title>maintenance-documents</title> <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"> <g id="add" fill="#000000" transform="translate(42.666667, 42.666667)"> <path d="M320,64 L405.333333,149.333333 L405.333333,426.666667 L64,426.666667 L64,64 L320,64 Z M302.326888,106.666667 L106.666667,106.666667 L106.666667,384 L362.666667,384 L362.666667,167.006445 L302.326888,106.666667 Z M256,7.10542736e-15 L298.666667,42.6666667 L42.6666667,42.6666667 L42.6666667,362.666667 L7.10542736e-15,362.666667 L7.10542736e-15,7.10542736e-15 L256,7.10542736e-15 Z M244.302904,167.174593 C260.439702,188.157298 265.883899,213.970305 260.713161,232.815619 C260.06747,235.91652 282.811168,260.09809 328.944255,305.360329 C344.0292,320.445274 344.0292,335.530218 328.944255,350.615163 C314.74666,364.812758 300.549065,365.64791 286.35147,353.120621 L211.482391,282.046388 C192.635434,287.217603 166.823081,281.773415 145.841366,265.636132 C130.452444,245.401095 125.144195,218.951922 129.431109,199.995106 L162.251622,232.815619 L195.072135,216.405362 L211.482391,183.58485 L178.661879,150.764337 C197.618105,146.477784 224.068368,151.785327 244.302904,167.174593 Z" id="Combined-Shape"> </path> </g> </g> </g></svg>
+						</span>
+						<span class="label">Work Orders</span>
+					</router-link>
+				</a-menu-item>
+				<a-menu-item>
 					<router-link to="/projects">
 						<span class="icon">
 							<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> 
@@ -68,14 +76,6 @@
 							<svg fill="#000000" viewBox="0 0 32 32" version="1.1" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <title>files</title> <path d="M16.984 16.047h-8v0.906h8v-0.906zM16.984 19.047h-8v0.969h8v-0.969zM12.016 4.016v3.016h-3.032v3.016h-2.953v18.938h13.969v-3.031h2.953v-2.938h3.016v-19h-13.953zM19.031 28.016h-12.031v-17.063h12.031v17.063zM21.984 25.047h-1.984v-15h-10.047v-2.047h12.031v17.047zM25 22.047h-2.047v-15.016h-9.969v-2.047h12.016v17.063zM16.984 25.031h-8v0.969h8v-0.969zM16.984 22.016h-8v0.969h8v-0.969zM16.999 13.016h-8v1h8v-1z"></path> </g></svg>
 						</span>
 						<span class="label">Documents</span>
-					</router-link>
-				</a-menu-item>
-				<a-menu-item>
-					<router-link to="/maintenance">
-						<span class="icon">
-							<svg viewBox="0 0 512 512" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" fill="#000000"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <title>maintenance-documents</title> <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"> <g id="add" fill="#000000" transform="translate(42.666667, 42.666667)"> <path d="M320,64 L405.333333,149.333333 L405.333333,426.666667 L64,426.666667 L64,64 L320,64 Z M302.326888,106.666667 L106.666667,106.666667 L106.666667,384 L362.666667,384 L362.666667,167.006445 L302.326888,106.666667 Z M256,7.10542736e-15 L298.666667,42.6666667 L42.6666667,42.6666667 L42.6666667,362.666667 L7.10542736e-15,362.666667 L7.10542736e-15,7.10542736e-15 L256,7.10542736e-15 Z M244.302904,167.174593 C260.439702,188.157298 265.883899,213.970305 260.713161,232.815619 C260.06747,235.91652 282.811168,260.09809 328.944255,305.360329 C344.0292,320.445274 344.0292,335.530218 328.944255,350.615163 C314.74666,364.812758 300.549065,365.64791 286.35147,353.120621 L211.482391,282.046388 C192.635434,287.217603 166.823081,281.773415 145.841366,265.636132 C130.452444,245.401095 125.144195,218.951922 129.431109,199.995106 L162.251622,232.815619 L195.072135,216.405362 L211.482391,183.58485 L178.661879,150.764337 C197.618105,146.477784 224.068368,151.785327 244.302904,167.174593 Z" id="Combined-Shape"> </path> </g> </g> </g></svg>
-						</span>
-						<span class="label">Maintenance</span>
 					</router-link>
 				</a-menu-item>
 				<a-menu-item>
