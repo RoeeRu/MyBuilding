@@ -10,7 +10,7 @@
 			</a-col>
 			<a-col>
 				<a-button type="link" @click="sendEmail(email='support@joindomos.com', subject='Please add resident', body='Please add the following residents:')">Add Resident</a-button>
-				<a-button type="link" @click="sendEmail('')">Email All</a-button>
+				<a-button type="link" @click="sendEmailAll()">Email All</a-button>
 			</a-col>
 		</a-row>
 		<a-list
@@ -58,14 +58,14 @@
 			}
 		},
 		methods: {
-			sendEmail(email, subject = '', body = '') {
-				window.open("mailto:"+ email +"?subject="+encodeURIComponent(subject) +"&body="+encodeURIComponent(body), '_blank').focus();
+			sendEmail(email, bcc, subject = '', body = '') {
+				console.log('send email to', email, bcc, subject, body)
+				window.open("mailto:"+ email +"?bcc:"+bcc+"&subject="+encodeURIComponent(subject) +"&body="+encodeURIComponent(body), '_blank').focus();
 			},
-			sendInvite(email, name) {
-				console.log('send invite')
-				var formattedBody = "";
-				var formattedSubject = "Join Your Building Page @ Domos";
-				window.open("mailto:"+ email+"?subject="+encodeURIComponent(formattedSubject)+"&body=Dear "+name+encodeURIComponent(formattedBody), '_blank').focus();
+			sendEmailAll() {
+				console.log('send bcc emails to all')
+				var emails = this.data.map(item => item.email).join(', ');
+				window.open("mailto:?bcc="+emails+"&subject="+encodeURIComponent('') +"&body="+encodeURIComponent(''), '_blank').focus();
 			}
 		}
 		
