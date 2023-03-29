@@ -6,10 +6,10 @@
 	<a-card :bordered="false" class="header-solid h-full" :bodyStyle="{paddingTop: 0, paddingBottom: '16px' }">
 		<a-row type="flex" justify="space-between" align="middle" class="mb-4">
 			<a-col>
-				<h6 class="font-semibold m-0">Members</h6>
+				<h6 class="font-semibold m-0">Residents</h6>
 			</a-col>
 			<a-col>
-				<a-button type="link">Add Member</a-button>
+				<a-button type="link" @click="sendEmail(email='support@joindomos.com', subject='Please add resident', body='Please add the following residents:')">Add Resident</a-button>
 				<a-button type="link" @click="sendEmail('')">Email All</a-button>
 			</a-col>
 		</a-row>
@@ -58,13 +58,12 @@
 			}
 		},
 		methods: {
-			sendEmail(email) {
-				console.log('send email')
-				window.open("mailto:"+ email, '_blank').focus();
+			sendEmail(email, subject = '', body = '') {
+				window.open("mailto:"+ email +"?subject="+encodeURIComponent(subject) +"&body="+encodeURIComponent(body), '_blank').focus();
 			},
 			sendInvite(email, name) {
 				console.log('send invite')
-				var formattedBody = ", \n \nPlease Use the following link to login into your account at Domos to get access to your personal portal. \nhttps://my-building-vue.vercel.app/#/sign-in \n \nThank you, \nYour Board and the Domos Team";
+				var formattedBody = "";
 				var formattedSubject = "Join Your Building Page @ Domos";
 				window.open("mailto:"+ email+"?subject="+encodeURIComponent(formattedSubject)+"&body=Dear "+name+encodeURIComponent(formattedBody), '_blank').focus();
 			}
