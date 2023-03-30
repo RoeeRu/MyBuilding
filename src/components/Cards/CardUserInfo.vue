@@ -1,5 +1,4 @@
 <template>
-
         <!-- User Profile Card -->
         <a-card :bordered="false"  :bodyStyle="{padding: 0,}">
 			<template #title>
