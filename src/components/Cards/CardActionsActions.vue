@@ -21,13 +21,13 @@
 				<a-col :span="24" :md="8" class="add-item-col">
 					<!-- Header Search Input -->
 					<a-input-search class="header-search"  placeholder="Search for request..." v-model="searchValue" @input="tableSearch" >
-						
+
 					</a-input-search>
 					<!-- / Header Search Input -->
 				</a-col>
 			</a-row>
 			<MainModal
-					:visible="visible"
+					v-if="visible"
 					:title="modalTitle"
 				 	@handleOk="modalHandleOk"
 					:handle-cancel="modalHandleCancel"

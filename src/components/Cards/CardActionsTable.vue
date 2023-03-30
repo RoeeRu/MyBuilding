@@ -73,10 +73,11 @@
 			</a-menu>
 				</a-dropdown>
 			<MainModal
-					:visible="visible"
+					 v-if="visible"
 					:title="modalTitle"
 				 	@handleOk="modalHandleOk"
 					:handle-cancel="modalHandleCancel"
+					ref="mainModal"
 				>
 				<MainForm ref="formFields" :formFields="actionInputs"  :title="modalTitle"></MainForm>
 			</MainModal>
@@ -137,10 +138,6 @@ import moment from 'moment';
 			return `${month}/${day}/${year}`;
 			},
 		},
-		created() {
-	     //this.formState.date = this.formattedDate;
-
-	  },
 		async mounted() {
 			await this.getMembersInformation();
 			this.actionInputs[5].membersInfo =  this.membersInfo;
@@ -174,7 +171,7 @@ import moment from 'moment';
 													apartment : row['owner']['apartment'],
 												};
 									this.actionInputs[index].value = value
-									
+
 								} else {
 									this.actionInputs[index].value = row[this.actionInputs[index].name]
 								}

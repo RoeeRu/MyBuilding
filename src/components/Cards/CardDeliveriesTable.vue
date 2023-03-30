@@ -27,7 +27,7 @@
 				</a-tag>
 			</template>
 
-			
+
 
 
 
@@ -44,7 +44,7 @@
 					<a-menu-item>
 						<a href="javascript:;" v-on:click="DeleteRow(row)">Delete</a>
 					</a-menu-item>
-					<a-dropdown> 
+					<a-dropdown>
 					<a class="ant-dropdown-link" @click="e => e.preventDefault()">
 					Change Status: <a-icon type="down" />
 					</a>
@@ -64,7 +64,7 @@
 			</a-menu>
 				</a-dropdown>
 			<MainModal
-					:visible="visible"
+					v-if="visible"
 					:title="modalTitle"
 				 	@handleOk="modalHandleOk"
 					:handle-cancel="modalHandleCancel"
@@ -173,7 +173,7 @@ import { mapActions } from 'vuex'
 					let res = await this.updateMaintenance({maintenance: {status: newStats, key: row.key}})
 				} catch (e) {
 					console.log('updateStatus error', e)
-				} 
+				}
 			},
 		  ...mapActions('maintenance', ['updateMaintenance', 'deleteMaintenance'])
 		},

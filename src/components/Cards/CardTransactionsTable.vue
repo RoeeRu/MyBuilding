@@ -61,7 +61,7 @@
 					</a-menu>
 				</a-dropdown>
 			<MainModal
-					:visible="visible"
+					v-if="visible"
 					:title="modalTitle"
 				 	@handleOk="modalHandleOk"
 					:handle-cancel="modalHandleCancel"

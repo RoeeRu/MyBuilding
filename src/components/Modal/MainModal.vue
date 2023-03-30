@@ -1,7 +1,8 @@
 <template>
   <div>
     <a-modal
-    v-model:visible="visible"
+    @keydown.esc="handleCancel"
+    v-model:visible="visibleModal"
     :title="title"
     @ok="handleOk"
     :mask-closable="false"
@@ -19,10 +20,6 @@
 
 export default ({
   props: {
-    visible: {
-      type: Boolean,
-      required: true,
-    },
     title: {
       type: String,
       required: false
@@ -37,10 +34,23 @@ export default ({
       default: true
     }
   },
+  watch: {
+   // Watch the `visible` prop for changes
+   visibleModal(newValue) {
+     if (!newValue) {
+       this.handleCancel()
+     }
+   }
+ },
   data() {
     return {
-      loading: false
+      loading: false,
+      visibleModal: false
     }
+  },
+  mounted() {
+    //do something after mounting vue instance
+    this.visibleModal = true;
   },
   methods: {
     async handleOk() {

@@ -11,7 +11,7 @@
 					v-text="row.name"
 					@click.prevent="downloadItem(row)" />
 			</template>
- 
+
 			<template slot="actionsBtn" slot-scope="row">
 				<a-dropdown>
 					<a class="ant-dropdown-link" @click="e => e.preventDefault()">
@@ -33,7 +33,7 @@
 				</a-dropdown>
 
 			<MainModal
-					:visible="visible"
+					v-if="visible"
 					:title="modalTitle"
 				 	@handleOk="modalHandleOk"
 					:handle-cancel="modalHandleCancel"
@@ -42,7 +42,7 @@
 			</MainModal>
 
 			<MainModal
-					:visible="visibleFileModal"
+					v-if="visibleFileModal"
 					:title="fileModalTitle"
 					@handleOk="fileModalHandleOk"
 					:handle-cancel="fileModalHandleCancel"
