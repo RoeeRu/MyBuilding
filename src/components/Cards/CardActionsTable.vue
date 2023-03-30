@@ -18,6 +18,13 @@
 				</div>
 			</template>
 
+			<template slot="owner" slot-scope="owner">
+				<div class="source-info">
+					<h6 class="m-0">{{ owner.name }}</h6>
+					<p class="m-0 font-regular text-muted">{{ owner.apartment }}</p>
+				</div>
+			</template>
+
 			<template slot="item" slot-scope="item">
 				<div class="source-info">
 					<h6 class="m-0">{{ item }}</h6>
@@ -86,6 +93,7 @@
 import MainModal from '../Modal/MainModal.vue';
 import MainForm from '../Forms/MainForm.vue';
 import { mapActions } from 'vuex'
+	import { mapState } from 'vuex'
 import moment from 'moment';
 
 	export default ({
@@ -112,11 +120,15 @@ import moment from 'moment';
 					{ name: 'due_date', label: 'Due Date', type:'date', rules: ['required']},
 					{ name: 'created_by_name', label: 'Owner (Name)', placeholder: 'Enter Name', type:'text', rules: ['required']},
 					{ name: 'created_by_apt', label: 'Owner (Apartment)', placeholder: 'Enter Appratment', type:'text', rules: []},
+      				{ name: 'owner', label: 'Owner', type:'searchSelect', rules: ['required']},
       	],
 				rowStatus: '',
 				rowKey: ''			}
 		},
 		computed: {
+			...mapState({
+				membersInfo: state => state.building.membersInfo,
+			}),
 			formattedDate() {
 			const today = new Date();
 			const year = today.getFullYear();
@@ -129,6 +141,10 @@ import moment from 'moment';
 	     //this.formState.date = this.formattedDate;
 
 	  },
+		async mounted() {
+			await this.getMembersInformation();
+			this.actionInputs[5].membersInfo =  this.membersInfo;
+		},
 		methods: {
 			async DeleteRow(row) {
 			if(confirm("Do you really want to delete?")){
@@ -151,6 +167,14 @@ import moment from 'moment';
 									const momentRowDate = moment(rowDate, 'MM/DD/YYYY');
 									const date = momentRowDate.isValid() ? momentRowDate : null;
 									this.actionInputs[index].value = date
+								} else if (this.actionInputs[index].name === 'owner') {
+									const value = {
+													name: row['owner']['name'],
+													email: row['owner']['email'],
+													apartment : row['owner']['apartment'],
+												};
+									this.actionInputs[index].value = value
+									
 								} else {
 									this.actionInputs[index].value = row[this.actionInputs[index].name]
 								}
@@ -198,7 +222,10 @@ import moment from 'moment';
 					console.log('updateStatus error', e)
 				}
 			},
-		  ...mapActions('actions', ['updateAction', 'deleteAction'])
+		  ...mapActions('actions', ['updateAction', 'deleteAction']),
+			...mapActions({
+				getMembersInformation: 'building/getMembersInformation'
+			})
 		},
 	})
 

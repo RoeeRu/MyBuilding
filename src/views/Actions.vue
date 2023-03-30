@@ -61,6 +61,12 @@
 			dataIndex: 'created_by', 
 			scopedSlots: { customRender: 'created_by' },
 		},
+		
+		{
+			title: 'Owner',
+			dataIndex: 'owner', 
+			scopedSlots: { customRender: 'owner' },
+		},
 		{
 			title: 'Status',
 			dataIndex: 'status',

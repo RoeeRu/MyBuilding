@@ -26,12 +26,9 @@
           showSearch
           placeholder="Select a person"
           optionFilterProp="children"
-          style="width: 200px"
           :filterOption="filterOption"
         >
-          <a-select-option value="jack">Jack</a-select-option>
-          <a-select-option value="lucy">Lucy</a-select-option>
-          <a-select-option value="tom">Tom</a-select-option>
+          <a-select-option v-for="(member, index) in getMembersInfo" :key="index" :value=getMemberDetails(member)>Apt. {{ member.apartment }} - {{member.name}}</a-select-option>
         </a-select>
 
         <a-date-picker v-else-if="input.type == 'date'" v-model="localFormData[input.name]" format="MM/DD/YYYY" />
@@ -97,6 +94,12 @@ export default ({
       this.$set(this.localFormData, field.name, '');
       this.BuildingID = field.BuildingID;
     }
+    else if (field.type === 'searchSelect') {
+      this.$set(this.formData, field.name, '');
+      this.$set(this.localFormData, field.name, '');
+      this.membersInfo = field.membersInfo;
+      console.log('membersInfo',this.membersInfo);
+    }
     else {
       this.$set(this.formData, field.name, '');
       this.$set(this.localFormData, field.name, '');
@@ -106,6 +109,13 @@ export default ({
   data() {
     return {
       BuildingID: '',
+      membersInfo: [
+        {
+          name: '',
+          email: '',
+          apartment: '',
+        },
+      ],
       formData: {},
       localFormData: {},
       isSuccess: true,
@@ -151,7 +161,21 @@ export default ({
       localFormData: validations,
     };
   },
+  computed: {
+    getMembersInfo() {
+      return this.membersInfo;
+    }
+  },
   methods: {
+    getMemberDetails(member) {
+      return {
+        name: member.name,
+        email: member.email,
+        apartment: member.apartment,
+      }
+    },
+    
+    
     filterOption(input, option) {
       return option.componentOptions.children[0].text.toLowerCase().indexOf(input.toLowerCase()) >= 0
     },

@@ -75,7 +75,7 @@ import debounce from 'lodash/debounce'
 					{ name: 'due_date', label: 'Due Date', type:'date', rules: ['required']},
 					{ name: 'created_by_name', label: 'Owner (Name)', placeholder: 'Enter Name', type:'text', rules: ['required']},
 					{ name: 'created_by_apt', label: 'Owner (Apartment)', placeholder: 'Enter Appratment', type:'text', rules: []},
-      		{ name: 'owner', label: 'Owner', type:'searchSelect', Selectlist: this.membersInfo, rules: ['required']},
+      		{ name: 'owner', label: 'Owner', type:'searchSelect', rules: ['required']},
       	],
 				searchValue: ''
 			}
@@ -95,6 +95,7 @@ import debounce from 'lodash/debounce'
 
 		async mounted() {
 			await this.getMembersInformation();
+			this.actionInputs[5].membersInfo =  this.membersInfo;
 		},
 		methods: {
 			download() {
@@ -106,6 +107,7 @@ import debounce from 'lodash/debounce'
 						status: item.status,
 						details: item.details,
 						date: item.due_date,
+						owner: item.owner.name + " - " + item.owner.apt
 					};
 				});
 				//get title from columns object into new array
