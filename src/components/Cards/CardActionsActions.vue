@@ -119,7 +119,7 @@ import debounce from 'lodash/debounce'
 
 		  showModal() {
 		    this.visible = true
-		  	
+
 		  },
 			modalHandleCancel() {
 				this.visible = false
@@ -153,7 +153,7 @@ import debounce from 'lodash/debounce'
 			},
 			...mapActions(
 				'actions', ['addAction', 'filterActionData']),
-				
+
 			...mapActions({
 				getMembersInformation: 'building/getMembersInformation'
 			})

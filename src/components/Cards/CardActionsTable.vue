@@ -121,7 +121,6 @@ import moment from 'moment';
 					{ name: 'due_date', label: 'Due Date', type:'date', rules: ['required']},
 					{ name: 'created_by_name', label: 'Owner (Name)', placeholder: 'Enter Name', type:'text', rules: ['required']},
 					{ name: 'created_by_apt', label: 'Owner (Apartment)', placeholder: 'Enter Appratment', type:'text', rules: []},
-      				{ name: 'owner', label: 'Owner', type:'searchSelect', rules: ['required']},
       	],
 				rowStatus: '',
 				rowKey: ''			}
@@ -198,7 +197,7 @@ import moment from 'moment';
 					}
 					//this.formState.date = this.formState.date.format('YYYY-MM-DD');
 					let res = await this.updateAction({action: {...this.$refs.formFields.formData,
-						 ...{status: this.rowStatus, key: this.rowKey, due_date: this.rowDueDate}}})
+						 ...{status: this.rowStatus, key: this.rowKey}}})
 					console.log('res', res)
 						 if(res) {
 						this.$refs.formFields.onFinish(true);

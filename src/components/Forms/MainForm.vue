@@ -174,8 +174,8 @@ export default ({
         apartment: member.apartment,
       }
     },
-    
-    
+
+
     filterOption(input, option) {
       return option.componentOptions.children[0].text.toLowerCase().indexOf(input.toLowerCase()) >= 0
     },
@@ -193,7 +193,7 @@ export default ({
       if(validSuccess) {
         this.formFields.forEach(field => {
           this.$set(this.formData, field.name, this.localFormData[field.name]);
-          if(field.type === 'date' && !this.isEdit) {
+          if(field.type === 'date') {
             this.formData[field.name] = this.formattedDate(this.formData[field.name].toDate())
           }
         });
@@ -217,9 +217,9 @@ export default ({
 
     },
 
-    
+
     customRequestUpload(options) {
-      //custom upload function to handle the upload request and response 
+      //custom upload function to handle the upload request and response
       //uploading the file to firebase storage
 
       const storage = getStorage();
@@ -249,7 +249,7 @@ export default ({
               console.log('Upload is running');
               break;
           }
-        }, 
+        },
         (error) => {
           // A full list of error codes is available at
           // https://firebase.google.com/docs/storage/web/handle-errors
@@ -267,7 +267,7 @@ export default ({
               // Unknown error occurred, inspect error.serverResponse
               break;
           }
-        }, 
+        },
         () => {
           // Upload completed successfully, now we can get the download URL
           getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {

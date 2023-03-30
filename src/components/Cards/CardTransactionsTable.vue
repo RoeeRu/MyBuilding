@@ -80,6 +80,7 @@
 import MainModal from '../Modal/MainModal.vue';
 import MainForm from '../Forms/MainForm.vue';
 import { mapActions } from 'vuex'
+import moment from 'moment';
 
 	export default ({
 		components: {
@@ -129,7 +130,12 @@ import { mapActions } from 'vuex'
 				this.transactionInputs.forEach((value, index) => {
 					if(this.transactionInputs[index].name === 'manual_name' || this.transactionInputs[index].name === 'manual_apt'){
 						this.transactionInputs[index].value = row['source'][this.transactionInputs[index].name]
-					}else if (this.transactionInputs[index].name === 'amount' || this.transactionInputs[index].name === 'type') {
+					}  else if (this.transactionInputs[index].name === 'date') {
+						const rowDate = row[this.transactionInputs[index].name];
+						const momentRowDate = moment(rowDate, 'MM/DD/YYYY');
+						const date = momentRowDate.isValid() ? momentRowDate : null;
+						this.transactionInputs[index].value = date;
+					} else if (this.transactionInputs[index].name === 'amount' || this.transactionInputs[index].name === 'type') {
 						this.transactionInputs[index].value = row['transaction_amount'][this.transactionInputs[index].name]
 					} else {
 						this.transactionInputs[index].value = row[this.transactionInputs[index].name]
@@ -150,9 +156,9 @@ import { mapActions } from 'vuex'
 					if(!isValid){
 						return;
 					}
-
+					console.log();
 					let res = await this.updateTransaction({transaction: {...this.$refs.formFields.formData,
-						 ...{date: this.rowDate, key: this.rowKey}}})
+						 ...{key: this.rowKey}}})
 
 					console.log('modalHandleOk', res)
 					if(res) {
