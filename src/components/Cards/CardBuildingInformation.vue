@@ -28,13 +28,22 @@
 			<a-descriptions-item label="Treasurer">
 				{{buildingInfo.treasurer}}
 			</a-descriptions-item>
+			<a-descriptions-item v-if="buildingInfo.super_name" label="Superintended Name">
+				{{buildingInfo.super_name}}
+			</a-descriptions-item>
+			<a-descriptions-item v-if="buildingInfo.super_email" label="Super Email">
+				<a v-bind:href="`mailto:${buildingInfo.super_email}`">{{buildingInfo.super_email}}</a> 
+			</a-descriptions-item>
+			<a-descriptions-item v-if="buildingInfo.super_phone" label="Super Phone">
+				<a v-bind:href="`tel:${buildingInfo.super_phone}`">{{buildingInfo.super_phone}}</a>
+			</a-descriptions-item>
 			<a-descriptions-item label="Main Email">
 				{{buildingInfo.email}}
 			</a-descriptions-item>
-			<a-descriptions-item label="Tax ID">
+			<a-descriptions-item v-if="buildingInfo.tax_id" label="Tax ID">
 				{{buildingInfo.tax_id}}
 			</a-descriptions-item>
-			<a-descriptions-item label="Budget 2023" contentStyle="">
+			<a-descriptions-item v-if="buildingInfo.budget" label="Budget 2023" contentStyle="">
 				{{buildingInfo.budget | currency('$', 0)}}
 			</a-descriptions-item>
 		</a-descriptions>

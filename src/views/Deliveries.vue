@@ -1,5 +1,5 @@
 <!-- 
-	This is the maintenance page, it uses the dashboard layout in: 
+	This is the delivery page, it uses the dashboard layout in: 
 	"./layouts/Dashboard.vue" .
  -->
 
@@ -8,7 +8,7 @@
 		<a-row  :gutter="24" type="flex">
 			<a-col  :span="24" class="mb-24">
 				<CardDeliveriesActions
-					:data="table1Data"
+					:data="deliveriesData"
 					:columns="table1Columns">
 				</CardDeliveriesActions>
 
@@ -23,7 +23,7 @@
 
 				<!-- Deliveries Table Card -->
 				<CardDeliveriesTable
-					:data="demoDeliveryData"
+					:data="deliveriesData"
 					:columns="table1Columns"
 				></CardDeliveriesTable>
 				<!-- / Deliveries Table Card -->
@@ -51,7 +51,7 @@
 			key: '1',
 			date: '10/01/2022',
 			created_by: {created_by_name:'John Milk', created_by_apt: 'Apt 11'},
-			issue: 'Fedex',
+			from: 'Fedex',
 			status: 'Ready',
 			details: 'Waiting in the package room',
 			actions: '',
@@ -60,7 +60,7 @@
 			key: '2',
 			date: '11/11/2022',
 			created_by: {created_by_name:'Sam Brown', created_by_apt: 'Apt 21'},
-			issue: 'Amazon',
+			from: 'Amazon',
 			status: 'Picked Up',
 			details: '',
 			actions: '',
@@ -82,7 +82,7 @@
 		},
 		{
 			title: 'Delivery From',
-			dataIndex: 'issue',
+			dataIndex: 'from',
 			class: 'font-semibold text-muted text-sm',
 		},
 		{
@@ -115,25 +115,24 @@
 
 				// Associating "Deliveries" table columns with its corresponding property.
 				table1Columns: table1Columns,
-				demoDeliveryData: demoDeliveryData,
 
 				
 			}
 		},
 		computed: {
 			...mapState({
-				table1Data: state => state.maintenance.maintenance,
+				deliveriesData: state => state.deliveries.deliveries,
 			})
 		},
 		methods: {
 			...mapActions({
-				getMaintenance: 'maintenance/getMaintenance',
+				getDeliveries: 'deliveries/getDeliveries',
 				
 			}),
 		},
 		async mounted() {
 			window.analytics.page('Deliveries');
-			await this.getMaintenance();
+			await this.getDeliveries();
 		},
 	})
 

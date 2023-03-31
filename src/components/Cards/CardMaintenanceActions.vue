@@ -65,7 +65,7 @@ import debounce from 'lodash/debounce'
 		data() {
 			return {
 				visible: false,
-				modalTitle: "Add Request",
+				modalTitle: "Add Work Order",
 				MaintenanceInputs: [
 					{ name: 'issue', label: 'Issue', placeholder: 'Enter Title', type:'text', rules: ['required']},
 					{ name: 'area', label: 'Area', type:'selectBox', 'options': [{value: 'Common Area1', text: 'Common Area'}, {value: 'In-Unit1', text: 'In-Unit'}], rules: ['required']},

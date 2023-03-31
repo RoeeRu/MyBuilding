@@ -1,16 +1,16 @@
 <template>
 
-	<!-- Maintenance actions Card -->
+	<!-- Deliveries deliveries Card -->
 	<a-card :bordered="false" class="header-solid h-full" :bodyStyle="{paddingTop: 0,}">
 
 		<template #title>
 			<a-row type="flex" align="middle">
 
-				<a-col :span="24" :md="3" :xs="12">
+				<a-col :span="24" :md="4" :xs="12">
 					<a-button type="primary"
 						@click="showModal"
 					>
-						Add Delivery
+						Add Item
 					</a-button>
 				</a-col>
 				<a-col :span="24" :md="2" :xs="12">
@@ -21,7 +21,6 @@
 				<a-col :span="24" :md="8" class="add-item-col">
 					<!-- Header Search Input -->
 					<a-input-search class="header-search"  placeholder="Search for request..." v-model="searchValue" @input="tableSearch">
-
 					</a-input-search>
 					<!-- / Header Search Input -->
 				</a-col>
@@ -32,12 +31,12 @@
 				 	@handleOk="modalHandleOk"
 					:handle-cancel="modalHandleCancel"
 				>
-				<MainForm ref="formFields" :formFields="MaintenanceInputs" :title="modalTitle"></MainForm>
+				<MainForm ref="formFields" :formFields="deliveryInputs" :title="modalTitle" ></MainForm>
 			</MainModal>
 		</template>
 
 	</a-card>
-	<!-- Maintenance actions Card -->
+	<!-- Deliveries deliveries Card -->
 
 </template>
 
@@ -45,8 +44,11 @@
 import MainModal from '../Modal/MainModal.vue';
 import MainForm from '../Forms/MainForm.vue';
 import { mapActions } from 'vuex'
+	import { mapState } from 'vuex'
 import { jsontoexcel } from "vue-table-to-excel";
 import debounce from 'lodash/debounce'
+
+
 
 	export default ({
 		components: {
@@ -65,17 +67,26 @@ import debounce from 'lodash/debounce'
 		data() {
 			return {
 				visible: false,
-				modalTitle: "Add Request",
-				MaintenanceInputs: [
-					{ name: 'issue', label: 'Issue', placeholder: 'Enter Title', type:'text', rules: ['required']},
-      		{ name: 'details', label: 'Details', placeholder:'Enter Details', type:'text', rules: []},
+				modalTitle: "Add New Item",
+				deliveryInputs: [
+      		//{ name: 'owner', label: 'Delivery For', type:'searchSelect', rules: ['required']},
+      		{ name: 'from', label: 'Delivery From', placeholder:'', type:'selectBox', 'options': [
+						{value: 'Amazon', text: 'Amazon'},
+						{value: 'UPS', text: 'UPS'},
+						{value: 'Fedex', text: 'Fedex'},
+						{value: 'Other', text: 'Other'}],
+						rules: ['required']},
+      		{ name: 'details', label: 'Details', placeholder:'Enter Details', type:'text', rules: ['required']},
 					{ name: 'created_by_name', label: 'Owner (Name)', placeholder: 'Enter Name', type:'text', rules: ['required']},
-					{ name: 'created_by_apt', label: 'Owner (Apartment)', placeholder: 'Enter Appratment', type:'text', rules: ['required']},
+					{ name: 'created_by_apt', label: 'Owner (Apartment)', placeholder: 'Enter Appratment', type:'text', rules: []},
       	],
 				searchValue: ''
 			}
 		},
 		computed: {
+			...mapState({
+				membersInfo: state => state.building.membersInfo,
+			}),
 	    formattedDate() {
 	      const today = new Date();
 	      const year = today.getFullYear();
@@ -84,27 +95,33 @@ import debounce from 'lodash/debounce'
 	      return `${month}/${day}/${year}`;
 	    },
 		},
+
+		async mounted() {
+			await this.getMembersInformation();
+			this.deliveryInputs[0].membersInfo =  this.membersInfo;
+		},
 		methods: {
 			download() {
 				// create array from data object, add created_by_name and created_by_apt and remove created_by
 				const dataDownload = this.data.map((item) => {
 					return {
-						date: item.date,
-						created_by : item.created_by.created_by_name + " - " + item.created_by.created_by_apt,
-						issue : item.issue,
+						from : item.from,
 						status: item.status,
 						details: item.details,
+						date: item.due_date,
+						owner: item.owner.name + " - " + item.owner.apt
 					};
 				});
 				//get title from columns object into new array
 				const head = this.columns.map((item) => item.title);
-				const fileName = "Maintenance Issues-" + this.formattedDate + '.csv';
+				const fileName = "Deliveries -" + this.formattedDate + '.csv';
 				console.log("download", dataDownload, head, fileName);
 				jsontoexcel.getXlsx(dataDownload, head, fileName);
 				},
 
 		  showModal() {
 		    this.visible = true
+		  	
 		  },
 			modalHandleCancel() {
 				this.visible = false
@@ -115,7 +132,7 @@ import debounce from 'lodash/debounce'
 					if(!isValid){
 						return;
 					}
-					let res = await this.addMaintenance({maintenance: {...this.$refs.formFields.formData, ...{status: "Open", date: this.formattedDate}}})
+					let res = await this.addDelivery({delivery: {...this.$refs.formFields.formData, ...{status: "Ready", date: this.formattedDate}}})
 					if(res) {
 						this.$refs.formFields.onFinish(true);
 						this.visible = false;
@@ -132,15 +149,21 @@ import debounce from 'lodash/debounce'
 		  },
 			tableSearch() {
 				let debouncedSearch = debounce(() => {
-				  this.filterMaintenanceData({searchValue: this.searchValue})
+				  this.filterDeliveryData({searchValue: this.searchValue})
 				}, 500)
       	debouncedSearch()
 			},
-			...mapActions('maintenance', ['addMaintenance', 'filterMaintenanceData'])
-		  },
+			...mapActions(
+				'deliveries', ['addDelivery', 'filterDeliveryData']),
+				
+			...mapActions({
+				getMembersInformation: 'building/getMembersInformation'
+			})
+		}
 	})
 
 </script>
+
 
 <style media="screen">
 	@media screen and (max-width: 767px) {
