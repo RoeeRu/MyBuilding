@@ -8,6 +8,7 @@ import maintenance from './maintenance'
 import transactions from './transactions'
 import dashboard from './dashboard'
 import documents from './documents'
+import deliveries from './deliveries'
 
 
 Vue.use(Vuex)
@@ -22,5 +23,6 @@ export default new Vuex.Store({
     transactions,
     dashboard,
     documents,
+    deliveries,
   }
 })

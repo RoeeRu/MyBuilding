@@ -50,10 +50,10 @@
 					</a>
 					<a-menu slot="overlay">
 					<a-menu-item>
-						<a href="javascript:;" v-on:click="updateStatus(row, newStats='Open')">Open</a>
+						<a href="javascript:;" v-on:click="updateStatus(row, newStats='Open')">Ready</a>
 					</a-menu-item>
 					<a-menu-item>
-						<a href="javascript:;" v-on:click="updateStatus(row, newStats='In Progress')">In Progress</a>
+						<a href="javascript:;" v-on:click="updateStatus(row, newStats='In Progress')">Picked Up</a>
 					</a-menu-item>
 					<a-menu-item>
 						<a href="javascript:;" v-on:click="updateStatus(row, newStats='Closed')">Closed</a>
