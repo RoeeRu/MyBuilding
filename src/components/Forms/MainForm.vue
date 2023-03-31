@@ -20,7 +20,6 @@
         <a-select v-else-if="input.type == 'selectBox'" v-model="localFormData[input.name]">
           <a-select-option v-for="(option, index) in input.options" :key="index" :value="option.value">{{option.text}}</a-select-option>
         </a-select>
-
         <a-select v-else-if="input.type == 'searchSelect'"
          v-model="localFormData[input.name]"
           showSearch
@@ -28,7 +27,9 @@
           optionFilterProp="children"
           :filterOption="filterOption"
         >
-          <a-select-option v-for="(member, index) in getMembersInfo" :key="index" :value=getMemberDetails(member)>Apt. {{ member.apartment }} - {{member.name}}</a-select-option>
+
+          <a-select-option v-for="(member, index) in input.membersInfo" :key="index" :value="index">
+            Apt. {{ member.apartment }} - {{member.name}}</a-select-option>
         </a-select>
 
         <a-date-picker v-else-if="input.type == 'date'" v-model="localFormData[input.name]" format="MM/DD/YYYY" />
@@ -85,22 +86,18 @@ export default ({
   mounted() {
   // Initialize formData with empty values for each field in formFields
   this.formFields.forEach(field => {
-    if(field.hasOwnProperty('value')) {
-      this.$set(this.localFormData, field.name, field.value);
-      this.$set(this.formData, field.name, field.value);
+    if(field.type === 'searchSelect') {
+        this.membersInfo = field.membersInfo;
     }
-    else if (field.type === 'uploadFile') {
+
+    if (field.type === 'uploadFile') {
       this.$set(this.formData, field.name, '');
       this.$set(this.localFormData, field.name, '');
       this.BuildingID = field.BuildingID;
-    }
-    else if (field.type === 'searchSelect') {
-      this.$set(this.formData, field.name, '');
-      this.$set(this.localFormData, field.name, '');
-      this.membersInfo = field.membersInfo;
-      console.log('membersInfo',this.membersInfo);
-    }
-    else {
+    } else if (field.hasOwnProperty('value')) {
+      this.$set(this.localFormData, field.name, field.value);
+      this.$set(this.formData, field.name, field.value);
+    } else {
       this.$set(this.formData, field.name, '');
       this.$set(this.localFormData, field.name, '');
     }
@@ -109,13 +106,7 @@ export default ({
   data() {
     return {
       BuildingID: '',
-      membersInfo: [
-        {
-          name: '',
-          email: '',
-          apartment: '',
-        },
-      ],
+      membersInfo: [],
       formData: {},
       localFormData: {},
       isSuccess: true,
@@ -161,21 +152,7 @@ export default ({
       localFormData: validations,
     };
   },
-  computed: {
-    getMembersInfo() {
-      return this.membersInfo;
-    }
-  },
   methods: {
-    getMemberDetails(member) {
-      return {
-        name: member.name,
-        email: member.email,
-        apartment: member.apartment,
-      }
-    },
-
-
     filterOption(input, option) {
       return option.componentOptions.children[0].text.toLowerCase().indexOf(input.toLowerCase()) >= 0
     },

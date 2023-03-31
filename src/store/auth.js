@@ -43,18 +43,20 @@ export default {
             resolve(false);
             return;
           }
-          unsubscribe();
-          commit('setUser', user);
-          const isLogged = await isUserLoggedIn(user.accessToken)
-          if(!isLogged){
-            dispatch('signOut')
-            resolve(false);
-            return false;
-          }
-          await dispatch('handlePersonalInfo')
-          dispatch('setLoggedIn', true)
-          resolve(true);
-          return isLogged;
+          setTimeout(async function () {
+            unsubscribe();
+            commit('setUser', user);
+            const isLogged = await isUserLoggedIn(user.accessToken)
+            if(!isLogged){
+              dispatch('signOut')
+              resolve(false);
+              return false;
+            }
+            await dispatch('handlePersonalInfo')
+            dispatch('setLoggedIn', true)
+            resolve(true);
+            return isLogged;
+          }, 300);
         }, reject);
       });
     },
@@ -150,7 +152,7 @@ export default {
         .then(async (result) => {
 
           // This gives you a Google Access Token. You can use it to access the Google API.
-          const credential = GoogleAuthProvider.credentialFromResult(result);
+          const credential = await GoogleAuthProvider.credentialFromResult(result);
           const token = credential.accessToken;
           // The signed-in user info.
           const user = result.user;

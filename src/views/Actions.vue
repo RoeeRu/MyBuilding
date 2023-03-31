@@ -1,5 +1,5 @@
-<!-- 
-	This is the actions page, it uses the dashboard layout in: 
+<!--
+	This is the actions page, it uses the dashboard layout in:
 	"./layouts/Dashboard.vue" .
 	It uses the CardActionsTable component in:
 	"./components/Cards/CardActionsTable.vue" .
@@ -26,6 +26,7 @@
 
 				<!-- Actions Table Card -->
 				<CardActionsTable
+					:v-if="actionTableVisible"
 					:data="table1Data"
 					:columns="table1Columns"
 				></CardActionsTable>
@@ -47,7 +48,7 @@
 	import CardActionsActions from '../components/Cards/CardActionsActions.vue';
 	import { mapActions } from 'vuex'
 	import { mapState } from 'vuex'
-	
+
 	// "Actions" table list of columns and their properties.
 	const table1Columns = [
 		{
@@ -55,16 +56,11 @@
 			dataIndex: 'item',
 			scopedSlots: { customRender: 'item' },
 		},
-		
-		{
-			title: 'Submitted By',
-			dataIndex: 'created_by', 
-			scopedSlots: { customRender: 'created_by' },
-		},
-		
+
+
 		{
 			title: 'Owner',
-			dataIndex: 'owner', 
+			dataIndex: 'owner',
 			scopedSlots: { customRender: 'owner' },
 		},
 		{
@@ -83,27 +79,27 @@
 			class: 'font-semibold text-muted text-sm',
 			width: 120,
 		},
-		
-		
+
+
 		{
 			title: '',
 			scopedSlots: { customRender: 'actionsBtn' },
 		},
 	];
 
-	
-	
 
-	
+
+
+
 
 	export default ({
 		components: {
-    CardActionsTable,
-	CardActionsActions
-},
+		    CardActionsTable,
+			  CardActionsActions
+		},
 		data() {
 			return {
-
+				actionTableVisible: false,
 				// Associating "Actions" table columns with its corresponding property.
 				table1Columns: table1Columns,
 
@@ -119,8 +115,9 @@
 				getActions: 'actions/getActions',
 			}),
 		},
-		mounted() {
-			this.getActions();
+		async mounted() {
+			await this.getActions();
+			this.actionTableVisible = true
 			window.analytics.page('Actions')
 		},
 	})

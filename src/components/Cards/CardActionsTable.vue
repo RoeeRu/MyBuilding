@@ -116,11 +116,10 @@ import moment from 'moment';
 				visible: false,
 				modalTitle: "Edit Project",
 				actionInputs: [
-	        		{ name: 'item', label: 'Project', placeholder:'Enter Title', type:'text', rules: ['required']},
-	        		{ name: 'details', label: 'Details', placeholder:'Enter Details', type:'text', rules: ['required']},
+	        { name: 'item', label: 'Project', placeholder:'Enter Title', type:'text', rules: ['required']},
+	        { name: 'details', label: 'Details', placeholder:'Enter Details', type:'text', rules: ['required']},
 					{ name: 'due_date', label: 'Due Date', type:'date', rules: ['required']},
-					{ name: 'created_by_name', label: 'Owner (Name)', placeholder: 'Enter Name', type:'text', rules: ['required']},
-					{ name: 'created_by_apt', label: 'Owner (Apartment)', placeholder: 'Enter Appratment', type:'text', rules: []},
+					{ name: 'owner', label: 'Owner', type:'searchSelect', rules: ['required']},
       	],
 				rowStatus: '',
 				rowKey: ''			}
@@ -138,8 +137,6 @@ import moment from 'moment';
 			},
 		},
 		async mounted() {
-			await this.getMembersInformation();
-			this.actionInputs[5].membersInfo =  this.membersInfo;
 		},
 		methods: {
 			async DeleteRow(row) {
@@ -154,23 +151,21 @@ import moment from 'moment';
 			}
 			},
 			showModal(row) {
-				this.actionInputs.forEach((name, index) => {
+				this.actionInputs.forEach((inputRow, index) => {
 						try {
-								if (this.actionInputs[index].name === 'created_by_name' || this.actionInputs[index].name === 'created_by_apt'){
-										this.actionInputs[index].value = row['created_by'][this.actionInputs[index].name]
-								} else if (this.actionInputs[index].name === 'due_date') {
+
+								if (inputRow.name === 'created_by_name' || inputRow.name === 'created_by_apt'){
+										inputRow.value = row['created_by'][inputRow.name]
+								} else if (inputRow.name === 'due_date') {
 									const rowDate = row[this.actionInputs[index].name];
 									const momentRowDate = moment(rowDate, 'MM/DD/YYYY');
 									const date = momentRowDate.isValid() ? momentRowDate : null;
 									this.actionInputs[index].value = date
-								} else if (this.actionInputs[index].name === 'owner') {
-									const value = {
-													name: row['owner']['name'],
-													email: row['owner']['email'],
-													apartment : row['owner']['apartment'],
-												};
-									this.actionInputs[index].value = value
-
+								} else if (inputRow.name === 'owner') {
+									const index = this.membersInfo.indexOf(this.membersInfo.find(el => el.user_id === row.user_id));
+									const inputIndex = this.actionInputs.indexOf(this.actionInputs.find(el => el.name === inputRow.name));
+									this.actionInputs[inputIndex].value = index
+									this.actionInputs[inputIndex].membersInfo =  this.membersInfo;
 								} else {
 									this.actionInputs[index].value = row[this.actionInputs[index].name]
 								}
@@ -178,7 +173,9 @@ import moment from 'moment';
 								console.log('modalHandleOk error', e)
 								this.actionInputs[index].value = null
 							}
+
 						}
+
 					);
 					this.visible = true
 					this.rowStatus = row.status
@@ -195,11 +192,19 @@ import moment from 'moment';
 					if(!isValid){
 						return;
 					}
-					//this.formState.date = this.formState.date.format('YYYY-MM-DD');
-					let res = await this.updateAction({action: {...this.$refs.formFields.formData,
-						 ...{status: this.rowStatus, key: this.rowKey}}})
-					console.log('res', res)
-						 if(res) {
+
+					let formFields = this.$refs.formFields.formData;
+					let user_id = this.membersInfo[formFields.owner].user_id;
+
+					formFields.owner = {
+						apartment:this.membersInfo[formFields.owner].apartment,
+						name: this.membersInfo[formFields.owner].name,
+						email: this.membersInfo[formFields.owner].email
+					}
+					let res = await this.updateAction({action: {...formFields,
+						 ...{status: this.rowStatus, key: this.rowKey, user_id}}})
+
+					if(res) {
 						this.$refs.formFields.onFinish(true);
 						this.visible = false;
 					} else {
@@ -219,9 +224,6 @@ import moment from 'moment';
 				}
 			},
 		  ...mapActions('actions', ['updateAction', 'deleteAction']),
-			...mapActions({
-				getMembersInformation: 'building/getMembersInformation'
-			})
 		},
 	})
 

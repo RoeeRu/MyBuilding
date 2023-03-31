@@ -73,8 +73,6 @@ import debounce from 'lodash/debounce'
       		{ name: 'item', label: 'Project', placeholder:'Enter Title', type:'text', rules: ['required']},
       		{ name: 'details', label: 'Details', placeholder:'Enter Details', type:'text', rules: ['required']},
 					{ name: 'due_date', label: 'Due Date', type:'date', rules: ['required']},
-					{ name: 'created_by_name', label: 'Owner (Name)', placeholder: 'Enter Name', type:'text', rules: ['required']},
-					{ name: 'created_by_apt', label: 'Owner (Apartment)', placeholder: 'Enter Appratment', type:'text', rules: []},
       		{ name: 'owner', label: 'Owner', type:'searchSelect', rules: ['required']},
       	],
 				searchValue: ''
@@ -95,7 +93,9 @@ import debounce from 'lodash/debounce'
 
 		async mounted() {
 			await this.getMembersInformation();
-			this.actionInputs[5].membersInfo =  this.membersInfo;
+			const inputIndex = this.actionInputs.indexOf(this.actionInputs.find(el => el.name === 'owner'));
+
+			this.actionInputs[inputIndex].membersInfo =  this.membersInfo;
 		},
 		methods: {
 			download() {
@@ -130,7 +130,19 @@ import debounce from 'lodash/debounce'
 					if(!isValid){
 						return;
 					}
-					let res = await this.addAction({action: {...this.$refs.formFields.formData, ...{status: "Open"}}})
+
+					let formFields = this.$refs.formFields.formData;
+					let user_id = this.membersInfo[formFields.owner].user_id;
+					formFields.owner = {
+						apartment:this.membersInfo[formFields.owner].apartment,
+						name: this.membersInfo[formFields.owner].name,
+						email: this.membersInfo[formFields.owner].email
+					}
+					let res = await this.addAction({
+						action: {...formFields,
+							 ...{status: "Open", user_id: user_id}
+					 }
+				 })
 					if(res) {
 						this.$refs.formFields.onFinish(true);
 						this.visible = false;
