@@ -53,9 +53,9 @@
 			class: 'text-muted',
 		},
 		{
-			title: 'Created By',
-			dataIndex: 'created_by',
-			scopedSlots: { customRender: 'created_by' },
+			title: 'Reported By',
+			dataIndex: 'owner',
+			scopedSlots: { customRender: 'owner' },
 		},
 		{
 			title: 'Issue',

@@ -13,10 +13,10 @@
 				</div>
 			</template>
 
-			<template slot="created_by" slot-scope="created_by">
+			<template slot="owner" slot-scope="owner">
 				<div class="source-info">
-					<h6 class="m-0">{{ created_by.created_by_name }}</h6>
-					<p class="m-0 font-regular text-muted">{{ created_by.created_by_apt }}</p>
+					<h6 class="m-0">{{ owner.name }}</h6>
+					<p class="m-0 font-regular text-muted">{{ owner.apartment }}</p>
 				</div>
 			</template>
 
@@ -83,6 +83,7 @@
 import MainModal from '../Modal/MainModal.vue';
 import MainForm from '../Forms/MainForm.vue';
 import { mapActions } from 'vuex'
+	import { mapState } from 'vuex'
 
 	export default ({
 		components: {
@@ -106,13 +107,17 @@ import { mapActions } from 'vuex'
 					{ name: 'issue', label: 'Issue', placeholder: 'Enter Date', type:'text', rules: ['required']},
 					{ name: 'area', label: 'Area', type:'selectBox', 'options': [{value: 'Common Area', text: 'Common Area'}, {value: 'In-Unit', text: 'In-Unit'}], rules: ['required']},
 					{ name: 'details', label: 'Details', placeholder:'Enter Details', type:'text', rules: ['required']},
-					{ name: 'created_by_name', label: 'Owner (Name)', placeholder: 'Enter Name', type:'text', rules: ['required']},
-					{ name: 'created_by_apt', label: 'Owner (Apartment)', placeholder: 'Enter Appratment', type:'text', rules: ['required']},
+      				{ name: 'owner', label: 'Reported By', type:'searchSelect', rules: ['required']},
       	],
 				rowDate: '',
 				rowStatus: '',
 				rowKey: ''
 			}
+		},
+		computed: {
+			...mapState({
+				membersInfo: state => state.building.membersInfo,
+			}),
 		},
 		methods: {
 			async DeleteRow(row) {
@@ -127,10 +132,15 @@ import { mapActions } from 'vuex'
 			}
 			},
 			showModal(row) {
-				this.MaintenanceInputs.forEach((value, index) => {
+				this.MaintenanceInputs.forEach((inputRow, index) => {
 					console.log(index)
 					if(this.MaintenanceInputs[index].name === 'created_by_name' || this.MaintenanceInputs[index].name === 'created_by_apt'){
 						this.MaintenanceInputs[index].value = row['created_by'][this.MaintenanceInputs[index].name]
+				}  else if (inputRow.name === 'owner') {
+							const index = this.membersInfo.indexOf(this.membersInfo.find(el => el.user_id === row.user_id));
+							const inputIndex = this.MaintenanceInputs.indexOf(this.MaintenanceInputs.find(el => el.name === inputRow.name));
+							this.MaintenanceInputs[inputIndex].value = index
+							this.MaintenanceInputs[inputIndex].membersInfo =  this.membersInfo;
 					} else {
 						try {
 							this.MaintenanceInputs[index].value = row[this.MaintenanceInputs[index].name]
@@ -154,8 +164,17 @@ import { mapActions } from 'vuex'
 					if(!isValid){
 						return;
 					}
-					//this.formState.date = this.formState.date.format('YYYY-MM-DD');
-					let res = await this.updateMaintenance({maintenance: {...this.$refs.formFields.formData,
+
+					let formFields = this.$refs.formFields.formData;
+					let user_id = this.membersInfo[formFields.owner].user_id;
+
+					formFields.owner = {
+						apartment:this.membersInfo[formFields.owner].apartment,
+						name: this.membersInfo[formFields.owner].name,
+						email: this.membersInfo[formFields.owner].email
+					}
+
+					let res = await this.updateMaintenance({maintenance: {...formFields,
 						 ...{date: this.rowDate, status: this.rowStatus, key: this.rowKey}}})
 					if(res) {
 						this.$refs.formFields.onFinish(true);

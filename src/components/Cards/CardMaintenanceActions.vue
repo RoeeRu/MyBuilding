@@ -45,6 +45,7 @@
 import MainModal from '../Modal/MainModal.vue';
 import MainForm from '../Forms/MainForm.vue';
 import { mapActions } from 'vuex'
+	import { mapState } from 'vuex'
 import { jsontoexcel } from "vue-table-to-excel";
 import debounce from 'lodash/debounce'
 
@@ -70,13 +71,15 @@ import debounce from 'lodash/debounce'
 					{ name: 'issue', label: 'Issue', placeholder: 'Enter Title', type:'text', rules: ['required']},
 					{ name: 'area', label: 'Area', type:'selectBox', 'options': [{value: 'Common Area1', text: 'Common Area'}, {value: 'In-Unit1', text: 'In-Unit'}], rules: ['required']},
       		{ name: 'details', label: 'Details', placeholder:'Enter Details', type:'text', rules: []},
-					{ name: 'created_by_name', label: 'Owner (Name)', placeholder: 'Enter Name', type:'text', rules: ['required']},
-					{ name: 'created_by_apt', label: 'Owner (Apartment)', placeholder: 'Enter Appratment', type:'text', rules: ['required']},
+      		{ name: 'owner', label: 'Reported By', type:'searchSelect', rules: ['required']},
       	],
 				searchValue: ''
 			}
 		},
 		computed: {
+			...mapState({
+				membersInfo: state => state.building.membersInfo,
+			}),
 	    formattedDate() {
 	      const today = new Date();
 	      const year = today.getFullYear();
@@ -84,6 +87,13 @@ import debounce from 'lodash/debounce'
 	      const day = String(today.getDate()).padStart(2, '0');
 	      return `${month}/${day}/${year}`;
 	    },
+		},
+
+		async mounted() {
+			await this.getMembersInformation();
+			const inputIndex = this.MaintenanceInputs.indexOf(this.MaintenanceInputs.find(el => el.name === 'owner'));
+
+			this.MaintenanceInputs[inputIndex].membersInfo =  this.membersInfo;
 		},
 		methods: {
 			download() {
@@ -96,6 +106,7 @@ import debounce from 'lodash/debounce'
 						area : item.area,
 						status: item.status,
 						details: item.details,
+						owner: item.owner.name + " - " + item.owner.apt,
 					};
 				});
 				//get title from columns object into new array
@@ -117,7 +128,14 @@ import debounce from 'lodash/debounce'
 					if(!isValid){
 						return;
 					}
-					let res = await this.addMaintenance({maintenance: {...this.$refs.formFields.formData, ...{status: "Open", date: this.formattedDate}}})
+					let formFields = this.$refs.formFields.formData;
+					let user_id = this.membersInfo[formFields.owner].user_id;
+					formFields.owner = {
+						apartment:this.membersInfo[formFields.owner].apartment,
+						name: this.membersInfo[formFields.owner].name,
+						email: this.membersInfo[formFields.owner].email
+					}
+					let res = await this.addMaintenance({maintenance: {...formFields, ...{status: "Open", date: this.formattedDate}}})
 					if(res) {
 						this.$refs.formFields.onFinish(true);
 						this.visible = false;
@@ -138,7 +156,11 @@ import debounce from 'lodash/debounce'
 				}, 500)
       	debouncedSearch()
 			},
-			...mapActions('maintenance', ['addMaintenance', 'filterMaintenanceData'])
+			...mapActions('maintenance', ['addMaintenance', 'filterMaintenanceData']),
+
+			...mapActions({
+				getMembersInformation: 'building/getMembersInformation'
+			})
 		  },
 	})
 
