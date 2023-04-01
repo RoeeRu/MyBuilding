@@ -5,13 +5,19 @@
 
 <template>
 	<div class="sign-in">
+		<loading
+					 v-if="loading"
+					 :active="loading"
+					 :can-cancel="true"
+					 :on-cancel="onCancel"
+					 :is-full-page="fullPage"/>
 
 		<a-row type="flex" :gutter="[24,24]" justify="space-around" align="middle">
 
 			<!-- Sign In Form Column -->
 			<a-col :span="24" :md="12" :lg="{span: 12, offset: 0}" :xl="{span: 8, offset: 0}" class="col-form">
 				<div class="brand"><img src="images/logo-domos.png" alt="domos" align="middle"></div>
-				
+
 				<h5 class="font-regular text-muted">Use your Google account to sign-in</h5>
 				<div class="sign-in-gateways">
 	    			<a-button  @click="handleSignUp('gmail')" >
@@ -80,13 +86,21 @@
 </template>
 
 <script>
+import Loading from 'vue-loading-overlay';
+import 'vue-loading-overlay/dist/vue-loading.css';
 
 	export default ({
+		components: {
+			Loading
+		},
+
 		data() {
 			return {
 				// Binded model property for "Sign In Form" switch button for "Remember Me" .
 				rememberMe: true,
-				regFailed: false
+				regFailed: false,
+				loading: false,
+				fullPage: true
 			}
 		},
 		beforeCreate() {
@@ -116,12 +130,17 @@
 			},
 
 			async handleSignUp(type) {
+				this.loading = true
 				let isSignedIn = await this.$store.dispatch('loginHandler', {regType: type})
+				this.loading = false
 				if (isSignedIn) {
 					this.$router.push({ name: 'Dashboard' });
 				} else {
 					this.regFailed = true;
 				}
+			},
+			onCancel() {
+					console.log('User cancelled the loader.')
 			}
 		},
 	})

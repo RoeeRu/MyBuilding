@@ -15,13 +15,14 @@ const instance = axios.create({
   }
 })
 
-instance.interceptors.response.use(response => {
+instance.interceptors.response.use(async response => {
   return response;
-}, (error) => {
+}, async (error) => {
   if (error.response.status === 401) {
-      store.dispatch('setLoggedIn', false);
+      await store.dispatch('signOut');
       if (router.currentRoute.name !== 'Sign-In') {
-        router.push({ name: 'Sign-In' });
+        router.currentRoute.meta.navigationCancelled = true;
+        router.go('Sign-In');
       }
 
       // ignore error?
