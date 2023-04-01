@@ -1,6 +1,6 @@
 <template>
 
-	<!-- Maintenance Table Card -->
+	<!-- Delivery Table Card -->
 
 	<a-card :bordered="false" class="header-solid h-full" :bodyStyle="{padding: 0,}">
 		<a-table :columns="columns" :data-source="data" :pagination="false">
@@ -13,16 +13,16 @@
 				</div>
 			</template>
 
-			<template slot="created_by" slot-scope="created_by">
+			<template slot="owner" slot-scope="owner">
 				<div class="source-info">
-					<h6 class="m-0">{{ created_by.created_by_name }}</h6>
-					<p class="m-0 font-regular text-muted">{{ created_by.created_by_apt }}</p>
+					<h6 class="m-0">{{ owner.name }}</h6>
+					<p class="m-0 font-regular text-muted">{{ owner.apartment }}</p>
 				</div>
 			</template>
 
 			<template slot="status" slot-scope="status">
-				<a-tag class="tag-status" :class="[status=='Ready' ? 'ant-tag-primary' : '', status=='Picked Up' ? 'ant-tag-muted' : ''
-			, status=='In Progress' ? 'ant-tag-success' : '']">
+				<a-tag class="tag-status" :class="[status=='In Progress' ? 'ant-tag-primary' : '', status=='Picked Up' ? 'ant-tag-muted' : ''
+			, status=='Ready' ? 'ant-tag-success' : '']">
 					{{ status }}
 				</a-tag>
 			</template>
@@ -50,13 +50,10 @@
 					</a>
 					<a-menu slot="overlay">
 					<a-menu-item>
-						<a href="javascript:;" v-on:click="updateStatus(row, newStats='Open')">Ready</a>
+						<a href="javascript:;" v-on:click="updateStatus(row, newStats='Ready')">Ready</a>
 					</a-menu-item>
 					<a-menu-item>
-						<a href="javascript:;" v-on:click="updateStatus(row, newStats='In Progress')">Picked Up</a>
-					</a-menu-item>
-					<a-menu-item>
-						<a href="javascript:;" v-on:click="updateStatus(row, newStats='Closed')">Closed</a>
+						<a href="javascript:;" v-on:click="updateStatus(row, newStats='Picked Up')">Picked Up</a>
 					</a-menu-item>
 					</a-menu>
 
@@ -69,13 +66,13 @@
 				 	@handleOk="modalHandleOk"
 					:handle-cancel="modalHandleCancel"
 				>
-				<MainForm ref="formFields" :formFields="MaintenanceInputs" :title="modalTitle"></MainForm>
+				<MainForm ref="formFields" :formFields="DeliveryInputs" :title="modalTitle"></MainForm>
 			</MainModal>
 			</template>
 
 		</a-table>
 	</a-card>
-	<!-- / Maintenance Table Card -->
+	<!-- / Delivery Table Card -->
 
 </template>
 
@@ -83,6 +80,7 @@
 import MainModal from '../Modal/MainModal.vue';
 import MainForm from '../Forms/MainForm.vue';
 import { mapActions } from 'vuex'
+	import { mapState } from 'vuex'
 
 	export default ({
 		components: {
@@ -102,16 +100,25 @@ import { mapActions } from 'vuex'
 			return {
 				visible: false,
 				modalTitle: "Edit Request",
-				MaintenanceInputs: [
-					{ name: 'issue', label: 'Issue', placeholder: 'Enter Date', type:'text', rules: ['required']},
-      				{ name: 'details', label: 'Details', placeholder:'Enter Details', type:'text', rules: ['required']},
-					{ name: 'created_by_name', label: 'Owner (Name)', placeholder: 'Enter Name', type:'text', rules: ['required']},
-					{ name: 'created_by_apt', label: 'Owner (Apartment)', placeholder: 'Enter Appratment', type:'text', rules: ['required']},
+				DeliveryInputs: [
+					{ name: 'owner', label: 'Delivery For', type:'searchSelect', rules: ['required']},
+					{ name: 'from', label: 'Delivery From', placeholder:'', type:'selectBox', 'options': [
+						{value: 'Amazon', text: 'Amazon'},
+						{value: 'UPS', text: 'UPS'},
+						{value: 'Fedex', text: 'Fedex'},
+						{value: 'Other', text: 'Other'}],
+						rules: ['required']},
+      				{ name: 'details', label: 'Details', placeholder:'Enter Details', type:'text', rules: ['']},
       	],
 				rowDate: '',
 				rowStatus: '',
 				rowKey: ''
 			}
+		},
+		computed: {
+			...mapState({
+				membersInfo: state => state.building.membersInfo,
+			}),
 		},
 		methods: {
 			async DeleteRow(row) {
@@ -119,23 +126,27 @@ import { mapActions } from 'vuex'
 				console.log("deleting", row.key);
 
 				try {
-					let res = await this.deleteMaintenance({maintenance: row})
+					let res = await this.deleteDelivery({delivery: row})
 					} catch (e) {
 						console.log('modalHandleOk error', e)
 					}
 			}
 			},
 			showModal(row) {
-				this.MaintenanceInputs.forEach((value, index) => {
-					console.log(index)
-					if(this.MaintenanceInputs[index].name === 'created_by_name' || this.MaintenanceInputs[index].name === 'created_by_apt'){
-						this.MaintenanceInputs[index].value = row['created_by'][this.MaintenanceInputs[index].name]
+				this.DeliveryInputs.forEach((inputRow, index) => {
+					if(this.DeliveryInputs[index].name === 'created_by_name' || this.DeliveryInputs[index].name === 'created_by_apt'){
+						this.DeliveryInputs[index].value = row['created_by'][this.DeliveryInputs[index].name]
+					}  else if (inputRow.name === 'owner') {
+							const index = this.membersInfo.indexOf(this.membersInfo.find(el => el.user_id === row.user_id));
+							const inputIndex = this.DeliveryInputs.indexOf(this.DeliveryInputs.find(el => el.name === inputRow.name));
+							this.DeliveryInputs[inputIndex].value = index
+							this.DeliveryInputs[inputIndex].membersInfo =  this.membersInfo;
 					} else {
 						try {
-							this.MaintenanceInputs[index].value = row[this.MaintenanceInputs[index].name]
+							this.DeliveryInputs[index].value = row[this.DeliveryInputs[index].name]
 						} catch (e) {
 							console.log('modalHandleOk error', e)
-							this.MaintenanceInputs[index].value = null
+							this.DeliveryInputs[index].value = null
 						}
 					}
 				});
@@ -153,9 +164,17 @@ import { mapActions } from 'vuex'
 					if(!isValid){
 						return;
 					}
-					//this.formState.date = this.formState.date.format('YYYY-MM-DD');
-					let res = await this.updateMaintenance({maintenance: {...this.$refs.formFields.formData,
-						 ...{date: this.rowDate, status: this.rowStatus, key: this.rowKey}}})
+
+					let formFields = this.$refs.formFields.formData;
+					let user_id = this.membersInfo[formFields.owner].user_id;
+
+					formFields.owner = {
+						apartment:this.membersInfo[formFields.owner].apartment,
+						name: this.membersInfo[formFields.owner].name,
+						email: this.membersInfo[formFields.owner].email,
+					}
+					let res = await this.updateDelivery({delivery: {...formFields,
+						 ...{date: this.rowDate, status: this.rowStatus, key: this.rowKey, user_id}}})
 					if(res) {
 						this.$refs.formFields.onFinish(true);
 						this.visible = false;
@@ -170,12 +189,12 @@ import { mapActions } from 'vuex'
 		  	},
 			async updateStatus(row, newStats) {
 				try {
-					let res = await this.updateMaintenance({maintenance: {status: newStats, key: row.key}})
+					let res = await this.updateDelivery({delivery: {status: newStats, key: row.key}})
 				} catch (e) {
 					console.log('updateStatus error', e)
 				}
 			},
-		  ...mapActions('maintenance', ['updateMaintenance', 'deleteMaintenance'])
+		  ...mapActions('deliveries', ['updateDelivery', 'deleteDelivery'])
 		},
 	})
 

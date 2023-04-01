@@ -77,8 +77,8 @@
 		},
 		{
 			title: 'Delivery For',
-			dataIndex: 'created_by',
-			scopedSlots: { customRender: 'created_by' },
+			dataIndex: 'owner',
+			scopedSlots: { customRender: 'owner' },
 		},
 		{
 			title: 'Delivery From',

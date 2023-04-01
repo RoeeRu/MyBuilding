@@ -69,16 +69,14 @@ import debounce from 'lodash/debounce'
 				visible: false,
 				modalTitle: "Add New Item",
 				deliveryInputs: [
-      		//{ name: 'owner', label: 'Delivery For', type:'searchSelect', rules: ['required']},
+      		{ name: 'owner', label: 'Delivery For', type:'searchSelect', rules: ['required']},
       		{ name: 'from', label: 'Delivery From', placeholder:'', type:'selectBox', 'options': [
 						{value: 'Amazon', text: 'Amazon'},
 						{value: 'UPS', text: 'UPS'},
 						{value: 'Fedex', text: 'Fedex'},
 						{value: 'Other', text: 'Other'}],
 						rules: ['required']},
-      		{ name: 'details', label: 'Details', placeholder:'Enter Details', type:'text', rules: ['required']},
-					{ name: 'created_by_name', label: 'Owner (Name)', placeholder: 'Enter Name', type:'text', rules: ['required']},
-					{ name: 'created_by_apt', label: 'Owner (Apartment)', placeholder: 'Enter Appratment', type:'text', rules: []},
+      		{ name: 'details', label: 'Details', placeholder:'Enter Details', type:'text', rules: ['']},
       	],
 				searchValue: ''
 			}
@@ -98,7 +96,9 @@ import debounce from 'lodash/debounce'
 
 		async mounted() {
 			await this.getMembersInformation();
-			this.deliveryInputs[0].membersInfo =  this.membersInfo;
+			const inputIndex = this.deliveryInputs.indexOf(this.deliveryInputs.find(el => el.name === 'owner'));
+
+			this.deliveryInputs[inputIndex].membersInfo =  this.membersInfo;
 		},
 		methods: {
 			download() {
@@ -132,7 +132,14 @@ import debounce from 'lodash/debounce'
 					if(!isValid){
 						return;
 					}
-					let res = await this.addDelivery({delivery: {...this.$refs.formFields.formData, ...{status: "Ready", date: this.formattedDate}}})
+					let formFields = this.$refs.formFields.formData;
+					let user_id = this.membersInfo[formFields.owner].user_id;
+					formFields.owner = {
+						apartment:this.membersInfo[formFields.owner].apartment,
+						name: this.membersInfo[formFields.owner].name,
+						email: this.membersInfo[formFields.owner].email,
+					}
+					let res = await this.addDelivery({delivery: {...formFields, ...{status: "Ready", date: this.formattedDate, user_id: user_id}}})
 					if(res) {
 						this.$refs.formFields.onFinish(true);
 						this.visible = false;

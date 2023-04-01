@@ -132,16 +132,15 @@ import debounce from 'lodash/debounce'
 					}
 
 					let formFields = this.$refs.formFields.formData;
-					let ownerID = this.membersInfo[formFields.owner].member_id;
+					let user_id = this.membersInfo[formFields.owner].user_id;
 					formFields.owner = {
 						apartment:this.membersInfo[formFields.owner].apartment,
 						name: this.membersInfo[formFields.owner].name,
-						email: this.membersInfo[formFields.owner].email,
-						owner_id: ownerID
+						email: this.membersInfo[formFields.owner].email
 					}
 					let res = await this.addAction({
 						action: {...formFields,
-							 ...{status: "Open", owner_id: ownerID}
+							 ...{status: "Open", user_id: user_id}
 					 }
 				 })
 					if(res) {
