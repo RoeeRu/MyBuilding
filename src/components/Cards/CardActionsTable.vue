@@ -162,7 +162,7 @@ import moment from 'moment';
 									const date = momentRowDate.isValid() ? momentRowDate : null;
 									this.actionInputs[index].value = date
 								} else if (inputRow.name === 'owner') {
-									const index = this.membersInfo.indexOf(this.membersInfo.find(el => el.user_id === row.user_id));
+									const index = this.membersInfo.indexOf(this.membersInfo.find(el => el.owner_id === row.owner_id));
 									const inputIndex = this.actionInputs.indexOf(this.actionInputs.find(el => el.name === inputRow.name));
 									this.actionInputs[inputIndex].value = index
 									this.actionInputs[inputIndex].membersInfo =  this.membersInfo;
@@ -194,15 +194,17 @@ import moment from 'moment';
 					}
 
 					let formFields = this.$refs.formFields.formData;
-					let user_id = this.membersInfo[formFields.owner].user_id;
+					let ownerId = this.membersInfo[formFields.owner].member_id;
+					console.log('ownerId', ownerId)
 
 					formFields.owner = {
 						apartment:this.membersInfo[formFields.owner].apartment,
 						name: this.membersInfo[formFields.owner].name,
-						email: this.membersInfo[formFields.owner].email
+						email: this.membersInfo[formFields.owner].email,
+						owner_id: ownerId
 					}
 					let res = await this.updateAction({action: {...formFields,
-						 ...{status: this.rowStatus, key: this.rowKey, user_id}}})
+						 ...{status: this.rowStatus, key: this.rowKey, owner_id: ownerId}}})
 
 					if(res) {
 						this.$refs.formFields.onFinish(true);
