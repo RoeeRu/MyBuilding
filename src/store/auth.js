@@ -5,13 +5,16 @@ import {handleSignIn,  isUserLoggedIn, resgiterNewApi } from '@/Api/user.js';
 import {getPersonalInfo} from '@/Api/profile.js';
 import jwt_decode from 'jwt-decode';
 import router from './../router/index.js'
+import {fetchAllowedRolesForRoutes } from '@/Api/user.js';
 
 
 export default {
   state () {
     return {
       user: null,
-      loggedIn: false
+      loggedIn: false,
+      routesByRole: [],
+      allowedRolesUpdated: false
     }
   },
   mutations: {
@@ -20,9 +23,19 @@ export default {
     },
     SET_LOGGED_IN(state, value) {
       state.loggedIn = value
+    },
+    SET_ROUTES(state, routesByRole) {
+      state.routesByRole = routesByRole
+    },
+    SET_ALLOW_ROLE_UPDATE(state, isUpdated) {
+      state.allowedRolesUpdated = isUpdated
     }
 
-
+  },
+  getters: {
+    user (state) {
+      return state.user
+    }
   },
   actions: {
     setLoggedIn({ commit }, value) {
@@ -45,6 +58,7 @@ export default {
           }
           setTimeout(async function () {
             unsubscribe();
+            await dispatch('getRoutes')
             commit('setUser', user);
             const isLogged = await isUserLoggedIn(user.accessToken)
             if(!isLogged){
@@ -61,6 +75,14 @@ export default {
       });
     },
 
+
+    async getRoutes({state, commit, dispatch}) {
+      let routesByRole = await fetchAllowedRolesForRoutes();
+      commit('SET_ROUTES', routesByRole);
+      commit('SET_ALLOW_ROLE_UPDATE', true);
+
+      return state.routesByRole
+    },
 
     async handlePersonalInfo({state, commit, dispatch}) {
       let user = state.user;

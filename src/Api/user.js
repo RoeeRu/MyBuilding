@@ -1,6 +1,15 @@
 import axios from './index.js'
 
 
+export function fetchAllowedRolesForRoutes(idToken) {
+  return axios.get('/registration/allowedRoles').then(response => {
+      return response.data.allowedRolesByRoute;
+   }).catch((e) => {
+     console.error(e.message);
+     return {};
+  });
+}
+
 export function resgiterNewApi(user) {
     return axios.post('/registration/new', {accessToken: user.accessToken})
       .then(response => {
