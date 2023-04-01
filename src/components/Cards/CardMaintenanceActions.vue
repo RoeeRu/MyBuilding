@@ -129,14 +129,13 @@ import debounce from 'lodash/debounce'
 						return;
 					}
 					let formFields = this.$refs.formFields.formData;
-					let ownerID = this.membersInfo[formFields.owner].member_id;
+					let user_id = this.membersInfo[formFields.owner].user_id;
 					formFields.owner = {
 						apartment:this.membersInfo[formFields.owner].apartment,
 						name: this.membersInfo[formFields.owner].name,
 						email: this.membersInfo[formFields.owner].email,
-						owner_id: ownerID
 					}
-					let res = await this.addMaintenance({maintenance: {...formFields, ...{status: "Open", date: this.formattedDate, owner_id: ownerID}}})
+					let res = await this.addMaintenance({maintenance: {...formFields, ...{status: "Open", date: this.formattedDate, user_id: user_id}}})
 					if(res) {
 						this.$refs.formFields.onFinish(true);
 						this.visible = false;
