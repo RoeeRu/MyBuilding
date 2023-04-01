@@ -45,7 +45,7 @@
 import MainModal from '../Modal/MainModal.vue';
 import MainForm from '../Forms/MainForm.vue';
 import { mapActions } from 'vuex'
-	import { mapState } from 'vuex'
+	import { mapState } from 'vuex' 
 import { jsontoexcel } from "vue-table-to-excel";
 import debounce from 'lodash/debounce'
 
@@ -129,13 +129,14 @@ import debounce from 'lodash/debounce'
 						return;
 					}
 					let formFields = this.$refs.formFields.formData;
-					let user_id = this.membersInfo[formFields.owner].user_id;
+					let ownerID = this.membersInfo[formFields.owner].member_id;
 					formFields.owner = {
 						apartment:this.membersInfo[formFields.owner].apartment,
 						name: this.membersInfo[formFields.owner].name,
-						email: this.membersInfo[formFields.owner].email
+						email: this.membersInfo[formFields.owner].email,
+						owner_id: ownerID
 					}
-					let res = await this.addMaintenance({maintenance: {...formFields, ...{status: "Open", date: this.formattedDate}}})
+					let res = await this.addMaintenance({maintenance: {...formFields, ...{status: "Open", date: this.formattedDate, owner_id: ownerID}}})
 					if(res) {
 						this.$refs.formFields.onFinish(true);
 						this.visible = false;
