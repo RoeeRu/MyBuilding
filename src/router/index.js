@@ -199,40 +199,42 @@ const router = new VueRouter({
 	}
 })
 
-async function updateRoutes() {
+async function checkForUpdatedRoutes() {
 	if (!store.state.auth.allowedRolesUpdated) {
-		let allowedRolesByRoutes = await store.dispatch('getRoutes');
-		router.options.routes.forEach(route => {
-			if(!route.meta.requiresAuth){
-				return;
-			}
-			Object.entries(allowedRolesByRoutes).forEach(([roleName, allowedRolesByRoute]) => {
-
-				let routerName = route.meta.permissionName;
-
-				if(Object.keys(allowedRolesByRoute).includes(routerName)) {
-					route.meta.allowedRoles.push(roleName);
-				}
-			});
-		});
+		await store.dispatch('getRoutes');
 	}
+
+	let allowedRolesByRoutes = store.state.auth.routesByRole
+	router.options.routes.forEach(route => {
+		if(!route.meta.requiresAuth || route.meta.allowedRoles.length > 0){
+			return;
+		}
+		Object.entries(allowedRolesByRoutes).forEach(([roleName, allowedRolesByRoute]) => {
+			let routerName = route.meta.permissionName;
+
+			if(Object.keys(allowedRolesByRoute).includes(routerName)) {
+				route.meta.allowedRoles.push(roleName);
+			}
+		});
+	});
+
 }
 
 router.beforeEach(async (to, from, next) => {
-	await updateRoutes();
-
 	let isLogged = await store.dispatch('isLoggedIn');
   const requiresAuth = to.meta.requiresAuth;
   if (!requiresAuth) {
     next();
   } else if (isLogged) {
+		await checkForUpdatedRoutes();
     const allowedRoles = to.meta.allowedRoles;
     const userRole = store.getters.user.role;
-
     if (!allowedRoles || allowedRoles.includes(userRole)) {
       next();
     } else {
-			next(from.path);
+			await store.dispatch('signOut');
+			router.currentRoute.meta.navigationCancelled = true;
+			router.go(from.path);
     }
   } else {
     next('/sign-in');

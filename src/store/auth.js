@@ -77,6 +77,9 @@ export default {
 
 
     async getRoutes({state, commit, dispatch}) {
+      if(state.allowedRolesUpdated) {
+        return;
+      }
       let routesByRole = await fetchAllowedRolesForRoutes();
       commit('SET_ROUTES', routesByRole);
       commit('SET_ALLOW_ROLE_UPDATE', true);
