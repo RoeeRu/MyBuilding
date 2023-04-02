@@ -67,7 +67,7 @@ import debounce from 'lodash/debounce'
 		data() {
 			return {
 				visible: false,
-				modalTitle: "Add New Item",
+				modalTitle: "Add New Delivery",
 				deliveryInputs: [
       		{ name: 'owner', label: 'Delivery For', type:'searchSelect', rules: ['required']},
       		{ name: 'from', label: 'Delivery From', placeholder:'', type:'selectBox', 'options': [
