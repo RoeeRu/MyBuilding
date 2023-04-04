@@ -220,16 +220,40 @@ async function checkForUpdatedRoutes() {
 
 }
 
+// function reloadPageIfExpired(inactivityTimeout) {
+//   const cacheExpireTime = new Date(localStorage.getItem("cacheExpireTime"));
+//   const currentTime = new Date();
+// 	console.log("cacheExpirationTime", cacheExpireTime);
+//
+//   if (!cacheExpireTime || currentTime > cacheExpireTime) {
+//     // Cache has expired, clear it
+//     localStorage.clear();
+//
+// 		// Set initial cache expiration time to 1 hour
+// 		let hour = 60 * 60 * 1000;
+// 		alert(new Date().getTime() + ((hour / 60) * 2));
+// 		let cacheExpirationTime = new Date().getTime() + ((hour / 60) * 2);
+// 		localStorage.setItem("cacheExpireTime", cacheExpirationTime);
+// 		console.log("cacheExpirationTime", cacheExpirationTime);
+// 		if(currentTime > cacheExpireTime) {
+// 			window.location.reload();
+// 		}
+//   }
+// }
+
 router.beforeEach(async (to, from, next) => {
 	let isLogged = await store.dispatch('isLoggedIn');
+	if(isLogged) {
+		// reloadPageIfExpired()
+	}
   const requiresAuth = to.meta.requiresAuth;
   if (!requiresAuth) {
     next();
   } else if (isLogged) {
-		await checkForUpdatedRoutes();
     const allowedRoles = to.meta.allowedRoles;
     const userRole = store.getters.user.role;
-    if (!allowedRoles || allowedRoles.includes(userRole)) {
+		await checkForUpdatedRoutes();
+    if (allowedRoles.length > 0 && allowedRoles.includes(userRole)) {
       next();
     } else {
 			await store.dispatch('signOut');

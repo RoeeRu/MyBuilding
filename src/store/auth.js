@@ -44,7 +44,6 @@ export default {
 
     async isLoggedIn({ state, commit, dispatch }) {
       if(state.loggedIn) {
-        console.log("state.loggedIn", state.loggedIn);
         return true;
       }
       FirebaseConfig.setup();
@@ -90,7 +89,7 @@ export default {
     async handlePersonalInfo({state, commit, dispatch}) {
       let user = state.user;
       let userPersonalres = await getPersonalInfo(user.accessToken);
-      if(!userPersonalres.status) {
+      if(!userPersonalres.status || !userPersonalres.data) {
         return false
       };
       user['building_id'] = userPersonalres.data.building_id;
@@ -146,11 +145,15 @@ export default {
             // Signed in
             const user = userCredential.user;
             commit('setUser', user);
+            isSignedIn = await handleSignIn(state.user.accessToken);
+            await dispatch('handlePersonalInfo')
+
             dispatch('setLoggedIn', true)
             dispatch('logAnalytics')
             return true;
           })
           .catch((error) => {
+            console.log("errorCode", error);
             const errorCode = error.code;
             const errorMessage = error.message;
             return false;
