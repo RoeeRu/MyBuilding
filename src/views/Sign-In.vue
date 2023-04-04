@@ -120,7 +120,9 @@ import 'vue-loading-overlay/dist/vue-loading.css';
 
 					}
 				});
+				this.loading = true
 				let isSignedIn = await this.$store.dispatch('loginHandler', {regType: 'selfRegistration', email:this.$refs.email.value, password: this.$refs.password.value})
+				this.loading = false
 				if (isSignedIn) {
 					this.$router.push({ name: 'Dashboard' });
 				} else {
