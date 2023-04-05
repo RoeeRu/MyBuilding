@@ -69,7 +69,7 @@ import debounce from 'lodash/debounce'
 				modalTitle: "Add Work Order",
 				MaintenanceInputs: [
 					{ name: 'issue', label: 'Issue', placeholder: 'Enter Title', type:'text', rules: ['required']},
-					{ name: 'area', label: 'Area', type:'selectBox', 'options': [{value: 'Common Area1', text: 'Common Area'}, {value: 'In-Unit1', text: 'In-Unit'}], rules: ['required']},
+					{ name: 'area', label: 'Area', type:'selectBox', 'options': [{value: 'Common Area', text: 'Common Area'}, {value: 'In-Unit', text: 'In-Unit'}], rules: ['required']},
       		{ name: 'details', label: 'Details', placeholder:'Enter Details', type:'text', rules: []},
       		{ name: 'owner', label: 'Reported By', type:'searchSelect', rules: ['required']},
       	],
