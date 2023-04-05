@@ -10,14 +10,14 @@
 				<span v-if="transaction.transaction_amount.type == 1" >
 				<a-timeline-item color="green">
 					
-									${{ transaction.transaction_amount.amount }},
+									{{ transaction.transaction_amount.amount | currency('$', 0)}},
 									{{ transaction.details }}
 					<p>{{ transaction.date }}</p>
 				</a-timeline-item>
 			</span>
 			<span v-else >
 				<a-timeline-item color="red">
-					-${{ transaction.transaction_amount.amount }},		
+					-{{ transaction.transaction_amount.amount | currency('$', 0)}},		
 					{{ transaction.details }}
 					<p>{{ transaction.date }}</p>
 				</a-timeline-item>

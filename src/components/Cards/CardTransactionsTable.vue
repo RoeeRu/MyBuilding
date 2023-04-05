@@ -32,13 +32,13 @@
 			<template slot="transaction_amount" slot-scope="transaction_amount">
 				<div class="transaction_amount-info">
 							<span v-if="transaction_amount.type == 1" class="text-success">
-								+ ${{ transaction_amount.amount }}
+								+ {{ transaction_amount.amount | currency('$', 0)}}
 							</span>
 							<span v-if="transaction_amount.type == 0" class="text-warning">
 								Pending
 							</span>
 							<span v-if="transaction_amount.type == -1" class="text-danger">
-								- ${{ transaction_amount.amount }}
+								- {{ transaction_amount.amount | currency('$', 0)}}
 							</span>
 				</div>
 			</template>
@@ -106,7 +106,7 @@ import moment from 'moment';
       		{ name: 'amount', label: 'Amount', placeholder:'Enter Amount', type:'currency', rules: ['required']},
       		{ name: 'details', label: 'Details', placeholder:'Enter Details', type:'text', rules: ['required']},
 					{ name: 'manual_name', label: 'Paid By (Name)', placeholder: 'Enter Name', type:'text', rules: ['required']},
-					{ name: 'manual_apt', label: 'Paid By (Appratment)', placeholder: 'Enter Appratment', type:'text', rules: ['required']},
+					{ name: 'manual_apt', label: 'Paid By (Appratment)', placeholder: 'Enter Appratment', type:'text', rules: ['']},
       	],
 				rowDate: '',
 				rowDet: '',
