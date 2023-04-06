@@ -34,7 +34,6 @@ export default {
     setRoleName (state, roleName) {
       state.roleName = roleName
     },
-
   },
   getters: {
     user (state) {
