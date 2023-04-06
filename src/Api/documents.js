@@ -2,7 +2,6 @@ import axios from './index.js'
 
 
 export function getDocuments(idToken) {
-  console.log("axios", axios);
   return axios.get('/documents/getDocuments', {
     headers: {
       Authorization: `Bearer ${idToken}`

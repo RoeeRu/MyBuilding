@@ -199,6 +199,19 @@ const router = new VueRouter({
 	}
 })
 
+// Add error handling to the Vue Router
+// router.onError(error => {
+//   console.error(error)
+//   Vue.prototype.$log.error('Failure Reason: ', error.message, error)
+//   if (/ChunkLoadError:.*failed./i.test(error.message)) {
+//     Vue.prototype.$log.error('Reloading Window 1')
+//     window.location.reload()
+//   } else if (/Loading.*chunk.*failed./i.test(error.message)) {
+//     Vue.prototype.$log.error('Reloading Window 2')
+//     window.location.reload()
+//   }
+// })
+
 async function checkForUpdatedRoutes() {
 	if (!store.state.auth.allowedRolesUpdated) {
 		await store.dispatch('getRoutes');
@@ -220,32 +233,30 @@ async function checkForUpdatedRoutes() {
 
 }
 
-// function reloadPageIfExpired(inactivityTimeout) {
-//   const cacheExpireTime = new Date(localStorage.getItem("cacheExpireTime"));
-//   const currentTime = new Date();
-// 	console.log("cacheExpirationTime", cacheExpireTime);
-//
-//   if (!cacheExpireTime || currentTime > cacheExpireTime) {
-//     // Cache has expired, clear it
-//     localStorage.clear();
-//
-// 		// Set initial cache expiration time to 1 hour
-// 		let hour = 60 * 60 * 1000;
-// 		alert(new Date().getTime() + ((hour / 60) * 2));
-// 		let cacheExpirationTime = new Date().getTime() + ((hour / 60) * 2);
-// 		localStorage.setItem("cacheExpireTime", cacheExpirationTime);
-// 		console.log("cacheExpirationTime", cacheExpirationTime);
-// 		if(currentTime > cacheExpireTime) {
-// 			window.location.reload();
-// 		}
-//   }
-// }
+function reloadPageIfExpired(inactivityTimeout) {
+	const currentExpireTime = localStorage.getItem("cacheExpireTime");
+
+  const currentTime = new Date().getTime();
+	const timeExpired = currentTime > currentExpireTime;
+  if (!currentExpireTime || timeExpired) {
+    // Cache has expired, clear it
+    localStorage.clear();
+
+		// Set localStorage session reload time to 2 hours from idle
+		let expTimeInHours = (60 * 60 * 1000) * 2;
+		let cacheExpirationTime = new Date().getTime() + expTimeInHours;
+		localStorage.setItem("cacheExpireTime", cacheExpirationTime);
+		if(currentExpireTime && timeExpired) {
+			window.location.reload();
+		}
+  }
+}
 
 
 router.beforeEach(async (to, from, next) => {
 	let isLogged = await store.dispatch('isLoggedIn');
 	if(isLogged) {
-		// reloadPageIfExpired()
+		reloadPageIfExpired()
 	}
   const requiresAuth = to.meta.requiresAuth;
   if (!requiresAuth) {
