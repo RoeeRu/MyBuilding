@@ -241,6 +241,7 @@ async function checkForUpdatedRoutes() {
 //   }
 // }
 
+
 router.beforeEach(async (to, from, next) => {
 	let isLogged = await store.dispatch('isLoggedIn');
 	if(isLogged) {
