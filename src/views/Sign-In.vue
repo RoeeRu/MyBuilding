@@ -88,6 +88,8 @@
 <script>
 import Loading from 'vue-loading-overlay';
 import 'vue-loading-overlay/dist/vue-loading.css';
+import { mapGetters } from 'vuex';
+import { mapActions } from 'vuex'
 
 	export default ({
 		components: {
@@ -100,7 +102,10 @@ import 'vue-loading-overlay/dist/vue-loading.css';
 				rememberMe: true,
 				regFailed: false,
 				loading: false,
-				fullPage: true
+				fullPage: true,
+				loginRoutes: ['dashboard', 'maintenance', 'projects', 'transactions', 'building', 'documents',
+				 							 'deliveries', 'services', 'services', 'billing'],
+				 // check by order with route nevigate the user first
 			}
 		},
 		beforeCreate() {
@@ -108,9 +113,11 @@ import 'vue-loading-overlay/dist/vue-loading.css';
 			this.form = this.$form.createForm(this, { name: 'normal_login' });
 		},
 		mounted() {
-
 			window.analytics.page('Sign In')
 		},
+		computed: {
+	    ...mapGetters(['allowedRoutes'])
+	  },
 		methods: {
 			// Handles input validation after submission.
 			async handleSubmit(e) {
@@ -136,10 +143,26 @@ import 'vue-loading-overlay/dist/vue-loading.css';
 				let isSignedIn = await this.$store.dispatch('loginHandler', {regType: type})
 				this.loading = false
 				if (isSignedIn) {
-					this.$router.push({ name: 'Dashboard' });
+					await this.nevigateUserLogin()
 				} else {
 					this.regFailed = true;
 				}
+			},
+			async nevigateUserLogin() {
+				for (let i = 0; i < this.loginRoutes.length; i++) {
+					let route = this.loginRoutes[i];
+					if(Object.keys(this.allowedRoutes).includes(route)) {
+						const matchingRoute = this.$router.options.routes.find(routeName => {
+							return routeName.meta && routeName.meta.permissionName === route;
+						})
+						if(Object.keys(matchingRoute).length > 0) {
+							this.$router.push({ name: matchingRoute.name });
+							return;
+						}
+					}
+				}
+				await this.$store.dispatch('signOut')
+				return;
 			},
 			onCancel() {
 					console.log('User cancelled the loader.')

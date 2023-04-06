@@ -151,7 +151,6 @@ import { mapState } from 'vuex'
 		},
 		mounted() {
 			const allowedRoleForRole = this.routesByRole[this.user.role];
-			console.log("allowedRoleForRole", allowedRoleForRole);
 			if(!allowedRoleForRole) {
 				return;
 			}

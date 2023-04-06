@@ -14,7 +14,8 @@ export default {
       user: null,
       loggedIn: false,
       routesByRole: [],
-      allowedRolesUpdated: false
+      allowedRolesUpdated: false,
+      roleName: null
     }
   },
   mutations: {
@@ -29,12 +30,18 @@ export default {
     },
     SET_ALLOW_ROLE_UPDATE(state, isUpdated) {
       state.allowedRolesUpdated = isUpdated
-    }
+    },
+    setRoleName (state, roleName) {
+      state.roleName = roleName
+    },
 
   },
   getters: {
     user (state) {
       return state.user
+    },
+    allowedRoutes (state) {
+      return state.routesByRole[state.roleName]
     }
   },
   actions: {
@@ -94,6 +101,7 @@ export default {
       };
       user['building_id'] = userPersonalres.data.building_id;
       user['role'] = userPersonalres.data.role;
+      commit('setRoleName', userPersonalres.data.role);
       commit('setUser', user);
       return true
     },
@@ -160,9 +168,9 @@ export default {
           });
       } else {
          let isSignedIn = await dispatch('signInWithPopup')
+         await dispatch('handlePersonalInfo')
          if(isSignedIn) {
            isSignedIn = await handleSignIn(state.user.accessToken);
-           await dispatch('handlePersonalInfo')
          }
 
          dispatch('setLoggedIn', isSignedIn)
