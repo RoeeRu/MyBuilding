@@ -165,11 +165,13 @@ export default {
             const errorMessage = error.message;
             return false;
           });
-      } else {
+      } 
+      else {
          let isSignedIn = await dispatch('signInWithPopup')
-         await dispatch('handlePersonalInfo')
+         console.log('isSignedIn', isSignedIn);
          if(isSignedIn) {
            isSignedIn = await handleSignIn(state.user.accessToken);
+           await dispatch('handlePersonalInfo')
          }
 
          dispatch('setLoggedIn', isSignedIn)
