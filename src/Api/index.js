@@ -3,7 +3,6 @@ import router from './../router/index.js'
 import store from '@/store'
 
 axios.defaults.withCredentials = true;
-console.log("withCredentials")
 
 
 

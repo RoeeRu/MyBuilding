@@ -8,7 +8,7 @@
 			<template slot="name"  slot-scope="row">
 				<a
 					:href="row.location"
-					v-text="row.name"
+					v-text="row.doc_name"
 					@click.prevent="downloadItem(row)" />
 			</template>
 
@@ -87,6 +87,7 @@ Axios.defaults.withCredentials = false;
 				modalTitle: "Edit Document",
 				pdfUrl: '',
 				DocumentInputs: [
+					{ 	name: 'doc_name', label: 'Document Name', type:'text', rules: ['required']},
 					{ name: 'type', label: 'Type', placeholder:'Enter type', type:'selectBox', 'options': [
 						{value: 'insurance', text: 'Insurance'},
 						{value: 'Work Order', text: 'Work Order'},

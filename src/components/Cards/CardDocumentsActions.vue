@@ -54,8 +54,8 @@ import debounce from 'lodash/debounce'
 				visible: false,
 				modalTitle: "Add Documents",
 				documentsInputs: [
-					{ 	name: 'location', label: 'Choose File', type:'uploadFile', rules: ['required'],
-					},
+					{ 	name: 'location', label: 'Choose File', type:'uploadFile', rules: ['required']},
+					{ 	name: 'doc_name', label: 'Document Name', type:'text', rules: ['']},
 				//	{ name: 'name', label: 'Document Name', type:'text', placeholder:'Type Name', rules: ['required']},
       				{ name: 'type', label: 'Type', placeholder:'Enter type', type:'selectBox', 'options': [
 						{value: 'insurance', text: 'Insurance'},
