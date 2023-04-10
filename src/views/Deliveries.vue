@@ -46,27 +46,7 @@
 	import { mapState } from 'vuex'
 	
 	// "Deliveries" table list of columns and their properties.
-	const  demoDeliveryData = [
-		{
-			key: '1',
-			date: '10/01/2022',
-			created_by: {created_by_name:'John Milk', created_by_apt: 'Apt 11'},
-			from: 'Fedex',
-			status: 'Awaiting Pick Up',
-			details: 'Waiting in the package room',
-			actions: '',
-		},
-		{
-			key: '2',
-			date: '11/11/2022',
-			created_by: {created_by_name:'Sam Brown', created_by_apt: 'Apt 21'},
-			from: 'Amazon',
-			status: 'Picked Up',
-			details: '',
-			actions: '',
-		},
 	
-	]
 	
 	
 	const table1Columns = [
