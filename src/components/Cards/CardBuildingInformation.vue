@@ -16,19 +16,25 @@
 		</p>
 		<hr class="my-25">
 		<a-descriptions  :column="1">
-			<a-descriptions-item label="Full Address">
+			<a-descriptions-item label="Address">
 				{{buildingInfo.address}}
 			</a-descriptions-item>
-			<a-descriptions-item label="Number of Apartments">
+			<a-descriptions-item label="Number of Units">
 				{{buildingInfo.apartments}}
 			</a-descriptions-item>
+			<a-descriptions-item label="Building Admin Email">
+				{{buildingInfo.email}}
+			</a-descriptions-item>
 			<a-descriptions-item label="Board President">
+				{{buildingInfo.board_president}}
+			</a-descriptions-item>
+			<a-descriptions-item label="Secretary">
 				{{buildingInfo.board_president}}
 			</a-descriptions-item>
 			<a-descriptions-item label="Treasurer">
 				{{buildingInfo.treasurer}}
 			</a-descriptions-item>
-			<a-descriptions-item v-if="buildingInfo.super_name" label="Superintended Name">
+			<a-descriptions-item v-if="buildingInfo.super_name" label="Superintendent">
 				{{buildingInfo.super_name}}
 			</a-descriptions-item>
 			<a-descriptions-item v-if="buildingInfo.super_email" label="Super Email">
@@ -36,9 +42,6 @@
 			</a-descriptions-item>
 			<a-descriptions-item v-if="buildingInfo.super_phone" label="Super Phone">
 				<a v-bind:href="`tel:${buildingInfo.super_phone}`">{{buildingInfo.super_phone}}</a>
-			</a-descriptions-item>
-			<a-descriptions-item label="Main Email">
-				{{buildingInfo.email}}
 			</a-descriptions-item>
 			<a-descriptions-item v-if="buildingInfo.tax_id" label="Tax ID">
 				{{buildingInfo.tax_id}}
