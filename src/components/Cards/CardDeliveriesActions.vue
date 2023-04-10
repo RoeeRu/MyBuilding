@@ -69,14 +69,15 @@ import debounce from 'lodash/debounce'
 				visible: false,
 				modalTitle: "Add New Delivery",
 				deliveryInputs: [
-      		{ name: 'owner', label: 'Delivery For', type:'searchSelect', rules: ['required']},
-      		{ name: 'from', label: 'Delivery From', placeholder:'', type:'selectBox', 'options': [
+      		{ name: 'owner', label: 'Recipient', type:'searchSelect', rules: ['required']},
+      		{ name: 'from', label: 'Delivered By', placeholder:'', type:'selectBox', 'options': [
 						{value: 'Amazon', text: 'Amazon'},
 						{value: 'UPS', text: 'UPS'},
 						{value: 'Fedex', text: 'Fedex'},
+						{value: 'USPS', text: 'USPS'},
 						{value: 'Other', text: 'Other'}],
 						rules: ['required']},
-      		{ name: 'details', label: 'Details', placeholder:'Enter Details', type:'text', rules: ['']},
+      		{ name: 'received_by', label: 'Received By', placeholder:'Enter Name', type:'text', rules: ['']},
       	],
 				searchValue: ''
 			}
@@ -105,11 +106,11 @@ import debounce from 'lodash/debounce'
 				// create array from data object, add created_by_name and created_by_apt and remove created_by
 				const dataDownload = this.data.map((item) => {
 					return {
+						date: item.date,
+						owner: item.owner.name + " - " + item.owner.apartment,
 						from : item.from,
 						status: item.status,
-						details: item.details,
-						date: item.due_date,
-						owner: item.owner.name + " - " + item.owner.apt
+						received_by: item.received_by,
 					};
 				});
 				//get title from columns object into new array
@@ -134,12 +135,15 @@ import debounce from 'lodash/debounce'
 					}
 					let formFields = this.$refs.formFields.formData;
 					let user_id = this.membersInfo[formFields.owner].user_id;
+					if (user_id == undefined || user_id == null) {
+						console.log('user_id is null')
+					}
 					formFields.owner = {
 						apartment:this.membersInfo[formFields.owner].apartment,
 						name: this.membersInfo[formFields.owner].name,
 						email: this.membersInfo[formFields.owner].email,
 					}
-					let res = await this.addDelivery({delivery: {...formFields, ...{status: "Ready", date: this.formattedDate, user_id: user_id}}})
+					let res = await this.addDelivery({delivery: {...formFields, ...{status: "Awaiting Pick Up", date: this.formattedDate, user_id: user_id}}})
 					if(res) {
 						this.$refs.formFields.onFinish(true);
 						this.visible = false;

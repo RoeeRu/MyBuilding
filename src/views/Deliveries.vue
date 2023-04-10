@@ -52,7 +52,7 @@
 			date: '10/01/2022',
 			created_by: {created_by_name:'John Milk', created_by_apt: 'Apt 11'},
 			from: 'Fedex',
-			status: 'Ready',
+			status: 'Awaiting Pick Up',
 			details: 'Waiting in the package room',
 			actions: '',
 		},
@@ -76,7 +76,7 @@
 			class: 'text-muted',
 		},
 		{
-			title: 'Delivery For',
+			title: 'Recipient',
 			dataIndex: 'owner',
 			scopedSlots: { customRender: 'owner' },
 		},
@@ -91,8 +91,8 @@
 			scopedSlots: { customRender: 'status' },
 		},
 		{
-			title: 'Details',
-			dataIndex: 'details',
+			title: 'Received By',
+			dataIndex: 'received_by',
 			class: 'font-semibold text-muted text-sm',
 		},
 		

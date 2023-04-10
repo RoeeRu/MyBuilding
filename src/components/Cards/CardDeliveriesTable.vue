@@ -22,7 +22,7 @@
 
 			<template slot="status" slot-scope="status">
 				<a-tag class="tag-status" :class="[status=='In Progress' ? 'ant-tag-primary' : '', status=='Picked Up' ? 'ant-tag-muted' : ''
-			, status=='Ready' ? 'ant-tag-success' : '']">
+			, status=='Awaiting Pick Up' ? 'ant-tag-success' : '']">
 					{{ status }}
 				</a-tag>
 			</template>
@@ -50,7 +50,7 @@
 					</a>
 					<a-menu slot="overlay">
 					<a-menu-item>
-						<a href="javascript:;" v-on:click="updateStatus(row, newStats='Ready')">Ready</a>
+						<a href="javascript:;" v-on:click="updateStatus(row, newStats='Awaiting Pick Up')">Awaiting Pick Up</a>
 					</a-menu-item>
 					<a-menu-item>
 						<a href="javascript:;" v-on:click="updateStatus(row, newStats='Picked Up')">Picked Up</a>
@@ -108,7 +108,7 @@ import { mapActions } from 'vuex'
 						{value: 'Fedex', text: 'Fedex'},
 						{value: 'Other', text: 'Other'}],
 						rules: ['required']},
-      				{ name: 'details', label: 'Details', placeholder:'Enter Details', type:'text', rules: ['']},
+      				{ name: 'received_by', label: 'Received By', placeholder:'Enter Name', type:'text', rules: ['']},
       	],
 				rowDate: '',
 				rowStatus: '',
