@@ -29,7 +29,7 @@
         >
 
           <a-select-option v-for="(member, index) in input.membersInfo" :key="index" :value="index">
-            Apt. {{ member.apartment }} - {{member.name}}</a-select-option>
+            Apartment {{ member.apartment }} - {{member.name}}</a-select-option>
         </a-select>
 
         <a-date-picker v-else-if="input.type == 'date'" v-model="localFormData[input.name]" format="MM/DD/YYYY" />

@@ -16,7 +16,7 @@
 			<template slot="owner" slot-scope="owner">
 				<div class="source-info">
 					<h6 class="m-0">{{ owner.name }}</h6>
-					<p class="m-0 font-regular text-muted">{{ owner.apartment }}</p>
+					<p class="m-0 font-regular text-muted">Apartment {{ owner.apartment }}</p>
 				</div>
 			</template>
 
