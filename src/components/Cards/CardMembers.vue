@@ -1,7 +1,7 @@
 <template>
 	
 
-	<!-- Members Card - use data from members-->
+	<!-- Members Card - use data from members--> 
 	
 	<a-card :bordered="false" class="header-solid h-full" :bodyStyle="{paddingTop: 0, paddingBottom: '16px' }">
 		<a-row type="flex" justify="space-between" align="middle" class="mb-4">
@@ -17,7 +17,7 @@
 			class="members-list"
 			item-layout="horizontal"
 			:split="false"
-			:data-source="data"
+      		:data-source="pagedData"
 		>
 			<a-list-item slot="renderItem" slot-scope="item">
 				<a-button slot="actions" type="link" @click="sendEmail(item.email)">
@@ -39,14 +39,26 @@
 				</a-list-item-meta>
 			</a-list-item>
 		</a-list>
+		<a-pagination
+      :current="currentPage"
+      :total="data.length"
+      :show-total="total => `Total ${total} items`"
+      :page-size="pageSize"
+      @change="handlePageChange"
+    />
 	</a-card>
 	<!-- / Members Card -->
 
 </template>
 
 <script>
+import { Pagination } from 'ant-design-vue';
+
 
 	export default ({
+		components: {
+			'a-pagination': Pagination,
+		},
 		props: {
 			data: {
 				type: Array,
@@ -55,7 +67,15 @@
 		},
 		data() {
 			return {
+			currentPage: 1,
+			pageSize:7,
 			}
+		},computed: {
+			pagedData() {
+			const startIndex = (this.currentPage - 1) * this.pageSize;
+			const endIndex = startIndex + this.pageSize;
+			return this.data.slice(startIndex, endIndex);
+			},
 		},
 		methods: {
 			sendEmail(email, bcc, subject = '', body = '') {
@@ -66,7 +86,10 @@
 				console.log('send bcc emails to all')
 				var emails = this.data.map(item => item.email).join(', ');
 				window.open("mailto:?bcc="+emails+"&subject="+encodeURIComponent('') +"&body="+encodeURIComponent(''), '_blank').focus();
-			}
+			},
+			handlePageChange(page) {
+			this.currentPage = page;
+			},
 		}
 		
 	})
