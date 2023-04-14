@@ -9,5 +9,8 @@
         }
       ]
     }
+  ],
+  "redirects" : [
+    {"source":"/building","destination":"/documents"}
   ]
 }
