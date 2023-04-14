@@ -1,58 +1,13 @@
 {
-    "headers": [
-      {
-        "source": "/building",
-        "headers": [
-          {
-            "key": "Cache-Control",
-            "value": "public, max-age=8640, must-revalidate"
-          }
-        ]
-      },
-      {
-        "source": "/Api/(.*)",
-        "headers": [
-          {
-            "key": "Cache-Control",
-            "value": "public, max-age=86400, must-revalidate"
-          }
-        ]
-      },
-      {
-        "source": "/src/Api/(.*)",
-        "headers": [
-          {
-            "key": "Cache-Control",
-            "value": "public, max-age=86401, must-revalidate"
-          }
-        ]
-      },
-      {
-        "source": "/manifest.json",
-        "headers": [
-          {
-            "key": "Cache-Control",
-            "value": "public, max-age=1, must-revalidate"
-          }
-        ]
-      },
-      {
-        "source": "/static/(.*)",
-        "headers": [
-          {
-            "key": "Cache-Control",
-            "value": "public, max-age=31536000, immutable"
-          }
-        ]
-      },
-      {
-        "source": "/public/(.*)",
-        "headers": [
-          {
-            "key": "Cache-Control",
-            "value": "public, max-age=31536000, immutable"
-          }
-        ]
-      }
-    ]
-  }
+  "headers": [
+    {
+      "source": "/(.*)",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=3600, s-maxage=3600, stale-while-revalidate=3600"
+        }
+      ]
+    }
+  ]
+}
