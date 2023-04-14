@@ -34,7 +34,7 @@
 			<a-descriptions-item label="Treasurer">
 				{{buildingInfo.treasurer}}
 			</a-descriptions-item>
-			<a-descriptions-item v-if="buildingInfo.super_name" label="Superintendent">
+			<a-descriptions-item v-if="buildingInfo.super_name" label="Super / Handyman">
 				{{buildingInfo.super_name}}
 			</a-descriptions-item>
 			<a-descriptions-item v-if="buildingInfo.super_email" label="Super Email">
@@ -45,9 +45,6 @@
 			</a-descriptions-item>
 			<a-descriptions-item v-if="buildingInfo.tax_id" label="Tax ID">
 				{{buildingInfo.tax_id}}
-			</a-descriptions-item>
-			<a-descriptions-item v-if="buildingInfo.budget" label="Budget 2023" contentStyle="">
-				{{buildingInfo.budget | currency('$', 0)}}
 			</a-descriptions-item>
 		</a-descriptions>
 	</a-card>
