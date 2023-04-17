@@ -15,7 +15,10 @@ export default {
       loggedIn: false,
       routesByRole: [],
       allowedRolesUpdated: false,
-      roleName: null
+      roleName: null,
+      initialRoute: '',
+      loginRoutes: ['dashboard', 'maintenance', 'projects', 'transactions', 'building', 'documents',
+                     'deliveries', 'services', 'services', 'billing'],
     }
   },
   mutations: {
@@ -34,6 +37,10 @@ export default {
     setRoleName (state, roleName) {
       state.roleName = roleName
     },
+    setInitialRoute (state, initialRoute) {
+      state.initialRoute = initialRoute
+    },
+
   },
   getters: {
     user (state) {
@@ -71,7 +78,7 @@ export default {
           }
           setTimeout(async function () {
             unsubscribe();
-            await dispatch('getRoutes')
+            // await dispatch('getRoutes')
             commit('setUser', user);
             const isLogged = await isUserLoggedIn(user.accessToken)
             if(!isLogged){
@@ -94,14 +101,25 @@ export default {
 
 
     async getRoutes({state, commit, dispatch}) {
-      if(state.allowedRolesUpdated) {
-        return;
-      }
-      let routesByRole = await fetchAllowedRolesForRoutes();
-      commit('SET_ROUTES', routesByRole);
+      let allowedRoutesByRole = await fetchAllowedRolesForRoutes();
+
+      router.options.routes.forEach(route => {
+        if(!route.meta.requiresAuth || route.meta.allowedRoles.length > 0){
+          return;
+        }
+        Object.entries(allowedRoutesByRole).forEach(([roleName, allowedRolesByRoute]) => {
+          let routerName = route.meta.permissionName;
+
+          if(Object.keys(allowedRolesByRoute).includes(routerName)) {
+            route.meta.allowedRoles.push(roleName);
+          }
+        });
+      });
+
+      commit('SET_ROUTES', allowedRoutesByRole);
       commit('SET_ALLOW_ROLE_UPDATE', true);
 
-      return state.routesByRole
+      return allowedRoutesByRole
     },
 
     async handlePersonalInfo({state, commit, dispatch}) {
@@ -170,7 +188,8 @@ export default {
 
             dispatch('setLoggedIn', true)
             dispatch('logAnalytics')
-            return true;
+            await dispatch('getRoutes')
+            return state.loggedIn;
           })
           .catch((error) => {
             console.log("errorCode", error);
@@ -178,10 +197,9 @@ export default {
             const errorMessage = error.message;
             return false;
           });
-      } 
+      }
       else {
          let isSignedIn = await dispatch('signInWithPopup')
-         console.log('isSignedIn', isSignedIn);
          if(isSignedIn) {
            isSignedIn = await handleSignIn(state.user.accessToken);
            await dispatch('handlePersonalInfo')
@@ -189,8 +207,9 @@ export default {
 
          dispatch('setLoggedIn', isSignedIn)
          dispatch('logAnalytics')
-         return isSignedIn;
       }
+      await dispatch('getRoutes')
+      return state.loggedIn;
     },
 
 
@@ -219,6 +238,24 @@ export default {
           console.log("errorMessage", errorMessage);
           return false;
         });
+    },
+
+    async updateInitialRoute({commit, state, dispatch, rootState}) {
+      for (let i = 0; i < state.loginRoutes.length; i++) {
+        let route = state.loginRoutes[i];
+        if(Object.keys(state.routesByRole[state.roleName]).includes(route)) {
+          const matchingRoute = router.options.routes.find(routeName => {
+            return routeName.meta && routeName.meta.permissionName === route;
+          })
+          if(Object.keys(matchingRoute).length > 0) {
+            localStorage.setItem("initialRoute", matchingRoute.path);
+            commit('setInitialRoute', matchingRoute.name);
+            router.push({ name: matchingRoute.name });
+            return;
+          }
+        }
+      }
+      await dispatch('signOut', false)
     },
 
     async signOut({state, commit, dispatch}) {

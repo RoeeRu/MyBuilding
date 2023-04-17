@@ -116,7 +116,7 @@ import { mapActions } from 'vuex'
 			window.analytics.page('Sign In')
 		},
 		computed: {
-	    ...mapGetters(['allowedRoutes'])
+	    ...mapActions(['updateInitialRoute'])
 	  },
 		methods: {
 			// Handles input validation after submission.
@@ -131,7 +131,7 @@ import { mapActions } from 'vuex'
 				let isSignedIn = await this.$store.dispatch('loginHandler', {regType: 'selfRegistration', email:this.$refs.email.value, password: this.$refs.password.value})
 				this.loading = false
 				if (isSignedIn) {
-					this.$router.push({ name: 'Dashboard' });
+					await this.nevigateUserLogin()
 				} else {
 					this.regFailed = true;
 				}
@@ -139,29 +139,22 @@ import { mapActions } from 'vuex'
 			},
 
 			async handleSignUp(type) {
-				this.loading = true
-				let isSignedIn = await this.$store.dispatch('loginHandler', {regType: type})
-				this.loading = false
-				if (isSignedIn) {
-					await this.nevigateUserLogin()
-				} else {
-					this.regFailed = true;
+				try {
+					this.loading = true
+					let isSignedIn = await this.$store.dispatch('loginHandler', {regType: type})
+					this.loading = false
+					if (isSignedIn) {
+						await this.nevigateUserLogin()
+					} else {
+						this.regFailed = true;
+					}
+				} catch (e) {
+					this.loading = false
 				}
+
 			},
 			async nevigateUserLogin() {
-				for (let i = 0; i < this.loginRoutes.length; i++) {
-					let route = this.loginRoutes[i];
-					if(Object.keys(this.allowedRoutes).includes(route)) {
-						const matchingRoute = this.$router.options.routes.find(routeName => {
-							return routeName.meta && routeName.meta.permissionName === route;
-						})
-						if(Object.keys(matchingRoute).length > 0) {
-							this.$router.push({ name: matchingRoute.name });
-							return;
-						}
-					}
-				}
-				await this.$store.dispatch('signOut')
+				await this.$store.dispatch('updateInitialRoute')
 				return;
 			},
 			onCancel() {

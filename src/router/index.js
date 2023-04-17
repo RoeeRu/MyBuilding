@@ -213,24 +213,12 @@ const router = new VueRouter({
 // })
 
 async function checkForUpdatedRoutes() {
-	if (!store.state.auth.allowedRolesUpdated) {
-		await store.dispatch('getRoutes');
+	let allowedRoutesByRole = store.state.auth.routesByRole;
+	if (!store.state.auth.allowedRolesUpdated && Array.isArray(allowedRoutesByRole) && allowedRoutesByRole.length > 0) {
+		return;
 	}
 
-	let allowedRolesByRoutes = store.state.auth.routesByRole
-	router.options.routes.forEach(route => {
-		if(!route.meta.requiresAuth || route.meta.allowedRoles.length > 0){
-			return;
-		}
-		Object.entries(allowedRolesByRoutes).forEach(([roleName, allowedRolesByRoute]) => {
-			let routerName = route.meta.permissionName;
-
-			if(Object.keys(allowedRolesByRoute).includes(routerName)) {
-				route.meta.allowedRoles.push(roleName);
-			}
-		});
-	});
-
+  await store.dispatch('getRoutes');
 }
 
 function reloadPageIfExpired(inactivityTimeout) {
@@ -273,11 +261,16 @@ router.beforeEach(async (to, from, next) => {
 		}
 	}
   const requiresAuth = to.meta.requiresAuth;
-  if (!requiresAuth) {
+	if(to.name=="Sign-In" && isLogged) {
+		const initialRoute = localStorage.getItem("initialRoute");
+		next(initialRoute || store.state.auth.initialRoute)
+	}
+  else if (!requiresAuth) {
     next();
   } else if (isLogged) {
     const allowedRoles = to.meta.allowedRoles;
     const userRole = store.getters.user.role;
+		// alert(to.name)
 		await checkForUpdatedRoutes();
     if (allowedRoles.length > 0 && allowedRoles.includes(userRole)) {
       next();
