@@ -239,14 +239,18 @@ function reloadPageIfExpired(inactivityTimeout) {
   const currentTime = new Date().getTime();
 	const timeExpired = currentTime > currentExpireTime;
   if (!currentExpireTime || timeExpired) {
+	if (process.env.NODE_ENV === 'development') {
+        console.log('Cache has expired, clearing it')}
     // Cache has expired, clear it
     localStorage.clear();
 
 		// Set localStorage session reload time to 2 hours from idle
-		let expTimeInHours = (60 * 60 * 1000) * 2;
+		let expTimeInHours = (60 * 60 * 1000) * inactivityTimeout;
 		let cacheExpirationTime = new Date().getTime() + expTimeInHours;
 		localStorage.setItem("cacheExpireTime", cacheExpirationTime);
 		if(currentExpireTime && timeExpired) {
+			if (process.env.NODE_ENV === 'development') {
+				console.log('currentExpireTime - reloading page')}
 			window.location.reload();
 		}
   }
@@ -254,9 +258,19 @@ function reloadPageIfExpired(inactivityTimeout) {
 
 
 router.beforeEach(async (to, from, next) => {
+	if (process.env.NODE_ENV === 'development') {
+        console.log('beforeEach', to.fullPath, from.fullPath)}
 	let isLogged = await store.dispatch('isLoggedIn');
-	if(isLogged) {
-		reloadPageIfExpired()
+	if(isLogged ) {
+		let inactivityTimeout = 2;
+		if (from.fullPath === '/sign-in' || from.fullPath === '/sign-up') {
+			let expTimeInHours = (60 * 60 * 1000) * inactivityTimeout;
+			let cacheExpirationTime = new Date().getTime() + expTimeInHours;
+			localStorage.setItem("cacheExpireTime", cacheExpirationTime);
+		}
+		else {
+		reloadPageIfExpired(inactivityTimeout)
+		}
 	}
   const requiresAuth = to.meta.requiresAuth;
   if (!requiresAuth) {

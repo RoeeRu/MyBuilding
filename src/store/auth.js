@@ -45,11 +45,17 @@ export default {
   },
   actions: {
     setLoggedIn({ commit }, value) {
+      if (process.env.NODE_ENV === 'development') {
+        console.log('setLoggedIn', value)}
       commit('SET_LOGGED_IN', value)
     },
 
     async isLoggedIn({ state, commit, dispatch }) {
+      if (process.env.NODE_ENV === 'development') {
+        console.log('isLoggedIn')}
       if(state.loggedIn) {
+        if (process.env.NODE_ENV === 'development') {
+          console.log('state.loggedIn', state.loggedIn)}
         return true;
       }
       FirebaseConfig.setup();
@@ -57,6 +63,8 @@ export default {
       return new Promise(async (resolve, reject) => {
         const unsubscribe = auth.onAuthStateChanged(async (user) => {
           if(!user){
+            if (process.env.NODE_ENV === 'development') {
+              console.log('user - signOut', user)}
             dispatch('signOut')
             resolve(false);
             return;
@@ -67,6 +75,8 @@ export default {
             commit('setUser', user);
             const isLogged = await isUserLoggedIn(user.accessToken)
             if(!isLogged){
+              if (process.env.NODE_ENV === 'development') {
+                console.log('user - isLogged', isLogged)}
               dispatch('signOut')
               resolve(false);
               return false;
@@ -74,6 +84,8 @@ export default {
             await dispatch('handlePersonalInfo')
             dispatch('setLoggedIn', true)
             resolve(true);
+            if (process.env.NODE_ENV === 'development') {
+              console.log('isLogged', isLogged)}
             return isLogged;
           }, 300);
         }, reject);
@@ -96,6 +108,7 @@ export default {
       let user = state.user;
       let userPersonalres = await getPersonalInfo(user.accessToken);
       if(!userPersonalres.status || !userPersonalres.data) {
+        console.log('userPersonalres - false', userPersonalres);
         return false
       };
       user['building_id'] = userPersonalres.data.building_id;
