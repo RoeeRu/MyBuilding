@@ -18,7 +18,7 @@ export default {
       roleName: null,
       initialRoute: '',
       loginRoutes: ['dashboard', 'maintenance', 'projects', 'transactions', 'building', 'documents',
-                     'deliveries', 'services', 'services', 'billing'],
+                     'deliveries', 'services', 'forum'],
     }
   },
   mutations: {
@@ -101,6 +101,8 @@ export default {
 
 
     async getRoutes({state, commit, dispatch}) {
+      if (process.env.NODE_ENV === 'development') {
+        console.log('getRoutes')}
       let allowedRoutesByRole = await fetchAllowedRolesForRoutes();
 
       router.options.routes.forEach(route => {

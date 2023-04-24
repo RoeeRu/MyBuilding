@@ -113,6 +113,29 @@ let routes = [
 		}
 	},
 	{
+		path: '/forum',
+		name: 'Community Forum',
+		layout: "dashboard",
+		component: () => import('../views/Forum.vue'),
+		meta: {
+				requiresAuth: true,
+				allowedRoles: [],
+				permissionName: 'forum'
+		}
+	},
+	{
+		path: '/thread/:id', // The dynamic route parameter is represented by ':id'
+		name: 'ThreadDetails',
+		layout: "dashboard",
+		component: () => import('../views/ThreadDetails.vue'),
+		props: (route) => ({ thread: route.params.thread }),
+		meta: {
+				requiresAuth: true,
+				allowedRoles: [],
+				permissionName: 'forum'
+		}
+	},
+	{
 		path: '/billing',
 		name: 'Billing',
 		layout: "dashboard",

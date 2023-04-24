@@ -104,7 +104,7 @@ import { mapActions } from 'vuex'
 				loading: false,
 				fullPage: true,
 				loginRoutes: ['dashboard', 'maintenance', 'projects', 'transactions', 'building', 'documents',
-				 							 'deliveries', 'services', 'services', 'billing'],
+				 							 'deliveries', 'services', 'forum', 'billing'],
 				 // check by order with route nevigate the user first
 			}
 		},
