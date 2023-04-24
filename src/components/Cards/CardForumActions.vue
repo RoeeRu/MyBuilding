@@ -100,6 +100,7 @@ import debounce from 'lodash/debounce'
 					formFields.created_by_name = this.personalInfo.name;
 					formFields.created_by_apartment = this.personalInfo.apartment;
 					formFields.created_by_uid = this.personalInfo.uid;
+					formFields.num_responses = "No responses yet"
 
 					let res =  await this.addTopic({topic: {...formFields}, BuildingID: this.BuildingID},)
 					if(res) {
