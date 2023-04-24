@@ -10,6 +10,8 @@
     <a-form-item v-for="(input, index) in formFields" :key="index" :label="input.label" :prop="input.name"  :colon="false">
         <a-input v-if="input.type == 'text'" v-model="localFormData[input.name]" :placeholder="input.placeholder"/>
 
+        <a-textarea v-else-if="input.type == 'textarea'" v-model="localFormData[input.name]" :rows="4" :placeholder="input.placeholder"/>
+
         <a-input  v-else-if="input.type == 'currency'"
         prefix="$"
         v-model="localFormData[input.name]"
