@@ -10,6 +10,18 @@
           <div class="response-text">{{ response.message }}</div>
           <div class="response-footer">
             <div class="response-author">Posted by {{ response.created_by_name }} - {{ response.created_by_apartment }}</div>
+            <div class="actions-menu" v-if="userUID === response.created_by_uid">
+            <a-dropdown>
+					<a class="ant-dropdown-link" @click="e => e.preventDefault()">
+					Actions <a-icon type="down" />
+					</a>
+					<a-menu slot="overlay">
+            <a-menu-item>
+						<a href="javascript:;" v-on:click="DeleteResponse(response, threadData)">Delete</a>
+					</a-menu-item>
+          </a-menu>
+          </a-dropdown>
+          </div>
             <div class="response-date">{{ formattedResponseDate(response.created_timestamp) }}</div>
           </div>
         </div>
@@ -43,6 +55,7 @@
 				BuildingID: state => state.auth.user.building_id,
 				personalInfo: state => state.profile.userInfo,
         responsesData: state => state.forum.responses_data,
+        userUID: (state) => state.auth.user.uid,
 			}),
       formattedThreadDate() {
         const date = new Date(this.thread.date);
@@ -56,9 +69,21 @@
       },
     },
     methods: {
+        async DeleteResponse(response, threadData) {
+			if(confirm("Do you really want to delete the response? This can not be undone!")){
+				console.log("deleting response", response.key);
+
+				try {
+					let res = await this.deleteResponse({response_id: response.id, topic_id: threadData.id, BuildingID: this.BuildingID});
+					} catch (e) {
+						console.log('modalHandleOk error', e)
+					}
+			}
+        },
         ...mapActions('forum', [
           'getThread',
           'addResponse',
+          'deleteResponse',
         ]),
 			...mapActions('profile', ['getUserData']),
 
@@ -131,7 +156,7 @@
   }
   
   .response-text {
-    font-size: 1rem;
+    font-size: 1.5rem;
     margin-bottom: 0.5rem;
   }
   
@@ -139,7 +164,7 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    font-size: 0.875rem;
+    font-size: 0.75rem;
     color: #666;
   }
   

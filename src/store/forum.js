@@ -98,6 +98,7 @@ export default {
         return false;
       }
       commit('threadInfo', res.data);
+      commit('responsesInfo', res.data.responses);
       return true;
     },
 
