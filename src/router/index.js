@@ -36,6 +36,17 @@ let routes = [
 		}
 	},
 	{
+		path: '/calendar',
+		name: 'Calendar',
+		layout: "dashboard",
+		component: () => import('../views/Calendar.vue'),
+		meta: {
+				requiresAuth: true,
+				allowedRoles: [],
+				permissionName: 'calendar'
+		}
+	},
+	{
 		path: '/projects',
 		name: 'Projects',
 		layout: "dashboard",

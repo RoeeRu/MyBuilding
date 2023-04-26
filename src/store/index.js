@@ -10,6 +10,7 @@ import dashboard from './dashboard'
 import documents from './documents'
 import deliveries from './deliveries'
 import forum from './forum'
+import calendar from './calendar'
 
 
 Vue.use(Vuex)
@@ -26,5 +27,6 @@ export default new Vuex.Store({
     documents,
     deliveries,
     forum,
+    calendar,
   }
 })
