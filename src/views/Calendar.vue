@@ -253,25 +253,6 @@
   
 	  this.loadState();
   
-	  const topLevelDiv = document.querySelector('.ds-expand.ds-calendar-app');
-	  const navToolbar = document.querySelector('.ds-app-calendar-toolbar.v-toolbar.elevation-0.v-toolbar--fixed.white');
-	  const navContent = document.querySelector('.v-toolbar__content');
-	  const mainContent = document.querySelector('.v-content.ds-expand');
-	  const contentWrap = document.querySelector('.v-content__wrap');
-	  const asideElement = document.querySelector('.v-navigation-drawer.v-navigation-drawer--clipped.v-navigation-drawer--fixed.v-navigation-drawer--open');
-  
-	  const newDivToolbar = document.createElement('div');
-	  newDivToolbar.innerHTML = navContent.innerHTML;
-	  newDivToolbar.className = 'v-toolbar__content';
-  
-	  const container = document.createElement('div');
-	  container.className = 'content-container';
-  
-	  topLevelDiv.removeChild(navToolbar);
-	  topLevelDiv.removeChild(asideElement);
-	  mainContent.insertBefore(container, contentWrap);
-	  container.appendChild(newDivToolbar);
-	  container.appendChild(contentWrap);
   
 	},
   
