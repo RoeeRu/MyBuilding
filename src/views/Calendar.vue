@@ -339,11 +339,6 @@
 	margin-bottom: 8px !important;
   }
   
-  .v-toolbar__content,
-  .v-content__wrap {
-	display: block;
-	width: 100%;
-  }
   
   </style>
   
