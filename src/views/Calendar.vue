@@ -1,112 +1,368 @@
-<!-- 
-	This is the calendar page, it uses the dashboard layout in: 
-	"./layouts/Dashboard.vue" .
- -->
-
 <template>
-	<div>
-
-				<!-- Calendar  Card -->
-					<CardCalendarLarge></CardCalendarLarge>
-
-				
-				<!-- / Calendar  Card -->
-
-		<!-- / Calendar  -->
-
-	</div>
-</template>
-
-<script>
-
-	// "Deliveries" table component.
-	import CardDeliveriesActions from '../components/Cards/CardDeliveriesActions.vue';
-	import { mapActions } from 'vuex'
-	import { mapState } from 'vuex'
-	import CardCalendarLarge from '../components/Cards/CardCalendarLarge.vue';
-	
-	// "Deliveries" table list of columns and their properties.
-	
-	
-	
-	const table1Columns = [
+	<v-app id="dayspan" v-cloak>
+  
+	  <ds-calendar-app ref="app"
+		:calendar="calendar"
+		:read-only="readOnly"
+		@change="saveState">
+  
+		<template slot="title">
+		  DaySpan
+		</template>
+  
+  
+		<template slot="eventPopover" slot-scope="slotData">
+		   <ds-calendar-event-popover
+			v-bind="slotData"
+			:read-only="readOnly"
+			@finish="saveState"
+		  ></ds-calendar-event-popover>
+		</template>
+  
+		<template slot="eventCreatePopover" slot-scope="{placeholder, calendar, close}">
+		  <ds-calendar-event-create-popover
+			:calendar-event="placeholder"
+			:calendar="calendar"
+			:close="$refs.app.$refs.calendar.clearPlaceholder"
+			@create-edit="$refs.app.editPlaceholder"
+			@create-popover-closed="saveState"
+		  ></ds-calendar-event-create-popover>
+		</template>
+  
+		<template slot="eventTimeTitle" slot-scope="{calendarEvent, details}">
+		  <div>
+			<v-icon class="ds-ev-icon"
+			  v-if="details.icon"
+			  size="14"
+			  :style="{color: details.forecolor}">
+			  {{ details.icon }}
+			</v-icon>
+			<strong class="ds-ev-title">{{ details.title }}</strong>
+		  </div>
+		  <div class="ds-ev-description">{{ getCalendarTime( calendarEvent ) }}</div>
+		</template>
+  
+		<template slot="drawerBottom">
+		  <div class="pa-3">
+			<v-checkbox
+			  label="Read Only?"
+			  v-model="readOnly"
+			></v-checkbox>
+		  </div>
+		</template>
+  
+	  </ds-calendar-app>
+  
+	</v-app>
+  </template>
+  
+  <script>
+  import { Calendar, Weekday, Month } from 'dayspan';
+  import Vue from 'vue';
+  
+  
+  export default {
+  
+	name: 'app',
+  
+	data: () => ({
+	  storeKey: 'dayspanState',
+	  calendar: Calendar.months(),
+	  readOnly: false,
+	  defaultEvents: [
 		{
-			title: 'Date Added',
-			dataIndex: 'date',
-			class: 'text-muted',
+		  data: {
+			title: 'Weekly Meeting',
+			color: '#3F51B5'
+		  },
+		  schedule: {
+			dayOfWeek: [Weekday.MONDAY],
+			times: [9],
+			duration: 30,
+			durationUnit: 'minutes'
+		  }
 		},
 		{
-			title: 'Recipient',
-			dataIndex: 'owner',
-			scopedSlots: { customRender: 'owner' },
+		  data: {
+			title: 'First Weekend',
+			color: '#4CAF50'
+		  },
+		  schedule: {
+			weekspanOfMonth: [0],
+			dayOfWeek: [Weekday.FRIDAY],
+			duration: 3,
+			durationUnit: 'days'
+		  }
 		},
 		{
-			title: 'Delivery From',
-			dataIndex: 'from',
-			class: 'font-semibold text-muted text-sm',
+		  data: {
+			title: 'End of Month',
+			color: '#000000'
+		  },
+		  schedule: {
+			lastDayOfMonth: [1],
+			duration: 1,
+			durationUnit: 'hours'
+		  }
 		},
 		{
-			title: 'Status',
-			dataIndex: 'status',
-			scopedSlots: { customRender: 'status' },
+		  data: {
+			title: 'Mother\'s Day',
+			color: '#2196F3',
+			calendar: 'US Holidays'
+		  },
+		  schedule: {
+			month: [Month.MAY],
+			dayOfWeek: [Weekday.SUNDAY],
+			weekspanOfMonth: [1]
+		  }
 		},
 		{
-			title: 'Received By',
-			dataIndex: 'received_by',
-			class: 'font-semibold text-muted text-sm',
+		  data: {
+			title: 'New Year\'s Day',
+			color: '#2196F3',
+			calendar: 'US Holidays'
+		  },
+		  schedule: {
+			month: [Month.JANUARY],
+			dayOfMonth: [1]
+		  }
 		},
-		
-		
 		{
-			title: '',
-			scopedSlots: { customRender: 'actionsBtn' },
+		  data: {
+			title: 'Inauguration Day',
+			color: '#2196F3',
+			calendar: 'US Holidays'
+		  },
+		  schedule: {
+			month: [Month.JANUARY],
+			dayOfMonth: [20]
+		  }
 		},
-	];
-
-	
-
-	export default ({
-		components: {
-	CardDeliveriesActions,
-	CardCalendarLarge,
+		{
+		  data: {
+			title: 'Martin Luther King, Jr. Day',
+			color: '#2196F3',
+			calendar: 'US Holidays'
+		  },
+		  schedule: {
+			month: [Month.JANUARY],
+			dayOfWeek: [Weekday.MONDAY],
+			weekspanOfMonth: [2]
+		  }
 		},
-		props: {
-			data: {
-				type: Array,
-				default: () => [],
-			},
-			columns: {
-				type: Array,
-				default: () => [],
-			},
-},
-		data() {
-			return {
-
-				// Associating "Deliveries" table columns with its corresponding property.
-				table1Columns: table1Columns,
-
-				
-			}
+		{
+		  data: {
+			title: 'George Washington\'s Birthday',
+			color: '#2196F3',
+			calendar: 'US Holidays'
+		  },
+		  schedule: {
+			month: [Month.FEBRUARY],
+			dayOfWeek: [Weekday.MONDAY],
+			weekspanOfMonth: [2]
+		  }
 		},
-		computed: {
-			...mapState({
-				deliveriesData: state => state.deliveries.deliveries,
-			})
+		{
+		  data: {
+			title: 'Memorial Day',
+			color: '#2196F3',
+			calendar: 'US Holidays'
+		  },
+		  schedule: {
+			month: [Month.MAY],
+			dayOfWeek: [Weekday.MONDAY],
+			lastWeekspanOfMonth: [0]
+		  }
 		},
-		methods: {
-			...mapActions({
-				getDeliveries: 'deliveries/getDeliveries',
-				
-			}),
+		{
+		  data: {
+			title: 'Independence Day',
+			color: '#2196F3',
+			calendar: 'US Holidays'
+		  },
+		  schedule: {
+			month: [Month.JULY],
+			dayOfMonth: [4]
+		  }
 		},
-		async mounted() {
-			window.analytics.page('Deliveries');
-			await this.getDeliveries();
+		{
+		  data: {
+			title: 'Labor Day',
+			color: '#2196F3',
+			calendar: 'US Holidays'
+		  },
+		  schedule: {
+			month: [Month.SEPTEMBER],
+			dayOfWeek: [Weekday.MONDAY],
+			lastWeekspanOfMonth: [0]
+		  }
 		},
-	})
-
-</script>
-
-<style lang="scss">
-</style>
+		{
+		  data: {
+			title: 'Columbus Day',
+			color: '#2196F3',
+			calendar: 'US Holidays'
+		  },
+		  schedule: {
+			month: [Month.OCTOBER],
+			dayOfWeek: [Weekday.MONDAY],
+			weekspanOfMonth: [1]
+		  }
+		},
+		{
+		  data: {
+			title: 'Veterans Day',
+			color: '#2196F3',
+			calendar: 'US Holidays'
+		  },
+		  schedule: {
+			month: [Month.NOVEMBER],
+			dayOfMonth: [11]
+		  }
+		},
+		{
+		  data: {
+			title: 'Thanksgiving Day',
+			color: '#2196F3',
+			calendar: 'US Holidays'
+		  },
+		  schedule: {
+			month: [Month.NOVEMBER],
+			dayOfWeek: [Weekday.THURSDAY],
+			weekspanOfMonth: [3]
+		  }
+		},
+		{
+		  data: {
+			title: 'Christmas Day',
+			color: '#2196F3',
+			calendar: 'US Holidays'
+		  },
+		  schedule: {
+			month: [Month.DECEMBER],
+			dayOfMonth: [25]
+		  }
+		}
+	  ]
+	}),
+  
+	mounted()
+	{
+	  window.app = this.$refs.app;
+  
+	  this.loadState();
+  
+	  const topLevelDiv = document.querySelector('.ds-expand.ds-calendar-app');
+	  const navToolbar = document.querySelector('.ds-app-calendar-toolbar.v-toolbar.elevation-0.v-toolbar--fixed.white');
+	  const navContent = document.querySelector('.v-toolbar__content');
+	  const mainContent = document.querySelector('.v-content.ds-expand');
+	  const contentWrap = document.querySelector('.v-content__wrap');
+	  const asideElement = document.querySelector('.v-navigation-drawer.v-navigation-drawer--clipped.v-navigation-drawer--fixed.v-navigation-drawer--open');
+  
+	  const newDivToolbar = document.createElement('div');
+	  newDivToolbar.innerHTML = navContent.innerHTML;
+	  newDivToolbar.className = 'v-toolbar__content';
+  
+	  const container = document.createElement('div');
+	  container.className = 'content-container';
+  
+	  topLevelDiv.removeChild(navToolbar);
+	  topLevelDiv.removeChild(asideElement);
+	  mainContent.insertBefore(container, contentWrap);
+	  container.appendChild(newDivToolbar);
+	  container.appendChild(contentWrap);
+  
+	},
+  
+	methods:
+	{
+  
+	  getCalendarTime(calendarEvent)
+	  {
+		let sa = calendarEvent.start.format('a');
+		let ea = calendarEvent.end.format('a');
+		let sh = calendarEvent.start.format('h');
+		let eh = calendarEvent.end.format('h');
+  
+		if (calendarEvent.start.minute !== 0)
+		{
+		  sh += calendarEvent.start.format(':mm');
+		}
+  
+		if (calendarEvent.end.minute !== 0)
+		{
+		  eh += calendarEvent.end.format(':mm');
+		}
+  
+		return (sa === ea) ? (sh + ' - ' + eh + ea) : (sh + sa + ' - ' + eh + ea);
+	  },
+  
+	  saveState()
+	  {
+		let state = this.calendar.toInput(true);
+		let json = JSON.stringify(state);
+  
+		localStorage.setItem(this.storeKey, json);
+	  },
+  
+	  loadState()
+	  {
+		let state = {};
+  
+		try
+		{
+		  let savedState = JSON.parse(localStorage.getItem(this.storeKey));
+  
+		  if (savedState)
+		  {
+			state = savedState;
+			state.preferToday = false;
+		  }
+		}
+		catch (e)
+		{
+		  // eslint-disable-next-line
+		  console.log( e );
+		}
+  
+		if (!state.events || !state.events.length)
+		{
+		  state.events = this.defaultEvents;
+		}
+  
+		state.events.forEach(ev =>
+		{
+		  let defaults = this.$dayspan.getDefaultEventDetails();
+  
+		  ev.data = Vue.util.extend( defaults, ev.data );
+		});
+  
+		this.$refs.app.setState( state );
+	  }
+	}
+  }
+  </script>
+  
+  <style>
+  
+  body, html, #app, #dayspan {
+	font-family: Roboto, sans-serif !important;
+	width: 100%;
+	height: 100%;
+  }
+  
+  .v-btn--flat,
+  .v-text-field--solo .v-input__slot {
+	background-color: #f5f5f5 !important;
+	margin-bottom: 8px !important;
+  }
+  
+  .v-toolbar__content,
+  .v-content__wrap {
+	display: block;
+	width: 100%;
+  }
+  
+  </style>
+  
