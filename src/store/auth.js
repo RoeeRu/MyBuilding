@@ -18,7 +18,7 @@ export default {
       roleName: null,
       initialRoute: '',
       loginRoutes: ['dashboard', 'maintenance', 'projects', 'transactions', 'building', 'documents',
-                     'deliveries', 'services', 'forum'],
+                     'deliveries', 'services', 'forum', 'calendar'],
     }
   },
   mutations: {

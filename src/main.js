@@ -13,7 +13,8 @@ import store from './store'
 import Vuex from 'vuex'
 import { inject } from '@vercel/analytics';
 import Vue2Filters from 'vue2-filters'
-
+import Vuetify from 'vuetify'
+import DaySpanVuetify from 'dayspan-vuetify'
 
 
 
@@ -23,6 +24,13 @@ import './scss/app.scss';
 
 Vue.use(Antd);
 Vue.use(Vue2Filters)
+Vue.use(Vuetify);
+
+Vue.use(DaySpanVuetify, {
+  methods: {
+    getDefaultEventColor: () => '#1976d2'
+  }
+});
 
 
 Vue.config.productionTip = false
