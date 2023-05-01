@@ -43,14 +43,7 @@
 		  <div class="ds-ev-description">{{ getCalendarTime( calendarEvent ) }}</div>
 		</template>
   
-		<template slot="drawerBottom">
-		  <div class="pa-3">
-			<v-checkbox
-			  label="Read Only?"
-			  v-model="readOnly"
-			></v-checkbox>
-		  </div>
-		</template>
+		
   
 	  </ds-calendar-app>
   
@@ -132,10 +125,7 @@
 	  saveState()
 	  {
 		let state = this.calendar.toInput(true);
-		let json = JSON.stringify(state);
   
-		//localStorage.setItem(this.storeKey, json);
-
 		this.replaceCalendar({newCalendar: state, building_id: this.BuildingID});
 		
 	  },
@@ -143,12 +133,8 @@
 	  loadState()
 	  {
 		let state = {};
-		
-  
 		try
 		{
-		 
-  
 		  if (this.calendarEvents)
 		  {
 			console.log("this.calendarEvents", this.calendarEvents[0])
@@ -194,7 +180,16 @@
 	background-color: #f5f5f5 !important;
 	margin-bottom: 8px !important;
   }
-  
+
+
+.layout-default .ant-layout-content {
+  padding-top: 0px;
+}
+
+.v-content{
+	padding-top: 0px !important; ;
+}
+
   
   </style>
   
