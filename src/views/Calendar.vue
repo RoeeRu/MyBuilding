@@ -187,7 +187,20 @@
 }
 
 .v-content{
-	padding-top: 0px !important; ;
+	padding: 0px !important; ;
+}
+
+.v-navigation-drawer {
+	visibility: hidden;
+}
+
+.v-toolbar__title {
+	visibility: hidden;
+}
+
+.v-toolbar__content {
+	border-bottom: 0px !important;
+
 }
 
   

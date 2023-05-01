@@ -38,7 +38,7 @@ let routes = [
 	{
 		path: '/calendar',
 		name: 'Calendar',
-		//layout: "dashboard",
+		layout: "dashboard",
 		component: () => import('../views/Calendar.vue'),
 		meta: {
 				requiresAuth: true,
