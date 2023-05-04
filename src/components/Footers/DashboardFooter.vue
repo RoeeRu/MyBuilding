@@ -30,7 +30,7 @@
 					<a href="https://joindomos.com/resources" target="_blank"> Blog</a>
 						</a-menu-item>
 					<a-menu-item>
-					<a href="https://app.joindomos.com/#/terms" target="_blank">Terms of Service</a>	
+					<a href="https://joindomos.com/terms-of-service" target="_blank">Terms of Service</a>	
 					</a-menu-item>
 				</a-menu>
 				<!-- / Footer Navigation Menu -->
