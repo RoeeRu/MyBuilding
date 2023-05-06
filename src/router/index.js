@@ -178,18 +178,6 @@ let routes = [
         requiresAuth: false
       }
 	},
-	{
-		path: '/terms',
-		name: 'Terms',
-		layout: "dashboard",
-		meta: {
-			layoutClass: 'layout-sign-up',
-		},
-		component: () => import('../views/Terms.vue'),
-		meta: {
-        requiresAuth: false
-      }
-	},
 ]
 
 // Adding layout property from each route to the meta
