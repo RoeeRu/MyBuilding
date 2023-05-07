@@ -15,7 +15,7 @@ let routes = [
 	},
 	{
 		path: '/',
-		redirect: '/dashboard',
+		redirect: localStorage.getItem("initialRoute"),
 		meta: {
 				requiresAuth: true,
 				allowedRoles: ['admin']
@@ -254,7 +254,7 @@ function reloadPageIfExpired(inactivityTimeout) {
     // Cache has expired, clear it
     localStorage.clear();
 
-		// Set localStorage session reload time to 2 hours from idle
+		// Set localStorage session reload time to inactivityTimeout hours from idle
 		let expTimeInHours = (60 * 60 * 1000) * inactivityTimeout;
 		let cacheExpirationTime = new Date().getTime() + expTimeInHours;
 		localStorage.setItem("cacheExpireTime", cacheExpirationTime);
@@ -272,7 +272,7 @@ router.beforeEach(async (to, from, next) => {
         console.log('beforeEach', to.fullPath, from.fullPath)}
 	let isLogged = await store.dispatch('isLoggedIn');
 	if(isLogged ) {
-		let inactivityTimeout = 2;
+		let inactivityTimeout = 4;
 		if (from.fullPath === '/sign-in' || from.fullPath === '/sign-up') {
 			let expTimeInHours = (60 * 60 * 1000) * inactivityTimeout;
 			let cacheExpirationTime = new Date().getTime() + expTimeInHours;
@@ -297,6 +297,7 @@ router.beforeEach(async (to, from, next) => {
     if (allowedRoles.length > 0 && allowedRoles.includes(userRole)) {
       next();
     } else {
+			console.log('role not allowed')
 			await store.dispatch('signOut');
 			router.currentRoute.meta.navigationCancelled = true;
 			router.go(from.path);

@@ -103,8 +103,8 @@ import { mapActions } from 'vuex'
 				regFailed: false,
 				loading: false,
 				fullPage: true,
-				loginRoutes: ['dashboard', 'maintenance', 'projects', 'transactions', 'building', 'documents',
-				 							 'deliveries', 'services', 'forum', 'calendar'],
+				loginRoutes: ['dashboard', 'calendar', 'projects', 'maintenance', 'transactions', 'building', 'documents',
+				 							 'deliveries', 'services', 'forum'],
 				 // check by order with route nevigate the user first
 			}
 		},
