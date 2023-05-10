@@ -24,7 +24,7 @@
 		
 		<!-- Copyright Notice -->
 		<p class="copyright">
-			Copyright © 2022 Domos
+			Copyright © 2023 Domos
 			by <a href="https://joindomos.com">Domos</a>.
 		</p>
 		<!-- / Copyright Notice -->

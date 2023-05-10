@@ -15,7 +15,7 @@ let routes = [
 	},
 	{
 		path: '/',
-		redirect: localStorage.getItem("initialRoute"),
+		redirect: '/dashboard',
 		meta: {
 				requiresAuth: true,
 				allowedRoles: ['admin']
