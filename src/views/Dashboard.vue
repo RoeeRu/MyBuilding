@@ -97,14 +97,21 @@
 		mounted() {
 
 			window.analytics.page('Dashboard');
-			Promise.all([this.getWidgets(), this.getChart()])
-			.then(() => {
-				this.loading = false
-			})
+			// run getWidgets  and when it's done, run  both getTransactions and getChart asynchonously
+			this.getWidgets().then(() => {
+				this.loading = false;
+				Promise.all([
+					this.getTransactions(),
+					this.getChart()
+				]).catch(error => {
+					console.log('getWidgets or getChart failed');
+				});
+			}).catch(error => {
+				console.log('getTransactions failed');
+			});
 
-			this.getTransactions().catch(error => {
-          console.log('getTransactions failed');
-      });
+
+			
 
 			this.getProjects().catch(error => {
           console.log('getProjects failed');
