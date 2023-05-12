@@ -32,6 +32,9 @@
 					<a-menu-item>
 					<a href="https://joindomos.com/terms-of-service" target="_blank">Terms of Service</a>	
 					</a-menu-item>
+					<a-menu-item>
+						<a href="javascript:;" v-on:click="signOut()">Sign Out</a>
+					</a-menu-item>
 				</a-menu>
 				<!-- / Footer Navigation Menu -->
 
@@ -49,6 +52,15 @@
 			return {
 			}
 		},
+		methods: {
+		async signOut() {
+			console.log('signing out')
+				let isSignedOut = await this.$store.dispatch('signOut')
+				if(isSignedOut) {
+					this.$router.push({ name: 'Sign-In' });
+				}
+			},
+		}
 	})
 
 </script>
