@@ -64,19 +64,6 @@
 	  storeKey: 'dayspanState',
 	  calendar: Calendar.months(),
 	  readOnly: false,
-	  defaultEvents: [
-		{
-		  data: {
-			title: 'Christmas Day',
-			color: '#2196F3',
-			calendar: 'US Holidays'
-		  },
-		  schedule: {
-			month: [Month.APRIL],
-			dayOfMonth: [25]
-		  }
-		}
-	  ]
 	}),
 	computed: {
 			...mapState(
@@ -201,6 +188,18 @@
 .v-toolbar__content {
 	border-bottom: 0px !important;
 
+}
+
+.v-menu__content {
+	  background-color: #491919 !important;
+	  top: 20% !important;
+	  right: 2% !important;
+	  left: auto !important;
+}
+
+.ds-app-calendar-toolbar {
+	background-color: transparent !important;
+	margin-top: 77px !important;
 }
 
   
