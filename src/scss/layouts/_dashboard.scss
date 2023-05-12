@@ -401,7 +401,7 @@
 	}
 	.ant-layout-content {
 		padding: 0px;
-		margin: 0px 20px 0px;
+		margin: 10px 20px 0px;
 	}
 	// / Content/Main Layout
 
@@ -527,9 +527,10 @@
 	// / Breadcrumbs
 	.header-control {
 		display: flex;
-		flex-direction: row-reverse;
+		//flex-direction: row-reverse;
 		align-items: center;
 		margin-top: 10px;
+		z-index: 5;
 
 		@media( min-width: $md ){
 			margin-top: 0;

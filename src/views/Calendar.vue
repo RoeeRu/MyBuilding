@@ -189,17 +189,9 @@
 	border-bottom: 0px !important;
 
 }
-
 .v-menu__content {
-	  background-color: #491919 !important;
-	  top: 20% !important;
 	  right: 2% !important;
 	  left: auto !important;
-}
-
-.ds-app-calendar-toolbar {
-	background-color: transparent !important;
-	margin-top: 77px !important;
 }
 
   

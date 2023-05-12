@@ -50,6 +50,7 @@
 					<a-button type="link" class="sidebar-toggler" @click="$emit('toggleSidebar', ! sidebarCollapsed) , resizeEventHandler()">
 						<svg width="30" height="30" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M16 132h416c8.837 0 16-7.163 16-16V76c0-8.837-7.163-16-16-16H16C7.163 60 0 67.163 0 76v40c0 8.837 7.163 16 16 16zm0 160h416c8.837 0 16-7.163 16-16v-40c0-8.837-7.163-16-16-16H16c-8.837 0-16 7.163-16 16v40c0 8.837 7.163 16 16 16zm0 160h416c8.837 0 16-7.163 16-16v-40c0-8.837-7.163-16-16-16H16c-8.837 0-16 7.163-16 16v40c0 8.837 7.163 16 16 16z"/></svg>
 					</a-button>
+					<!-- Profile Control Buttons 
 					<a-dropdown>
 						<a-menu slot="overlay">
 						<a-menu-item>
@@ -63,7 +64,7 @@
 							<a-icon type="down" />
 						</a-button>
 					</a-dropdown>
-					<!-- / Header Control Buttons -->
+					 / Profile Control Buttons -->
 
 					<!-- Header Search Input 
 					<a-input-search class="header-search" :class="searchLoading ? 'loading' : ''" placeholder="Type here…" @search="onSearch" :loading='searchLoading'>
@@ -180,3 +181,10 @@
 	})
 
 </script>
+
+<style>
+.sidebar-toggler {
+  display: none;
+  left: 2%;
+}
+</style>
