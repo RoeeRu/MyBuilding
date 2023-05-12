@@ -15,16 +15,36 @@
 
 		</a-row>
 		<!-- Documents Table -->
+		<!-- <a-row :gutter="24" type="flex"> -->
+
+			<!-- Documents Table Column -->
+			<!-- <a-col :span="24" class="mb-24"> -->
+
+				<!-- Documents Table Card -->
+				<!-- <CardDocumentsTable
+					:data="documentsData"
+					:columns="table1Columns"
+				></CardDocumentsTable> -->
+				<!-- / Documents Table Card -->
+
+			<!-- </a-col> -->
+			<!-- / Documents Table Column -->
+
+		<!-- </a-row> -->
+		<!-- / Documents Table -->
+
+
+		<!-- Documents Table -->
 		<a-row :gutter="24" type="flex">
 
 			<!-- Documents Table Column -->
 			<a-col :span="24" class="mb-24">
 
 				<!-- Documents Table Card -->
-				<CardDocumentsTable
+				<CardDocumentFolders
 					:data="documentsData"
 					:columns="table1Columns"
-				></CardDocumentsTable>
+				></CardDocumentFolders>
 				<!-- / Documents Table Card -->
 
 			</a-col>
@@ -32,7 +52,6 @@
 
 		</a-row>
 		<!-- / Documents Table -->
-
 	</div>
 </template>
 
@@ -41,6 +60,7 @@
 	// "Documents" table component.
 	import CardDocumentsTable from '../components/Cards/CardDocumentsTable.vue';
 	import CardCardDocumentsActions from '../components/Cards/CardDocumentsActions.vue';
+	import CardDocumentFolders from '../components/Cards/CardDocumentFolders.vue';
 	import { mapActions } from 'vuex'
 	import { mapState } from 'vuex'
 
@@ -85,6 +105,7 @@
 		components: {
 	CardDocumentsTable,
 	CardCardDocumentsActions,
+	CardDocumentFolders,
 },
 		data() {
 			return {
