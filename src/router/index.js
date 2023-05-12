@@ -15,7 +15,7 @@ let routes = [
 	},
 	{
 		path: '/',
-		redirect: '/dashboard',
+		redirect: localStorage.getItem("initialRoute"),
 		meta: {
 				requiresAuth: true,
 				allowedRoles: ['admin']
@@ -235,34 +235,38 @@ const router = new VueRouter({
 // })
 
 async function checkForUpdatedRoutes() {
+	if (process.env.NODE_ENV === 'development') {
+        console.log('checkForUpdatedRoutes')}
 	let allowedRoutesByRole = store.state.auth.routesByRole;
 	if (!store.state.auth.allowedRolesUpdated && Array.isArray(allowedRoutesByRole) && allowedRoutesByRole.length > 0) {
 		return;
 	}
+	if (process.env.NODE_ENV === 'development') {
+        console.log('checkForUpdatedRoutes - allowedRolesUpdated')}
 
   await store.dispatch('getRoutes');
 }
 
 function reloadPageIfExpired(inactivityTimeout) {
+	if (process.env.NODE_ENV === 'development') {
+        console.log('reloadPageIfExpired')}
 	const currentExpireTime = localStorage.getItem("cacheExpireTime");
 
   const currentTime = new Date().getTime();
 	const timeExpired = currentTime > currentExpireTime;
   if (!currentExpireTime || timeExpired) {
 	if (process.env.NODE_ENV === 'development') {
-        console.log('Cache has expired, clearing it')}
-    // Cache has expired, clear it
-    localStorage.clear();
+        console.log('timeExpired')}
 
-		// Set localStorage session reload time to inactivityTimeout hours from idle
-		let expTimeInHours = (60 * 60 * 1000) * inactivityTimeout;
-		let cacheExpirationTime = new Date().getTime() + expTimeInHours;
-		localStorage.setItem("cacheExpireTime", cacheExpirationTime);
-		if(currentExpireTime && timeExpired) {
-			if (process.env.NODE_ENV === 'development') {
-				console.log('currentExpireTime - reloading page')}
-			window.location.reload();
-		}
+	// Set localStorage session reload time to inactivityTimeout hours from idle
+	let expTimeInHours = (60 * 60 * 1000) * inactivityTimeout;
+	let cacheExpirationTime = new Date().getTime() + expTimeInHours;
+	localStorage.setItem("cacheExpireTime", cacheExpirationTime);
+	if(currentExpireTime && timeExpired) {
+		if (process.env.NODE_ENV === 'development') {
+			console.log('currentExpireTime - reloading page')}
+		window.location.reload();
+	}
   }
 }
 
@@ -279,6 +283,7 @@ router.beforeEach(async (to, from, next) => {
 			localStorage.setItem("cacheExpireTime", cacheExpirationTime);
 		}
 		else {
+			// check if need to reload page
 		reloadPageIfExpired(inactivityTimeout)
 		}
 	}
@@ -292,7 +297,6 @@ router.beforeEach(async (to, from, next) => {
   } else if (isLogged) {
     const allowedRoles = to.meta.allowedRoles;
     const userRole = store.getters.user.role;
-		// alert(to.name)
 		await checkForUpdatedRoutes();
     if (allowedRoles.length > 0 && allowedRoles.includes(userRole)) {
       next();
